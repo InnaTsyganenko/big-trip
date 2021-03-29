@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Inna Tsyganenko](https://up.htmlacademy.ru/ecmascript/14/user/1452537).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Гуляев](https://htmlacademy.ru/profile/dima).
 
 ---
 
