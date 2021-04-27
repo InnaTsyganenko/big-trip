@@ -36,16 +36,12 @@ export const options = [
   },
 ];
 
-export const createPointOptionsTemplate = () => {
+const createPointOptionsTemplate = () => {
   const randomOffers = getRandomArrayElements(options, 0);
   return randomOffers.map((option) => `<li class="event__offer">
   <span class="event__offer-title"style="white-space: pre;">${option.title}</span>&plus;&euro;&nbsp;
   <span class="event__offer-price">${option.price}</span>
   </li>`).join('\n');
-};
-
-export const createEmptyListTemplate = () => {
-  return '<p class="trip-events__msg">Click New Event to create your first point</p>';
 };
 
 export const createPointTemplate = (point) => {

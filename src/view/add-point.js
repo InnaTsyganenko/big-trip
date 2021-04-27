@@ -1,3 +1,4 @@
+import {generatePoint} from '../mock/point.js';
 import {options} from './point.js';
 import {getRandomInteger, newPointDate, getRandomArrayElements} from '../utils.js';
 import {TYPES} from '../const.js';
@@ -106,3 +107,5 @@ export const createAddPointTemplate = (point = {}) => {
   </section>
 </form>`;
 };
+
+export const addPoint = new Array(1).fill().map(generatePoint);
