@@ -31,8 +31,8 @@ export const createRouteInfoTemplate = () => {
   arrPrices = arrPrices > '0' ? arrPrices.reduce((total, amount) => total + amount) : '0';
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
-    <h1 class="trip-info__title">${renderDestinations(arrDestinations)}</h1>
-    <p class="trip-info__dates">${headerDate(points[1].datetimeStart) + ' ' + '&mdash;' + ' ' + headerDate(points[points.length - 1].datetimeEnd)}</p>
+    <h1 class="trip-info__title">${points.length > 1 ? renderDestinations(arrDestinations) : ''}</h1>
+    <p class="trip-info__dates">${points.length > 1 ? headerDate(points[1].datetimeStart) + ' ' + '&mdash;' + ' ' + headerDate(points[points.length - 1].datetimeEnd) : ''}</p>
   </div>
   <p class="trip-info__cost">
   Total: &euro;&nbsp;<span class="trip-info__cost-value">${arrPrices}</span>

@@ -1,13 +1,16 @@
+import dayjs from 'dayjs';
+import * as isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+dayjs.extend(isSameOrAfter);
 import {POINT_COUNT} from './const.js';
 import {isEscEvent, isInPage, renderTemplate, renderElement, RenderPosition} from './utils.js';
 import SiteMenuView from './view/site-menu.js';
 import NoPointView from './view/no-point.js';
-import PointListView from './view/point-list.js';
+import {pointListComponent} from './view/point-list.js';
 import {createPointTemplate, points, sortingDatePoints} from './view/point.js';
 import {createRouteInfoTemplate} from './view/route-info.js';
 import {createAddPointTemplate, addPoint} from './view/add-point.js';
 import {createEditPointTemplate} from './view/edit-point.js';
-import {createFiltersTemplate, isPastPoint, isFuturePoint} from './view/filters.js';
+import {createFiltersTemplate} from './view/filters.js';
 import {createSortingTemplate} from './view/sorting.js';
 
 const body = document.querySelector('.page-body');
@@ -18,16 +21,16 @@ const siteNavigationElement = siteHeaderElement.querySelector('.trip-controls__n
 const siteFiltersElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
 
-
-const pointListComponent = new PointListView().getElement();
 renderElement(siteTripEventsElement, pointListComponent, RenderPosition.BEFOREEND);
 
 if (POINT_COUNT === 0) {
   renderElement(siteTripEventsElement, new NoPointView().getElement(), 'beforeend');
 }
 
+const sortingDatePointsSlice = sortingDatePoints.slice(1);
+
 const renderPoints = () => {
-  sortingDatePoints.slice(1).forEach((i) => {
+  sortingDatePointsSlice.forEach((i) => {
     renderTemplate(pointListComponent, createPointTemplate(i), 'beforeend');
   });
 };
@@ -39,11 +42,6 @@ renderTemplate(siteTripEventsElement, createSortingTemplate(), 'afterbegin');
 renderTemplate(siteTripMainElement, createRouteInfoTemplate(), 'afterbegin');
 
 const addPointButton = siteHeaderElement.querySelector('.trip-main__event-add-btn');
-
-const siteFiltersElements = siteHeaderElement.querySelectorAll('.trip-filters__filter-input');
-const sitePointsSortElements = siteMainElement.querySelectorAll('.trip-sort__input');
-const filterEverythingInput = siteHeaderElement.querySelector('#filter-everything');
-const sortDayInput = siteTripEventsElement.querySelector('#sort-day');
 
 const closeAddForm = (evt) => {
   if (isEscEvent(evt)) {
@@ -81,54 +79,52 @@ const showEditForm = () => {
 
 showEditForm();
 
-siteFiltersElements.forEach((filterPoints) => {
-  let filtredPastPoints;
-  let filtredFuturePoints;
-  filterPoints.addEventListener('change', () => {
-    pointListComponent.innerHTML = '';
+const siteFiltersElements = siteHeaderElement.querySelectorAll('.trip-filters__filter-input');
+const sitePointsSortElements = siteMainElement.querySelectorAll('.trip-sort__input');
+const filterEverythingInput = siteHeaderElement.querySelector('#filter-everything');
+const sortDayInput = siteTripEventsElement.querySelector('#sort-day');
+
+let arrfiltredPoints = [...sortingDatePointsSlice];
+
+siteFiltersElements.forEach((filterElement) => {
+  filterElement.addEventListener('change', () => {
     sortDayInput.checked = true;
-    switch (filterPoints.id) {
-      case 'filter-future':
-        filtredFuturePoints = isFuturePoint();
-        for (let i = 0; i < filtredFuturePoints.length; i++) {
-          renderTemplate(pointListComponent, createPointTemplate(filtredFuturePoints[i]), 'beforeend');
-        }
-        break;
-      case 'filter-past':
-        filtredPastPoints = isPastPoint();
-        for (let i = 0; i < filtredPastPoints.length; i++) {
-          renderTemplate(pointListComponent, createPointTemplate(filtredPastPoints[i]), 'beforeend');
-        }
-        break;
-      default:
-        renderPoints();
-        break;
-    }
+    pointListComponent.innerHTML = '';
+    const filtredPoints = sortingDatePointsSlice.filter((e) =>
+      (filterElement.id === 'filter-future'
+        ? (e.datetimeStart.isBefore(dayjs(), 'm') && e.datetimeEnd.isAfter(dayjs(), 'm') || e.datetimeStart.isSameOrAfter(dayjs(), 'm')) : false)
+        ||
+        (filterElement.id === 'filter-past'
+          ? (e.datetimeStart.isBefore(dayjs(), 'm') && e.datetimeEnd.isAfter(dayjs(), 'm') || e.datetimeEnd.isBefore(dayjs(), 'm')) : false)
+        ||
+      (filterElement.id === 'filter-everything'
+        ? sortingDatePointsSlice : false),
+    );
+    arrfiltredPoints = filtredPoints;
+    filtredPoints.forEach((i) => {
+      renderTemplate(pointListComponent, createPointTemplate(i), 'beforeend');
+    });
     showEditForm();
   });
 });
 
-sitePointsSortElements.forEach((sortingPoints) => {
-  sortingPoints.addEventListener('change', () => {
+
+sitePointsSortElements.forEach((sortElement) => {
+  sortElement.addEventListener('change', () => {
     pointListComponent.innerHTML = '';
-    switch (sortingPoints.id) {
-      case 'sort-time':
-        points.sort((a, b) => b.duration - a.duration);
-        for (let i = 1; i < points.length; i++) {
-          renderTemplate(pointListComponent, createPointTemplate(points[i]), 'beforeend');
-        }
-        break;
-      case 'sort-price':
-        points.sort((a, b) => b.price - a.price);
-        for (let i = 1; i < points.length; i++) {
-          renderTemplate(pointListComponent, createPointTemplate(points[i]), 'beforeend');
-        }
-        break;
-      default:
-        points.sort((a, b) => a.datetimeStart - b.datetimeStart);
-        renderPoints();
-        break;
+    if (sortingDatePointsSlice > '1') {
+      const sortedPoints = arrfiltredPoints.sort((a, b) =>
+        ((sortElement.id === 'sort-time') ? (b.duration - a.duration) : false)
+        ||
+        (sortElement.id === 'sort-price' ? (b.price - a.price) : false)
+        ||
+        (sortElement.id === 'sort-everything'
+          ? sortingDatePointsSlice : false),
+      );
+      sortedPoints.forEach((i) => {
+        renderTemplate(pointListComponent, createPointTemplate(i), 'beforeend');
+      });
     }
-    showEditForm();
   });
 });
+
