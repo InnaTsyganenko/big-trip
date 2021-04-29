@@ -3,12 +3,13 @@ import * as isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter);
 import {POINT_COUNT} from './const.js';
 import {isEscEvent, isInPage, renderTemplate, renderElement, RenderPosition} from './utils.js';
+import {generatePoint} from './mock/point.js';
 import SiteMenuView from './view/site-menu.js';
 import NoPointView from './view/no-point.js';
 import {pointListComponent} from './view/point-list.js';
-import {createPointTemplate, points, sortingDatePoints} from './view/point.js';
+import {createPointTemplate, points} from './view/point.js';
 import {createRouteInfoTemplate} from './view/route-info.js';
-import {createAddPointTemplate, addPoint} from './view/add-point.js';
+import {createAddPointTemplate} from './view/add-point.js';
 import {createEditPointTemplate} from './view/edit-point.js';
 import {createFiltersTemplate} from './view/filters.js';
 import {createSortingTemplate} from './view/sorting.js';
@@ -23,11 +24,11 @@ const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
 
 renderElement(siteTripEventsElement, pointListComponent, RenderPosition.BEFOREEND);
 
+const sortingDatePointsSlice = points.sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
+
 if (POINT_COUNT === 0) {
   renderElement(siteTripEventsElement, new NoPointView().getElement(), 'beforeend');
 }
-
-const sortingDatePointsSlice = sortingDatePoints.slice(1);
 
 const renderPoints = () => {
   sortingDatePointsSlice.forEach((i) => {
@@ -51,6 +52,8 @@ const closeAddForm = (evt) => {
     body.removeEventListener('keydown', closeAddForm);
   }
 };
+
+const addPoint = new Array(1).fill().map(generatePoint);
 
 addPointButton.addEventListener('click', () => {
   filterEverythingInput.checked = true;

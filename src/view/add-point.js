@@ -1,34 +1,6 @@
-import {generatePoint} from '../mock/point.js';
-import {options} from './point.js';
-import {getRandomInteger, newPointDate, getRandomArrayElements} from '../utils.js';
-import {TYPES} from '../const.js';
-
-export const createPointTypesTemplate = (currentType) => {
-  return TYPES.map((type) => `<div class="event__type-item">
-  <input
-  id="event-type-${type}-1"
-  class="event__type-input  visually-hidden"
-  type="radio" name="event-type"
-  value="${type}"
-  ${currentType === type ? 'checked' : ''}
-  >
-  <label
-  class="event__type-label  event__type-label--${type}"
-  for="event-type-${type}-1">${type}</label>
-</div>`).join('\n');
-};
-
-export const randomAvailableOptions = getRandomArrayElements(options, 0);
-export const createPointAvailableOptionsTemplate = () => {
-  return randomAvailableOptions.map((option) => `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${option.value}-1" type="checkbox" name="event-offer-${option.value}" ${(option.isChecked) ? 'checked' : ''}>
-  <label class="event__offer-label" for="event-offer-${option.value}-1">
-    <span class="event__offer-title">${option.title}</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${option.price}</span>
-  </label>
-</div>`).join('\n');
-};
+import {getRandomInteger, newPointDate} from '../utils.js';
+import {createPointTypesTemplate} from './point-types.js';
+import {randomAvailableOptions, createPointAvailableOptionsTemplate} from './point-options.js';
 
 export const createAddPointTemplate = (point = {}) => {
   const {type, destination, datetimeStart, datetimeEnd, price, description, photos, offers} = point;
@@ -107,5 +79,3 @@ export const createAddPointTemplate = (point = {}) => {
   </section>
 </form>`;
 };
-
-export const addPoint = new Array(1).fill().map(generatePoint);

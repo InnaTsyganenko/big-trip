@@ -2,7 +2,7 @@
 import {headerDate} from '../utils.js';
 import {points} from '../view/point.js';
 
-const renderDestinations = (dest) => {
+const displayDestinations = (dest) => {
   switch (dest.length) {
     case 1:
       dest = dest[0];
@@ -31,7 +31,7 @@ export const createRouteInfoTemplate = () => {
   arrPrices = arrPrices > '0' ? arrPrices.reduce((total, amount) => total + amount) : '0';
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
-    <h1 class="trip-info__title">${points.length > 1 ? renderDestinations(arrDestinations) : ''}</h1>
+    <h1 class="trip-info__title">${points.length > 1 ? displayDestinations(arrDestinations) : ''}</h1>
     <p class="trip-info__dates">${points.length > 1 ? headerDate(points[1].datetimeStart) + ' ' + '&mdash;' + ' ' + headerDate(points[points.length - 1].datetimeEnd) : ''}</p>
   </div>
   <p class="trip-info__cost">

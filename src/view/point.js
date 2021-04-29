@@ -1,40 +1,6 @@
-import {getRandomInteger, getRandomArrayElements} from '../utils.js';
+import {getRandomArrayElements} from '../utils.js';
 import {POINT_COUNT} from '../const.js';
-import {generatePoint} from '../mock/point.js';
-
-export const options = [
-  {
-    id: 1,
-    value: 'luggage',
-    title: 'Add luggage',
-    price: 30,
-    isChecked: Boolean(getRandomInteger(0, 1)),
-  }, {
-    id: 2,
-    value: 'comfort',
-    title: 'Switch to comfort class',
-    price: 100,
-    isChecked: Boolean(getRandomInteger(0, 1)),
-  }, {
-    id: 3,
-    value: 'meal',
-    title: 'Add meal',
-    price: 15,
-    isChecked: Boolean(getRandomInteger(0, 1)),
-  }, {
-    id: 4,
-    value: 'seats',
-    title: 'Choose seats',
-    price: 5,
-    isChecked: Boolean(getRandomInteger(0, 1)),
-  }, {
-    id: 5,
-    value: 'train',
-    title: 'Travel by train',
-    price: 40,
-    isChecked: Boolean(getRandomInteger(0, 1)),
-  },
-];
+import {generatePoint, options} from '../mock/point.js';
 
 const createPointOptionsTemplate = () => {
   const randomOffers = getRandomArrayElements(options, 0);
@@ -102,4 +68,3 @@ export const createPointTemplate = (point) => {
 };
 
 export const points = new Array(POINT_COUNT).fill().map(generatePoint);
-export const sortingDatePoints = points.sort((a, b) => a.datetimeStart - b.datetimeStart);

@@ -10,7 +10,7 @@ const createSiteMenuTemplate = () => {
 </div>`;
 };
 
-export default class SiteMenuView {
+export default class SiteMenu {
   constructor() {
     this._element = null;
   }

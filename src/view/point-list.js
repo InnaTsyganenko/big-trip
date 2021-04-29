@@ -4,7 +4,7 @@ const createPointListTemplate = () => {
   return '<ul class="trip-events__list"></ul>';
 };
 
-export default class PointListView {
+export default class PointList {
   constructor() {
     this._element = null;
   }
@@ -26,4 +26,4 @@ export default class PointListView {
   }
 }
 
-export const pointListComponent = new PointListView().getElement();
+export const pointListComponent = new PointList().getElement();

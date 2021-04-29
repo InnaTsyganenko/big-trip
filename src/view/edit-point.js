@@ -1,4 +1,5 @@
-import {createPointTypesTemplate, createPointAvailableOptionsTemplate, randomAvailableOptions} from './add-point.js';
+import {createPointTypesTemplate} from './point-types.js';
+import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options.js';
 import {newPointDate} from '../utils.js';
 
 export const createEditPointTemplate = (editPoint) => {
