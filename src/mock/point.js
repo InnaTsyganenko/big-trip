@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {getRandomInteger, getRandomArrayElements} from '../utils.js';
-import {TYPES, DESTINATION, DESCRIPTION} from '../const.js';
+import {POINT_COUNT, TYPES, DESTINATION, DESCRIPTION} from '../const.js';
 
 export const options = [
   {
@@ -55,3 +55,6 @@ export const generatePoint = () => {
     isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };
+
+const points = new Array(POINT_COUNT).fill().map(generatePoint);
+export const sortingDatePointsSlice = points.sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
