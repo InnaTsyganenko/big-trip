@@ -1,13 +1,26 @@
-import {getRandomInteger, newPointDate} from '../utils.js';
+import {getRandomInteger, newPointDate, makeElement} from '../utils.js';
 import {createPointTypesTemplate} from './point-types.js';
 import {randomAvailableOptions, createPointAvailableOptionsTemplate} from './point-options.js';
 
-export const createAddPointTemplate = (point = {}) => {
-  const {type, destination, datetimeStart, datetimeEnd, price, description, photos, offers} = point;
+const BLANK_POINT = {
+  type: '',
+  destination: '',
+  datetimeStart: '',
+  datetimeEnd: '',
+  price: '',
+  description: '',
+  photos: '',
+  offers: '',
+  isFavorite: '',
+};
+
+const createAddPointTemplate = (addPoint = {}) => {
+  const {type, destination, datetimeStart, datetimeEnd, price, description, photos, offers} = addPoint;
 
   const typesTemplate = createPointTypesTemplate(type);
   const offersTemplate = createPointAvailableOptionsTemplate(offers);
-  return `<form class="event event--edit" action="#" method="post">
+  return `<li class="trip-events__item">
+  <form class="event event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -77,5 +90,29 @@ export const createAddPointTemplate = (point = {}) => {
       </div>
     </section>` : ''}
   </section>
-</form>`;
+</form>
+</li>`;
 };
+
+export default class AddPoint {
+  constructor(addPoint = BLANK_POINT) {
+    this._addPoint = addPoint;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createAddPointTemplate(this._addPoint);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = makeElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import {makeElement} from '../utils.js';
 
 const createPointListTemplate = () => {
   return '<ul class="trip-events__list"></ul>';
@@ -15,7 +15,7 @@ export default class PointList {
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate());
+      this._element = makeElement(this.getTemplate());
     }
 
     return this._element;
@@ -25,5 +25,3 @@ export default class PointList {
     this._element = null;
   }
 }
-
-export const pointListComponent = new PointList().getElement();

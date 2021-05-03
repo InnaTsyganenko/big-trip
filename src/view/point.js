@@ -1,6 +1,5 @@
-import {getRandomArrayElements} from '../utils.js';
-import {POINT_COUNT} from '../const.js';
-import {generatePoint, options} from '../mock/point.js';
+import {getRandomArrayElements, makeElement} from '../utils.js';
+import {options} from '../mock/point.js';
 
 const createPointOptionsTemplate = () => {
   const randomOffers = getRandomArrayElements(options, 0);
@@ -10,7 +9,7 @@ const createPointOptionsTemplate = () => {
   </li>`).join('\n');
 };
 
-export const createPointTemplate = (point) => {
+const createPointTemplate = (point) => {
   const {type, destination, datetimeStart, datetimeEnd, duration, price, isFavorite} = point;
 
   const calcDuration = () => {
@@ -67,4 +66,25 @@ export const createPointTemplate = (point) => {
   </li>`;
 };
 
-export const points = new Array(POINT_COUNT).fill().map(generatePoint);
+export default class Point {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = makeElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,133 +1,168 @@
 import dayjs from 'dayjs';
 import * as isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter);
-import {POINT_COUNT} from './const.js';
-import {isEscEvent, isInPage, renderTemplate, renderElement, RenderPosition} from './utils.js';
-import {generatePoint} from './mock/point.js';
+import {isEscEvent, RenderPosition, render} from './utils.js';
+import {generatePoint, sortingDatePointsSlice} from './mock/point.js';
 import SiteMenuView from './view/site-menu.js';
-import NoPointView from './view/no-point.js';
-import {pointListComponent} from './view/point-list.js';
-import {createPointTemplate, points} from './view/point.js';
-import {createRouteInfoTemplate} from './view/route-info.js';
-import {createAddPointTemplate} from './view/add-point.js';
-import {createEditPointTemplate} from './view/edit-point.js';
-import {createFiltersTemplate} from './view/filters.js';
-import {createSortingTemplate} from './view/sorting.js';
+import NoPointListView from './view/no-point.js';
+import PointListView from './view/point-list.js';
+import PointView from './view/point.js';
+import RouteInfoView from './view/route-info.js';
+import AddPointView from './view/add-point.js';
+import EditPointView from './view/edit-point.js';
+import FiltersView from './view/filters.js';
+import SortingView from './view/sorting.js';
+
+const siteHeaderContainerElement = document.querySelector('.page-header__container');
+const siteTripInfoElement = siteHeaderContainerElement.querySelector('.trip-main');
+const siteNavigationElement = siteHeaderContainerElement.querySelector('.trip-controls__navigation');
+const siteFiltersElement = siteHeaderContainerElement.querySelector('.trip-controls__filters');
 
 const body = document.querySelector('.page-body');
-const siteHeaderElement = document.querySelector('.page-header__container');
 const siteMainElement = document.querySelector('.page-main');
-const siteTripMainElement = siteHeaderElement.querySelector('.trip-main');
-const siteNavigationElement = siteHeaderElement.querySelector('.trip-controls__navigation');
-const siteFiltersElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
 
-renderElement(siteTripEventsElement, pointListComponent, RenderPosition.BEFOREEND);
+render(siteTripInfoElement, new RouteInfoView().getElement(), RenderPosition.AFTERBEGIN);
+render(siteNavigationElement, new SiteMenuView().getElement(), RenderPosition.AFTERBEGIN);
+render(siteFiltersElement, new FiltersView().getElement(), RenderPosition.AFTERBEGIN);
+render(siteTripEventsElement, new SortingView().getElement(), RenderPosition.AFTERBEGIN);
 
-const sortingDatePointsSlice = points.sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
-
-if (POINT_COUNT === 0) {
-  renderElement(siteTripEventsElement, new NoPointView().getElement(), 'beforeend');
+if (sortingDatePointsSlice.length === 0) {
+  render(siteTripEventsElement, new NoPointListView().getElement(), RenderPosition.BEFOREEND);
 }
 
-const renderPoints = () => {
-  sortingDatePointsSlice.forEach((i) => {
-    renderTemplate(pointListComponent, createPointTemplate(i), 'beforeend');
+const pointListComponent = new PointListView();
+render(siteTripEventsElement, pointListComponent.getElement(), RenderPosition.BEFOREEND);
+
+const renderPoint = (pointListElement, point) => {
+  const pointComponent = new PointView(point);
+  const pointEditComponent = new EditPointView(point);
+  const replaceCardToForm = () => {
+    pointListElement.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+  };
+
+  const replaceFormToCard = () => {
+    pointListElement.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
+    body.removeEventListener('keydown', onEscKeyDown);
+  };
+
+  const onEscKeyDown = (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      replaceFormToCard();
+      body.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
+  pointEditComponent.getElement().querySelector('.event__reset-btn').addEventListener('click', () => replaceFormToCard());
+
+  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    (pointListComponent.getElement().querySelector('.event--edit')) ?
+      pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__reset-btn').click() : false;
+    replaceCardToForm();
+    body.addEventListener('keydown', onEscKeyDown);
   });
-};
-renderPoints();
 
-renderElement(siteNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
-renderTemplate(siteFiltersElement, createFiltersTemplate(), 'beforeend');
-renderTemplate(siteTripEventsElement, createSortingTemplate(), 'afterbegin');
-renderTemplate(siteTripMainElement, createRouteInfoTemplate(), 'afterbegin');
+  pointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    replaceFormToCard();
+  });
 
-const addPointButton = siteHeaderElement.querySelector('.trip-main__event-add-btn');
-
-const closeAddForm = (evt) => {
-  if (isEscEvent(evt)) {
+  pointEditComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pointListComponent.querySelector('.event--edit').remove();
-    addPointButton.disabled = false;
-    body.removeEventListener('keydown', closeAddForm);
-  }
-};
-
-const addPoint = new Array(1).fill().map(generatePoint);
-
-addPointButton.addEventListener('click', () => {
-  filterEverythingInput.checked = true;
-  sortDayInput.checked = true;
-  pointListComponent.innerHTML = '';
-  renderPoints();
-  renderTemplate(pointListComponent, createAddPointTemplate(addPoint[0]), 'afterbegin');
-  addPointButton.disabled = true;
-  body.addEventListener('keydown', closeAddForm);
-  showEditForm();
-});
-
-const showEditForm = () => {
-  const sitePointsElement = pointListComponent.querySelectorAll('.trip-events__item');
-  sitePointsElement.forEach((editPoint) => {
-    const editPointButton = editPoint.querySelector('.event__rollup-btn');
-    editPointButton.addEventListener('click', () => {
-      if (isInPage(document.querySelector('.event--edit'))) {
-        document.querySelector('.event--edit').remove();
-      }
-      renderTemplate(editPoint, createEditPointTemplate(points[1]), 'beforeend');
-      body.addEventListener('keydown', closeAddForm);
-    });
+    replaceFormToCard();
   });
+
+  render(pointListElement, pointComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-showEditForm();
+sortingDatePointsSlice.forEach((listPoint) => renderPoint(pointListComponent.getElement(), listPoint));
 
-const siteFiltersElements = siteHeaderElement.querySelectorAll('.trip-filters__filter-input');
+const renderAddForm = (addForm) => {
+  const addPointButton = siteHeaderContainerElement.querySelector('.trip-main__event-add-btn');
+  addForm = new Array(1).fill().map(generatePoint);
+  const pointAddComponent = new AddPointView(addForm[0]);
+
+  const showAddForm = () => {
+    (pointListComponent.getElement().querySelector('.event--edit')) ?
+      pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__reset-btn').click() : false;
+    filterEverythingInput.checked = true;
+    sortDayInput.checked = true;
+    render(pointListComponent.getElement(), pointAddComponent.getElement(), RenderPosition.AFTERBEGIN);
+    addPointButton.disabled = true;
+  };
+
+  const closeAddForm = () => {
+    pointListComponent.getElement().querySelector('.trip-events__item').remove();
+    addPointButton.disabled = false;
+    body.removeEventListener('keydown', onEscKeyDown);
+  };
+
+  const onEscKeyDown = (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      closeAddForm();
+      body.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
+  addPointButton.addEventListener('click', () => {
+    showAddForm();
+    body.addEventListener('keydown', onEscKeyDown);
+  });
+
+  pointAddComponent.getElement().querySelector('.event__reset-btn').addEventListener('click', () => closeAddForm());
+};
+
+renderAddForm();
+
+const siteFiltersElements = siteHeaderContainerElement.querySelectorAll('.trip-filters__filter-input');
 const sitePointsSortElements = siteMainElement.querySelectorAll('.trip-sort__input');
-const filterEverythingInput = siteHeaderElement.querySelector('#filter-everything');
+const filterEverythingInput = siteHeaderContainerElement.querySelector('#filter-everything');
 const sortDayInput = siteTripEventsElement.querySelector('#sort-day');
+const sortTimeInput = siteTripEventsElement.querySelector('#sort-time');
+const sortPriceInput = siteTripEventsElement.querySelector('#sort-price');
+
+const isFutureOrCurrentPoints = () => {
+  return sortingDatePointsSlice.filter((point) => (point.datetimeStart.isSameOrAfter(dayjs(), 'm'))
+  || (point.datetimeStart.isBefore(dayjs(), 'm')
+  && point.datetimeEnd.isAfter(dayjs(), 'm')));
+};
+
+const isPastOrCurrentPoints = () => {
+  return sortingDatePointsSlice.filter((point) => (point.datetimeEnd.isBefore(dayjs(), 'm'))
+  || (point.datetimeStart.isBefore(dayjs(), 'm')
+  && point.datetimeEnd.isAfter(dayjs(), 'm')));
+};
 
 let arrfiltredPoints = [...sortingDatePointsSlice];
 
 siteFiltersElements.forEach((filterElement) => {
   filterElement.addEventListener('change', () => {
     sortDayInput.checked = true;
-    pointListComponent.innerHTML = '';
-    const filtredPoints = sortingDatePointsSlice.filter((e) =>
-      (filterElement.id === 'filter-future'
-        ? (e.datetimeStart.isBefore(dayjs(), 'm') && e.datetimeEnd.isAfter(dayjs(), 'm') || e.datetimeStart.isSameOrAfter(dayjs(), 'm')) : false)
-        ||
-        (filterElement.id === 'filter-past'
-          ? (e.datetimeStart.isBefore(dayjs(), 'm') && e.datetimeEnd.isAfter(dayjs(), 'm') || e.datetimeEnd.isBefore(dayjs(), 'm')) : false)
-        ||
-      (filterElement.id === 'filter-everything'
-        ? sortingDatePointsSlice : false),
-    );
-    arrfiltredPoints = filtredPoints;
-    filtredPoints.forEach((i) => {
-      renderTemplate(pointListComponent, createPointTemplate(i), 'beforeend');
-    });
-    showEditForm();
+    pointListComponent.getElement().innerHTML = '';
+    const filtredPoints = () =>
+      filterElement.id === 'filter-future' ? isFutureOrCurrentPoints() : false
+      ||
+      filterElement.id === 'filter-past' ? isPastOrCurrentPoints() : false
+      ||
+      filterElement.id === 'filter-everything' ? sortingDatePointsSlice : false;
+    arrfiltredPoints = filtredPoints();
+    (arrfiltredPoints.length < '2') ? ((sortTimeInput.disabled = true) & (sortPriceInput.disabled = true)) : ((sortTimeInput.disabled = false) & (sortPriceInput.disabled = false));
+    filtredPoints().forEach((listPoint) => renderPoint(pointListComponent.getElement(), listPoint));
   });
 });
-
 
 sitePointsSortElements.forEach((sortElement) => {
   sortElement.addEventListener('change', () => {
-    pointListComponent.innerHTML = '';
-    if (sortingDatePointsSlice > '1') {
-      const sortedPoints = arrfiltredPoints.sort((a, b) =>
-        ((sortElement.id === 'sort-time') ? (b.duration - a.duration) : false)
-        ||
-        (sortElement.id === 'sort-price' ? (b.price - a.price) : false)
-        ||
-        (sortElement.id === 'sort-everything'
-          ? sortingDatePointsSlice : false),
-      );
-      sortedPoints.forEach((i) => {
-        renderTemplate(pointListComponent, createPointTemplate(i), 'beforeend');
-      });
-    }
+    pointListComponent.getElement().innerHTML = '';
+    const sortedPoints = arrfiltredPoints.sort((a, b) =>
+      ((sortElement.id === 'sort-time') ? (b.duration - a.duration) : false)
+      ||
+      (sortElement.id === 'sort-price' ? (b.price - a.price) : false)
+      ||
+      (sortElement.id === 'sort-everything'
+        ? sortingDatePointsSlice : false),
+    );
+    sortedPoints.forEach((listPoint) => renderPoint(pointListComponent.getElement(), listPoint));
   });
 });
-

@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import {makeElement} from '../utils.js';
 
 const createSiteMenuTemplate = () => {
   return `<div class="trip-controls__navigation">
@@ -21,7 +21,7 @@ export default class SiteMenu {
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate());
+      this._element = makeElement(this.getTemplate());
     }
 
     return this._element;

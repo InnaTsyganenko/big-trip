@@ -1,10 +1,11 @@
 import {createPointTypesTemplate} from './point-types.js';
 import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options.js';
-import {newPointDate} from '../utils.js';
+import {newPointDate, makeElement} from '../utils.js';
 
-export const createEditPointTemplate = (editPoint) => {
+const createEditPointTemplate = (editPoint) => {
   const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = editPoint;
-  return `<form class="event event--edit" action="#" method="post">
+  return `<li class="trip-events__item">
+  <form class="event event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -67,5 +68,29 @@ export const createEditPointTemplate = (editPoint) => {
         <p class="event__destination-description">${description.join(' ')}</p>
     </section>` : ''}
   </section>
-</form>`;
+</form>
+</li>`;
 };
+
+export default class EditPoint {
+  constructor(editPoint) {
+    this._editPoint = editPoint;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditPointTemplate(this._editPoint);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = makeElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
