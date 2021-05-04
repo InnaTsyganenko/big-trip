@@ -4,7 +4,7 @@ dayjs.extend(isSameOrAfter);
 import {isEscEvent, RenderPosition, render} from './utils.js';
 import {generatePoint, sortingDatePointsSlice} from './mock/point.js';
 import SiteMenuView from './view/site-menu.js';
-import NoPointListView from './view/no-point.js';
+import NoPointListView from './view/no-point-list.js';
 import PointListView from './view/point-list.js';
 import PointView from './view/point.js';
 import RouteInfoView from './view/route-info.js';
@@ -37,6 +37,7 @@ render(siteTripEventsElement, pointListComponent.getElement(), RenderPosition.BE
 const renderPoint = (pointListElement, point) => {
   const pointComponent = new PointView(point);
   const pointEditComponent = new EditPointView(point);
+
   const replaceCardToForm = () => {
     pointListElement.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
   };
@@ -85,6 +86,8 @@ const renderAddForm = (addForm) => {
   const showAddForm = () => {
     (pointListComponent.getElement().querySelector('.event--edit')) ?
       pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__reset-btn').click() : false;
+    (siteMainElement.querySelector('.trip-events__msg')) ?
+      siteMainElement.querySelector('.trip-events__msg').style = 'display: none;' : false;
     filterEverythingInput.checked = true;
     sortDayInput.checked = true;
     render(pointListComponent.getElement(), pointAddComponent.getElement(), RenderPosition.AFTERBEGIN);
@@ -94,6 +97,8 @@ const renderAddForm = (addForm) => {
   const closeAddForm = () => {
     pointListComponent.getElement().querySelector('.trip-events__item').remove();
     addPointButton.disabled = false;
+    (sortingDatePointsSlice.length === 0) ?
+      siteMainElement.querySelector('.trip-events__msg').style = 'display: block;' : false;
     body.removeEventListener('keydown', onEscKeyDown);
   };
 
@@ -109,6 +114,8 @@ const renderAddForm = (addForm) => {
     showAddForm();
     body.addEventListener('keydown', onEscKeyDown);
   });
+
+  pointAddComponent.getElement().querySelector('form').addEventListener('submit', (evt) => evt.preventDefault());
 
   pointAddComponent.getElement().querySelector('.event__reset-btn').addEventListener('click', () => closeAddForm());
 };
