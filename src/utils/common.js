@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -22,40 +20,10 @@ export const getRandomArrayElements = function (arr, minValue) {
   return (shuffledArr.slice(min));
 };
 
-export const headerDate = (date) => {
-  return dayjs(date).format('DD MMM');
-};
-
-export const newPointDate = (date) => {
-  return dayjs(date).format('DD/MM/YY HH:mm');
-};
-
 export const isEscEvent = (evt) => {
   return evt.key === ('Escape' || 'Esc');
 };
 
 export const isInPage = (node) => {
   return (node === document.body) ? false : document.body.contains(node);
-};
-
-export const RenderPosition = {
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
-export const makeElement = (template) => {
-  const newElement = document.createElement('div');
-  newElement.innerHTML = template;
-  return newElement.firstChild;
 };

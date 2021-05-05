@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {getRandomInteger, getRandomArrayElements} from '../utils.js';
+import {getRandomInteger, getRandomArrayElements} from '../utils/common.js';
 import {POINT_COUNT, TYPES, DESTINATION, DESCRIPTION} from '../const.js';
 
 export const options = [

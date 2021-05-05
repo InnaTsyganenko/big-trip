@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import * as isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter);
-import {isEscEvent, RenderPosition, render} from './utils.js';
+import {isEscEvent} from './utils/common.js';
+import {RenderPosition, render} from './utils/render.js';
 import {generatePoint, sortingDatePointsSlice} from './mock/point.js';
 import SiteMenuView from './view/site-menu.js';
 import NoPointListView from './view/no-point-list.js';
@@ -55,22 +56,27 @@ const renderPoint = (pointListElement, point) => {
     }
   };
 
-  pointEditComponent.getElement().querySelector('.event__reset-btn').addEventListener('click', () => replaceFormToCard());
-
-  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  pointComponent.setEditClickHandler(() => {
     (pointListComponent.getElement().querySelector('.event--edit')) ?
-      pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__reset-btn').click() : false;
+      pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__rollup-btn').click() : false;
     replaceCardToForm();
     body.addEventListener('keydown', onEscKeyDown);
   });
 
-  pointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  pointEditComponent.setFormHideEditHandler(() => {
     replaceFormToCard();
   });
 
-  pointEditComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  pointEditComponent.setFormSubmitHandler(() => {
     replaceFormToCard();
+  });
+
+  pointEditComponent.setFormDeletePointHandler(() => {
+    pointEditComponent.getElement().remove();
+    if (pointListComponent.getElement().querySelector('.trip-events__item') === null) {
+      render(siteTripEventsElement, new NoPointListView().getElement(), RenderPosition.BEFOREEND);
+    }
+    body.removeEventListener('keydown', onEscKeyDown);
   });
 
   render(pointListElement, pointComponent.getElement(), RenderPosition.BEFOREEND);
@@ -85,7 +91,7 @@ const renderAddForm = (addForm) => {
 
   const showAddForm = () => {
     (pointListComponent.getElement().querySelector('.event--edit')) ?
-      pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__reset-btn').click() : false;
+      pointListComponent.getElement().querySelector('.event--edit').querySelector('.event__rollup-btn').click() : false;
     (siteMainElement.querySelector('.trip-events__msg')) ?
       siteMainElement.querySelector('.trip-events__msg').style = 'display: none;' : false;
     filterEverythingInput.checked = true;
@@ -115,9 +121,9 @@ const renderAddForm = (addForm) => {
     body.addEventListener('keydown', onEscKeyDown);
   });
 
-  pointAddComponent.getElement().querySelector('form').addEventListener('submit', (evt) => evt.preventDefault());
+  pointAddComponent.setFormSubmitHandler(() => closeAddForm());
 
-  pointAddComponent.getElement().querySelector('.event__reset-btn').addEventListener('click', () => closeAddForm());
+  pointAddComponent.setFormDeleteHandler(() => closeAddForm());
 };
 
 renderAddForm();

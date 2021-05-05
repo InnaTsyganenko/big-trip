@@ -1,4 +1,6 @@
-import {getRandomInteger, newPointDate, makeElement} from '../utils.js';
+import {getRandomInteger} from '../utils/common.js';
+import AbstractView from './abstract.js';
+import {newPointDate} from '../utils/point.js';
 import {createPointTypesTemplate} from './point-types.js';
 import {randomAvailableOptions, createPointAvailableOptionsTemplate} from './point-options.js';
 
@@ -14,8 +16,8 @@ const BLANK_POINT = {
   isFavorite: '',
 };
 
-const createAddPointTemplate = (addPoint = {}) => {
-  const {type, destination, datetimeStart, datetimeEnd, price, description, photos, offers} = addPoint;
+const createAddPointTemplate = (point = {}) => {
+  const {type, destination, datetimeStart, datetimeEnd, price, description, photos, offers} = point;
 
   const typesTemplate = createPointTypesTemplate(type);
   const offersTemplate = createPointAvailableOptionsTemplate(offers);
@@ -94,25 +96,35 @@ const createAddPointTemplate = (addPoint = {}) => {
 </li>`;
 };
 
-export default class AddPoint {
-  constructor(addPoint = BLANK_POINT) {
-    this._addPoint = addPoint;
-    this._element = null;
+export default class AddPointView extends AbstractView{
+  constructor(point = BLANK_POINT) {
+    super();
+    this._point = point;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteHandler = this._formDeleteHandler.bind(this);
   }
 
   getTemplate() {
-    return createAddPointTemplate(this._addPoint);
+    return createAddPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = makeElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  _formDeleteHandler(evt) {
+    evt.preventDefault();
+    this._callback.formDelete();
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  setFormDeleteHandler(callback) {
+    this._callback.formDelete = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteHandler);
   }
 }

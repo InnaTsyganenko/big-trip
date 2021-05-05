@@ -1,27 +1,11 @@
-import {makeElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const createNoPointListTemplate = () => {
   return '<p class="trip-events__msg">Click New Event to create your first point</p>';
 };
 
-export default class NoPointList {
-  constructor() {
-    this._element = null;
-  }
-
+export default class NoPointListView extends AbstractView{
   getTemplate() {
     return createNoPointListTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = makeElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

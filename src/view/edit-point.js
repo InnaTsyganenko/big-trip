@@ -1,6 +1,7 @@
 import {createPointTypesTemplate} from './point-types.js';
 import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options.js';
-import {newPointDate, makeElement} from '../utils.js';
+import {newPointDate} from '../utils/point.js';
+import AbstractView from './abstract.js';
 
 const createEditPointTemplate = (editPoint) => {
   const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = editPoint;
@@ -72,25 +73,46 @@ const createEditPointTemplate = (editPoint) => {
 </li>`;
 };
 
-export default class EditPoint {
-  constructor(editPoint) {
-    this._editPoint = editPoint;
-    this._element = null;
+export default class EditPointView extends AbstractView{
+  constructor(point) {
+    super();
+    this._point = point;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formHideEditHandler = this._formHideEditHandler.bind(this);
+    this._formDeletePointHandler = this._formDeletePointHandler.bind(this);
   }
 
   getTemplate() {
-    return createEditPointTemplate(this._editPoint);
+    return createEditPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = makeElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  _formHideEditHandler(evt) {
+    evt.preventDefault();
+    this._callback.formHideEdit();
+  }
+
+  _formDeletePointHandler(evt) {
+    evt.preventDefault();
+    this._callback.formDeletePoint();
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  setFormHideEditHandler(callback) {
+    this._callback.formHideEdit = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formHideEditHandler);
+  }
+
+  setFormDeletePointHandler(callback) {
+    this._callback.formDeletePoint = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeletePointHandler);
   }
 }

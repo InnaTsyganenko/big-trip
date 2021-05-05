@@ -1,4 +1,4 @@
-import {makeElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const createSiteMenuTemplate = () => {
   return `<div class="trip-controls__navigation">
@@ -10,24 +10,8 @@ const createSiteMenuTemplate = () => {
 </div>`;
 };
 
-export default class SiteMenu {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SiteMenuView extends AbstractView{
   getTemplate() {
     return createSiteMenuTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = makeElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

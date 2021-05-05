@@ -1,4 +1,4 @@
-import {getRandomArrayElements} from '../utils.js';
+import {getRandomArrayElements} from '../utils/common.js';
 import {options} from '../mock/point.js';
 
 export const randomAvailableOptions = getRandomArrayElements(options, 0);
