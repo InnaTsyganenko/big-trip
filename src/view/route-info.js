@@ -1,5 +1,6 @@
 
-import {headerDate, makeElement} from '../utils.js';
+import AbstractView from './abstract.js';
+import {headerDate} from '../utils/point.js';
 import {sortingDatePointsSlice} from '../mock/point.js';
 
 const displayDestinations = (dest) => {
@@ -40,24 +41,8 @@ const createRouteInfoTemplate = () => {
 </section>`;
 };
 
-export default class RouteInfo {
-  constructor() {
-    this._element = null;
-  }
-
+export default class RouteInfoView extends AbstractView{
   getTemplate() {
     return createRouteInfoTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = makeElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

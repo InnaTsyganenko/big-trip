@@ -1,5 +1,6 @@
-import {getRandomArrayElements, makeElement} from '../utils.js';
+import {getRandomArrayElements} from '../utils/common.js';
 import {options} from '../mock/point.js';
+import AbstractView from './abstract.js';
 
 const createPointOptionsTemplate = () => {
   const randomOffers = getRandomArrayElements(options, 0);
@@ -66,25 +67,24 @@ const createPointTemplate = (point) => {
   </li>`;
 };
 
-export default class Point {
+export default class PointView extends AbstractView{
   constructor(point) {
+    super();
     this._point = point;
-    this._element = null;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = makeElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
   }
 }
