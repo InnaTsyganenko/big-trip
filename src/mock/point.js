@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 import {getRandomInteger, getRandomArrayElements} from '../utils/common.js';
 import {POINT_COUNT, TYPES, DESTINATION, DESCRIPTION} from '../const.js';
 
@@ -42,7 +43,7 @@ export const generatePoint = () => {
   const duration = datetimeEnd.diff(datetimeStart, 'm');
 
   return {
-    id: 1,
+    id: nanoid(),
     type: TYPES[getRandomInteger(0, TYPES.length - 1)],
     destination: DESTINATION[getRandomInteger(0, DESTINATION.length - 1)],
     datetimeStart,
@@ -58,3 +59,4 @@ export const generatePoint = () => {
 
 const points = new Array(POINT_COUNT).fill().map(generatePoint);
 export const sortingDatePointsSlice = points.sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
+export const addPointData = new Array(1).fill().map(generatePoint);
