@@ -101,7 +101,7 @@ export default class AddPointView extends AbstractView{
     super();
     this._point = point;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._formDeleteHandler = this._formDeleteHandler.bind(this);
+    this._formCancelHandler = this._formCancelHandler.bind(this);
   }
 
   getTemplate() {
@@ -113,9 +113,9 @@ export default class AddPointView extends AbstractView{
     this._callback.formSubmit();
   }
 
-  _formDeleteHandler(evt) {
+  _formCancelHandler(evt) {
     evt.preventDefault();
-    this._callback.formDelete();
+    this._callback.formCancel();
   }
 
   setFormSubmitHandler(callback) {
@@ -123,8 +123,8 @@ export default class AddPointView extends AbstractView{
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
 
-  setFormDeleteHandler(callback) {
-    this._callback.formDelete = callback;
-    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteHandler);
+  setFormCancelHandler(callback) {
+    this._callback.formCancel = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formCancelHandler);
   }
 }
