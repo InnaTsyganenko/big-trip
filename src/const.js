@@ -1,5 +1,5 @@
 export const POINT_COUNT = 5;
-export const TYPES = ['taxi', 'bus', 'train', 'ship', 'transport', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+export const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Transport', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 export const DESTINATION = ['Amsterdam', 'Geneva', 'Chamonix'];
 export const DESCRIPTION = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
