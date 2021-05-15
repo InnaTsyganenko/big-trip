@@ -1,10 +1,12 @@
 import {createPointTypesTemplate} from './point-types.js';
 import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options.js';
 import {newPointDate} from '../utils/point.js';
-import AbstractView from './abstract.js';
+import SmartView from './smart.js';
 
-const createEditPointTemplate = (editPoint) => {
-  const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = editPoint;
+const createEditPointTemplate = (data) => {
+  const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = data;
+
+  const typePointsTemplate = createPointTypesTemplate(type);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -18,7 +20,7 @@ const createEditPointTemplate = (editPoint) => {
       <div class="event__type-list">
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Event type</legend>
-          ${createPointTypesTemplate(type)}
+          ${typePointsTemplate}
         </fieldset>
       </div>
     </div>
@@ -73,22 +75,78 @@ const createEditPointTemplate = (editPoint) => {
 </li>`;
 };
 
-export default class EditPointView extends AbstractView{
+export default class EditPointView extends SmartView{
   constructor(point) {
     super();
-    this._point = point;
+
+    this._data = EditPointView.parsePointToData(point);
+
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formHideEditHandler = this._formHideEditHandler.bind(this);
     this._formDeletePointHandler = this._formDeletePointHandler.bind(this);
+    this._typePointToggleHandler = this._typePointToggleHandler.bind(this);
+
+    this._setInnerHandlers();
+  }
+
+  reset(point) {
+    this.updateData(
+      EditPointView.parsePointToData(point),
+    );
   }
 
   getTemplate() {
-    return createEditPointTemplate(this._point);
+    return createEditPointTemplate(this._data);
+  }
+
+  updateData(update) {
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign(
+      {},
+      this._data,
+      update,
+    );
+
+    this.updateElement();
+  }
+
+  updateElement() {
+    const prevElement = this.getElement();
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.getElement();
+
+    parent.replaceChild(newElement, prevElement);
+
+    this.restoreHandlers();
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setFormHideEditHandler(this._callback.formHideEdit);
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector('.event__type-group')
+      .addEventListener('change', this._typePointToggleHandler);
+  }
+
+  _typePointToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      type: evt.target.value,
+    });
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._point);
+    this._callback.formSubmit(EditPointView.parseDataToPoint(this._data));
   }
 
   _formHideEditHandler(evt) {
@@ -114,5 +172,20 @@ export default class EditPointView extends AbstractView{
   setDeletePointHandler(callback) {
     this._callback.formDeletePoint = callback;
     this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeletePointHandler);
+  }
+
+  static parsePointToData(point) {
+    return Object.assign(
+      {},
+      point,
+      {
+      },
+    );
+  }
+
+  static parseDataToPoint(data) {
+    data = Object.assign({}, data);
+
+    return data;
   }
 }

@@ -1,10 +1,10 @@
 import {isEscEvent} from '../utils/common.js';
 import {RenderPosition, render} from '../utils/render.js';
-import {sortingDatePointsSlice} from '../mock/point.js';
+import {points} from '../mock/point.js';
 import NoPointListView from '../view/no-point-list.js';
 import AddPointView from '../view/add-point.js';
 
-const Mode = {
+const ModeAddPoint = {
   DEFAULT: 'DEFAULT',
   SHOW: 'SHOW',
 };
@@ -14,7 +14,7 @@ export default class AddPoint {
     this._pointListContainer = pointListContainer;
 
     this._addPointComponent = null;
-    this._mode = Mode.DEFAULT;
+    this._mode = ModeAddPoint.DEFAULT;
 
     this._body = document.querySelector('.page-body');
     this._siteMainElement = document.querySelector('.page-main');
@@ -33,17 +33,15 @@ export default class AddPoint {
     this._addPointComponent = new AddPointView(point);
 
     this._addPointButton.addEventListener('click', () => {
-      const filterEverythingInput = this._siteHeaderContainerElement.querySelector('#filter-everything');
-      (this._pointListContainer.getElement().querySelector('.event--edit')) ?
+      this._mode = ModeAddPoint.SHOW;
+      ((this._pointListContainer.getElement().querySelector('.event--edit'))) ?
         this._pointListContainer.getElement().querySelector('.event--edit').querySelector('.event__rollup-btn').click() : false;
       (this._body.querySelector('.trip-events__msg')) ?
         this._body.querySelector('.trip-events__msg').style = 'display: none;' : false;
-      filterEverythingInput.checked = true;
       this._sortDayInput.checked = true;
       render(this._pointListContainer, this._addPointComponent, RenderPosition.AFTERBEGIN);
       this._addPointButton.disabled = true;
       this._body.addEventListener('keydown', this._escKeyDownHandler);
-      this._mode = Mode.SHOW;
     });
 
     this._siteTripEventsElement = this._siteMainElement.querySelector('.trip-events');
@@ -71,11 +69,11 @@ export default class AddPoint {
   }
 
   _closeAddForm() {
-    if (this._mode == Mode.SHOW) {
-      this._mode = Mode.DEFAULT;
+    if (this._mode == ModeAddPoint.SHOW) {
+      this._mode = ModeAddPoint.DEFAULT;
       this._pointListContainer.getElement().querySelector('.trip-events__item').remove();
       this._addPointButton.disabled = false;
-      (sortingDatePointsSlice.length === 0) ?
+      (points.length === 0) ?
         this._siteMainElement.querySelector('.trip-events__msg').style = 'display: block;' : false;
     }
   }
