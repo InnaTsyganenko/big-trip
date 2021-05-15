@@ -1,35 +1,35 @@
 import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
 import {getRandomInteger, getRandomArrayElements} from '../utils/common.js';
-import {POINT_COUNT, TYPES, DESTINATION, DESCRIPTION} from '../const.js';
+import {POINT_COUNT, TYPES, TYPES_OPTIONS, DESTINATION, DESCRIPTION, DESTINATION_PHOTOS} from '../const.js';
 
 export const options = [
   {
-    id: 1,
+    id: 0,
     value: 'luggage',
     title: 'Add luggage',
     price: 30,
     isChecked: Boolean(getRandomInteger(0, 1)),
   }, {
-    id: 2,
+    id: 1,
     value: 'comfort',
     title: 'Switch to comfort class',
     price: 100,
     isChecked: Boolean(getRandomInteger(0, 1)),
   }, {
-    id: 3,
+    id: 2,
     value: 'meal',
     title: 'Add meal',
     price: 15,
     isChecked: Boolean(getRandomInteger(0, 1)),
   }, {
-    id: 4,
+    id: 3,
     value: 'seats',
     title: 'Choose seats',
     price: 5,
     isChecked: Boolean(getRandomInteger(0, 1)),
   }, {
-    id: 5,
+    id: 4,
     value: 'train',
     title: 'Travel by train',
     price: 40,
@@ -41,18 +41,20 @@ export const generatePoint = () => {
   const datetimeStart = dayjs().add(getRandomInteger(-3000, 3000), 'm');
   const datetimeEnd = datetimeStart.add(getRandomInteger(100, 3000), 'm');
   const duration = datetimeEnd.diff(datetimeStart, 'm');
+  const typ = TYPES[getRandomInteger(0, TYPES.length - 1)];
+  const dest = DESTINATION[getRandomInteger(0, DESTINATION.length - 1)];
 
   return {
     id: nanoid(),
-    type: TYPES[getRandomInteger(0, TYPES.length - 1)],
-    destination: DESTINATION[getRandomInteger(0, DESTINATION.length - 1)],
+    type: typ,
+    destination: dest,
     datetimeStart,
     datetimeEnd,
     duration,
     price: getRandomInteger(20, 200),
     description: getRandomArrayElements(DESCRIPTION, 1),
-    photos: 'http://picsum.photos/248/152?r=',
-    offers: [1, 2, 3],
+    photos: DESTINATION_PHOTOS[dest],
+    offers: TYPES_OPTIONS[typ],
     isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };

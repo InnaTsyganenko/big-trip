@@ -1,10 +1,12 @@
 import {createPointTypesTemplate} from './point-types.js';
-import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options.js';
+import {createPointAvailableOptionsTemplate} from './point-options.js';
+import {createPointPhotosTemplate} from './point-photos.js';
 import {newPointDate} from '../utils/point.js';
 import SmartView from './smart.js';
+import {TYPES_OPTIONS, DESTINATION_DESCRIPTION, DESTINATION_PHOTOS} from '../const.js';
 
 const createEditPointTemplate = (data) => {
-  const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = data;
+  const {type, destination, datetimeStart, datetimeEnd, price, description, offers, photos} = data;
 
   const typePointsTemplate = createPointTypesTemplate(type);
   return `<li class="trip-events__item">
@@ -31,9 +33,9 @@ const createEditPointTemplate = (data) => {
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
       <datalist id="destination-list-1">
-        <option value="Amsterdam"></option>
-        <option value="Geneva"></option>
-        <option value="Chamonix"></option>
+        <option value="Amsterdam">Amsterdam</option>
+        <option value="Geneva">Geneva</option>
+        <option value="Chamonix">Chamonix</option>
       </datalist>
     </div>
 
@@ -60,7 +62,7 @@ const createEditPointTemplate = (data) => {
     </button>
   </header>
   <section class="event__details">
-    ${randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
+    ${offers.length !== 0 ? `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         <div class="event__available-offers">
           ${createPointAvailableOptionsTemplate(offers)}
@@ -69,29 +71,36 @@ const createEditPointTemplate = (data) => {
       ${description.length !== 0 ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description.join(' ')}</p>
+
+        <div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${createPointPhotosTemplate(photos)}
+        </div>
+      </div>
     </section>` : ''}
   </section>
 </form>
 </li>`;
 };
 
-export default class EditPointView extends SmartView{
+export default class EditPoint extends SmartView{
   constructor(point) {
     super();
 
-    this._data = EditPointView.parsePointToData(point);
+    this._data = EditPoint.parsePointToData(point);
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formHideEditHandler = this._formHideEditHandler.bind(this);
     this._formDeletePointHandler = this._formDeletePointHandler.bind(this);
     this._typePointToggleHandler = this._typePointToggleHandler.bind(this);
+    this._destinationPointToggleHandler = this._destinationPointToggleHandler.bind(this);
 
     this._setInnerHandlers();
   }
 
   reset(point) {
     this.updateData(
-      EditPointView.parsePointToData(point),
+      EditPoint.parsePointToData(point),
     );
   }
 
@@ -135,18 +144,32 @@ export default class EditPointView extends SmartView{
     this.getElement()
       .querySelector('.event__type-group')
       .addEventListener('change', this._typePointToggleHandler);
+
+    this.getElement()
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._destinationPointToggleHandler);
   }
 
   _typePointToggleHandler(evt) {
     evt.preventDefault();
     this.updateData({
       type: evt.target.value,
+      offers: TYPES_OPTIONS[evt.target.value],
+    });
+  }
+
+  _destinationPointToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      description: DESTINATION_DESCRIPTION[evt.target.value],
+      destination: evt.target.value,
+      photos: DESTINATION_PHOTOS[evt.target.value],
     });
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(EditPointView.parseDataToPoint(this._data));
+    this._callback.formSubmit(EditPoint.parseDataToPoint(this._data));
   }
 
   _formHideEditHandler(evt) {
