@@ -41,20 +41,20 @@ export const generatePoint = () => {
   const datetimeStart = dayjs().add(getRandomInteger(-3000, 3000), 'm');
   const datetimeEnd = datetimeStart.add(getRandomInteger(100, 3000), 'm');
   const duration = datetimeEnd.diff(datetimeStart, 'm');
-  const typ = TYPES[getRandomInteger(0, TYPES.length - 1)];
-  const dest = DESTINATION[getRandomInteger(0, DESTINATION.length - 1)];
+  const type = TYPES[getRandomInteger(0, TYPES.length - 1)];
+  const destination = DESTINATION[getRandomInteger(0, DESTINATION.length - 1)];
 
   return {
     id: nanoid(),
-    type: typ,
-    destination: dest,
+    type: type,
+    destination: destination,
     datetimeStart,
     datetimeEnd,
     duration,
     price: getRandomInteger(20, 200),
     description: getRandomArrayElements(DESCRIPTION, 1),
-    photos: DESTINATION_PHOTOS[dest],
-    offers: TYPES_OPTIONS[typ],
+    photos: DESTINATION_PHOTOS[destination],
+    offers: TYPES_OPTIONS[type],
     isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };

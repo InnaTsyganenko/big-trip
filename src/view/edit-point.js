@@ -4,6 +4,8 @@ import {createPointPhotosTemplate} from './point-photos.js';
 import {newPointDate} from '../utils/point.js';
 import SmartView from './smart.js';
 import {TYPES_OPTIONS, DESTINATION_DESCRIPTION, DESTINATION_PHOTOS} from '../const.js';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createEditPointTemplate = (data) => {
   const {type, destination, datetimeStart, datetimeEnd, price, description, offers, photos} = data;
@@ -41,10 +43,10 @@ const createEditPointTemplate = (data) => {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${newPointDate(datetimeStart)}">
+      <input class="event__input event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${newPointDate(datetimeStart)}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${newPointDate(datetimeEnd)}">
+      <input class="event__input event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${newPointDate(datetimeEnd)}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -88,14 +90,18 @@ export default class EditPoint extends SmartView{
     super();
 
     this._data = EditPoint.parsePointToData(point);
+    this._datepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formHideEditHandler = this._formHideEditHandler.bind(this);
     this._formDeletePointHandler = this._formDeletePointHandler.bind(this);
     this._typePointToggleHandler = this._typePointToggleHandler.bind(this);
     this._destinationPointToggleHandler = this._destinationPointToggleHandler.bind(this);
+    this._startDateChangeHandler = this._startDateChangeHandler.bind(this);
+    this._endDateChangeHandler = this._endDateChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setDatepicker();
   }
 
   reset(point) {
@@ -136,8 +142,38 @@ export default class EditPoint extends SmartView{
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormHideEditHandler(this._callback.formHideEdit);
+    this.setDeletePointHandler(this._callback.formDeletePoint);
+  }
+
+  _setDatepicker() {
+    if (this._datepicker) {
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
+
+    if (newPointDate(this._data.datetimeStart)) {
+      this._datepicker = flatpickr(
+        this.getElement().querySelector('#event-start-time-1'),
+        {
+          dateFormat: 'd/m/Y H:i',
+          defaultDate: newPointDate(this._data.datetimeStart),
+          onChange: this._startDateChangeHandler,
+        },
+      );
+    }
+    if (newPointDate(this._data.datetimeEnd)) {
+      this._datepicker = flatpickr(
+        this.getElement().querySelector('#event-end-time-1'),
+        {
+          dateFormat: 'd/m/Y H:i',
+          defaultDate: newPointDate(this._data.datetimeEnd),
+          onChange: this._endDateChangeHandler,
+        },
+      );
+    }
   }
 
   _setInnerHandlers() {
@@ -164,6 +200,18 @@ export default class EditPoint extends SmartView{
       description: DESTINATION_DESCRIPTION[evt.target.value],
       destination: evt.target.value,
       photos: DESTINATION_PHOTOS[evt.target.value],
+    });
+  }
+
+  _startDateChangeHandler([userDate]) {
+    this.updateData({
+      datetimeStart: userDate,
+    });
+  }
+
+  _endDateChangeHandler([userDate]) {
+    this.updateData({
+      datetimeEnd: userDate,
     });
   }
 
