@@ -1,13 +1,54 @@
-import {createPointTypesTemplate} from './point-types.js';
-import {createPointAvailableOptionsTemplate} from './point-options.js';
-import {createPointPhotosTemplate} from './point-photos.js';
+import {options} from '../mock/point.js';
 import {newPointDate} from '../utils/point.js';
-import SmartView from './smart.js';
-import {TYPES_OPTIONS, DESTINATION_DESCRIPTION, DESTINATION_PHOTOS} from '../const.js';
+import Smart from './smart.js';
+import {TYPES, TYPES_OPTIONS, DESTINATION_DESCRIPTION, DESTINATION_PHOTOS, Mode} from '../const.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createEditPointTemplate = (data) => {
+const BLANK_POINT = {
+  type: '',
+  destination: '',
+  datetimeStart: '',
+  datetimeEnd: '',
+  price: '',
+  description: '',
+  photos: '',
+  offers: '',
+  isFavorite: '',
+};
+
+export const createPointTypesTemplate = (currentType) => {
+  return TYPES.map((type) => `<div class="event__type-item">
+  <input
+  id="event-type-${type}-1"
+  class="event__type-input  visually-hidden"
+  type="radio" name="event-type"
+  value="${type}"
+  ${currentType === type ? 'checked' : ''}
+  >
+  <label
+  class="event__type-label  event__type-label--${type}"
+  for="event-type-${type}-1">${type}</label>
+</div>`).join('\n');
+};
+
+const createPointAvailableOptionsTemplate = (options_ids) => {
+  return options.map((option) => `${Object.values(options_ids).includes(option.id) ? `<div class="event__offer-selector">
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${option.value}-1" type="checkbox" name="event-offer-${option.value}" ${(option.isChecked) ? 'checked' : ''}>
+  <label class="event__offer-label" for="event-offer-${option.value}-1">
+    <span class="event__offer-title">${option.title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${option.price}</span>
+  </label>
+</div>` : ''}`).join('\n');
+};
+
+const createPointPhotosTemplate = (photos) => {
+  return photos.map((photo) =>
+    `<img class="event__photo" src="http://picsum.photos/248/152?r=${photo}" alt="Event photo"></img>`);
+};
+
+const createEditPointTemplate = (data = {}, mode) => {
   const {type, destination, datetimeStart, datetimeEnd, price, description, offers, photos} = data;
 
   const typePointsTemplate = createPointTypesTemplate(type);
@@ -58,10 +99,12 @@ const createEditPointTemplate = (data) => {
     </div>
 
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-    <button class="event__reset-btn" type="reset">Delete</button>
-    <button class="event__rollup-btn" type="button">
-      <span class="visually-hidden">Open event</span>
+    <button class="event__reset-btn" type="reset" value="Delete">
+    ${mode === Mode.EDITING ? 'Delete' : 'Cancel'}
     </button>
+    ${mode === Mode.EDITING ? `<button class="event__rollup-btn" type="button">
+    <span class="visually-hidden">Open event</span>
+  </button>` : ''}
   </header>
   <section class="event__details">
     ${offers.length !== 0 ? `<section class="event__section  event__section--offers">
@@ -73,24 +116,25 @@ const createEditPointTemplate = (data) => {
       ${description.length !== 0 ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description.join(' ')}</p>
-
+        ${photos.length !== 0 ? `
         <div class="event__photos-container">
         <div class="event__photos-tape">
           ${createPointPhotosTemplate(photos)}
         </div>
-      </div>
+      </div>` : ''}
     </section>` : ''}
   </section>
 </form>
 </li>`;
 };
 
-export default class EditPoint extends SmartView{
-  constructor(point) {
+export default class EditPoint extends Smart {
+  constructor(point = BLANK_POINT, mode) {
     super();
 
     this._data = EditPoint.parsePointToData(point);
     this._datepicker = null;
+    this._mode = mode;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formHideEditHandler = this._formHideEditHandler.bind(this);
@@ -111,33 +155,7 @@ export default class EditPoint extends SmartView{
   }
 
   getTemplate() {
-    return createEditPointTemplate(this._data);
-  }
-
-  updateData(update) {
-    if (!update) {
-      return;
-    }
-
-    this._data = Object.assign(
-      {},
-      this._data,
-      update,
-    );
-
-    this.updateElement();
-  }
-
-  updateElement() {
-    const prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.getElement();
-
-    parent.replaceChild(newElement, prevElement);
-
-    this.restoreHandlers();
+    return createEditPointTemplate(this._data, this._mode);
   }
 
   restoreHandlers() {
@@ -226,6 +244,7 @@ export default class EditPoint extends SmartView{
   }
 
   _formDeletePointHandler(evt) {
+    this.updateData();
     evt.preventDefault();
     this._callback.formDeletePoint();
   }
@@ -237,7 +256,9 @@ export default class EditPoint extends SmartView{
 
   setFormHideEditHandler(callback) {
     this._callback.formHideEdit = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formHideEditHandler);
+    if (this._mode === Mode.EDITING) {
+      this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formHideEditHandler);
+    }
   }
 
   setDeletePointHandler(callback) {
@@ -250,13 +271,13 @@ export default class EditPoint extends SmartView{
       {},
       point,
       {
+
       },
     );
   }
 
   static parseDataToPoint(data) {
     data = Object.assign({}, data);
-
     return data;
   }
 }

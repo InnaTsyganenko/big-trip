@@ -1,18 +1,19 @@
+import {Mode} from '../const.js';
 import {updateItem} from '../utils/common.js';
 import {RenderPosition, render} from '../utils/render.js';
-import {points, addPointData} from '../mock/point.js';
+import {points} from '../mock/point.js';
 import SortingView from '../view/sorting.js';
 import NoPointListView from '../view/no-point-list.js';
 import PointListView from '../view/point-list.js';
 import PointPresenter from './point.js';
-import AddPointPresenter from './add-point.js';
 
 export default class TripEvents {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
     this._pointPresenter = {};
-    this._addPointComponent = null;
     this._currentSortType = 'sort-everything';
+
+    this._mode = Mode.DEFAULT;
 
     this._body = document.querySelector('.page-body');
     this._siteHeaderContainerElement = document.querySelector('.page-header__container');
@@ -31,8 +32,17 @@ export default class TripEvents {
   init(tripEvents) {
     this._tripEvents = tripEvents.slice();
     this._sourcedTripEvents = tripEvents.slice();
+
     render(this._siteTripEventsElement, this._pointListComponent.getElement(), RenderPosition.BEFOREEND);
     this._renderTripEvents();
+  }
+
+  getTripEvents() {
+    return this._tripEvents;
+  }
+
+  setTripEvents(tripEvents) {
+    this._tripEvents = tripEvents;
   }
 
   _handlePointChange(updatedPoint) {
@@ -45,7 +55,6 @@ export default class TripEvents {
     Object
       .values(this._pointPresenter)
       .forEach((presenter) => presenter.resetView());
-    this._addPointComponent._closeAddForm();
   }
 
   _sortPoints(sortType) {
@@ -82,27 +91,23 @@ export default class TripEvents {
     render(this._siteTripEventsElement, this._noPointListComponent.getElement(), RenderPosition.BEFOREEND);
   }
 
-  _renderPoint(point) {
+  _renderPoint(mode, point) {
     const pointPresenter = new PointPresenter(this._pointListComponent, this._handlePointChange, this._handleModeChange);
-    pointPresenter.init(point);
+    pointPresenter.init(mode, point);
     this._pointPresenter[point.id] = pointPresenter;
   }
 
-  _renderAddPoint(point) {
-    const addPointPresenter = new AddPointPresenter(this._pointListComponent);
-    addPointPresenter.init(point);
-    this._addPointComponent = addPointPresenter;
-  }
-
   _renderPoints() {
-    this._tripEvents.forEach((tripEvent) => this._renderPoint(tripEvent));
+    this._tripEvents.forEach((tripEvent, idx) => {
+      this._renderPoint(idx === 0 ? Mode.ADD : Mode.EDITING, tripEvent);
+    });
   }
 
   _renderTripEvents() {
     this._renderSorting();
-    (points.length === 0) ? this._renderNoPointsList()
+
+    (points.length === 1) ? this._renderNoPointsList()
       : this._renderPoints();
-    this._renderAddPoint(addPointData[0]);
   }
 
   _clearPointList() {

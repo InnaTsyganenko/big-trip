@@ -38,7 +38,13 @@ export const DESTINATION_DESCRIPTION =
 
 export const DESTINATION_PHOTOS =
   {
-    'Amsterdam': [1, 3, 4],
-    'Geneva': [2, 4, 6, 8, 12],
-    'Chamonix': [5, 7, 9, 11],
+    'Amsterdam': [1],
+    'Geneva': [8, 12],
+    'Chamonix': [],
   };
+
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+  ADD: 'ADD',
+};

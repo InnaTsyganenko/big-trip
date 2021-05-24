@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import * as isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 dayjs.extend(isSameOrAfter);
 import {RenderPosition, render} from './utils/render.js';
-import {points} from './mock/point.js';
+import {tripPoints} from './mock/point.js';
 import SiteMenuView from './view/site-menu.js';
 import RouteInfoView from './view/route-info.js';
 import FiltersView from './view/filters.js';
@@ -20,5 +20,5 @@ render(siteTripInfoElement, new RouteInfoView().getElement(), RenderPosition.AFT
 render(siteNavigationElement, new SiteMenuView().getElement(), RenderPosition.AFTERBEGIN);
 render(siteFiltersElement, new FiltersView().getElement(), RenderPosition.AFTERBEGIN);
 
-const tripEventsPresenter = new TripEventsPresenter(siteTripEventsElement);
-tripEventsPresenter.init(points);
+export const tripEventsPresenter = new TripEventsPresenter(siteTripEventsElement);
+tripEventsPresenter.init(tripPoints);

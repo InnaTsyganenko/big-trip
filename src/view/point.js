@@ -1,6 +1,6 @@
 import {getRandomArrayElements} from '../utils/common.js';
 import {options} from '../mock/point.js';
-import AbstractView from './abstract.js';
+import Smart from './smart.js';
 
 const createPointOptionsTemplate = () => {
   const randomOffers = getRandomArrayElements(options, 0);
@@ -67,7 +67,7 @@ const createPointTemplate = (point) => {
   </li>`;
 };
 
-export default class PointView extends AbstractView{
+export default class Point extends Smart {
   constructor(point) {
     super();
     this._point = point;

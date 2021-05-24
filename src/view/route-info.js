@@ -1,5 +1,5 @@
 
-import AbstractView from './abstract.js';
+import Abstract from './abstract.js';
 import {headerDate} from '../utils/point.js';
 import {points} from '../mock/point.js';
 
@@ -41,7 +41,7 @@ const createRouteInfoTemplate = () => {
 </section>`;
 };
 
-export default class RouteInfoView extends AbstractView {
+export default class RouteInfoView extends Abstract {
   getTemplate() {
     return createRouteInfoTemplate();
   }

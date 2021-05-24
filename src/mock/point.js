@@ -59,5 +59,6 @@ export const generatePoint = () => {
   };
 };
 
-export const points = new Array(POINT_COUNT).fill().map(generatePoint).sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
 export const addPointData = new Array(1).fill().map(generatePoint);
+export const points = new Array(POINT_COUNT).fill().map(generatePoint).sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
+export const tripPoints = addPointData.concat(points);
