@@ -1,4 +1,4 @@
-import AbstractView from './abstract.js';
+import AbstractView from './abstract-view.js';
 
 const createSiteMenuTemplate = () => {
   return `<div class="trip-controls__navigation">
@@ -11,7 +11,7 @@ const createSiteMenuTemplate = () => {
 };
 
 export default class SiteMenuView extends AbstractView{
-  getTemplate() {
+  get template() {
     return createSiteMenuTemplate();
   }
 }

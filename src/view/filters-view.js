@@ -1,4 +1,4 @@
-import AbstractView from './abstract.js';
+import AbstractView from './abstract-view.js';
 
 const createFiltersTemplate = () => {
   return `<div class="trip-controls__filters">
@@ -25,7 +25,7 @@ const createFiltersTemplate = () => {
 };
 
 export default class FiltersView extends AbstractView{
-  getTemplate() {
+  get template() {
     return createFiltersTemplate();
   }
 }

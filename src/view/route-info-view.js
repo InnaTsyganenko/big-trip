@@ -1,7 +1,6 @@
 
-import AbstractView from './abstract.js';
+import AbstractView from './abstract-view.js';
 import {headerDate} from '../utils/point.js';
-import {points} from '../mock/point.js';
 
 const displayDestinations = (dest) => {
   switch (dest.length) {
@@ -21,7 +20,7 @@ const displayDestinations = (dest) => {
   return dest;
 };
 
-const createRouteInfoTemplate = () => {
+const createRouteInfoTemplate = (points) => {
   const arrDestinations = [];
   let arrPrices = [];
   for (let i = 0; i < points.length; i++) {
@@ -42,7 +41,14 @@ const createRouteInfoTemplate = () => {
 };
 
 export default class RouteInfoView extends AbstractView {
-  getTemplate() {
-    return createRouteInfoTemplate();
+  #points = [];
+
+  constructor(points) {
+    super();
+    this.#points = points;
+  }
+
+  get template() {
+    return createRouteInfoTemplate(this.#points);
   }
 }

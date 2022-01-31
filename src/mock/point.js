@@ -1,7 +1,22 @@
 import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
 import {getRandomInteger, getRandomArrayElements} from '../utils/common.js';
-import {POINT_COUNT, TYPES, DESTINATION, DESCRIPTION} from '../const.js';
+import {TYPES} from '../const.js';
+
+const DESTINATION = ['Amsterdam', 'Geneva', 'Chamonix'];
+const DESCRIPTION = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Cras aliquet varius magna, non porta ligula feugiat eget.',
+  'Fusce tristique felis at fermentum pharetra.',
+  'Aliquam id orci ut lectus varius viverra.',
+  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
+  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
+  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
+  'Sed sed nisi sed augue convallis suscipit in sed felis.',
+  'Aliquam erat volutpat.',
+  'Nunc fermentum tortor ac porta dapibus.',
+  'In rutrum ac purus sit amet tempus.',
+];
 
 export const options = [
   {
@@ -52,10 +67,7 @@ export const generatePoint = () => {
     price: getRandomInteger(20, 200),
     description: getRandomArrayElements(DESCRIPTION, 1),
     photos: 'http://picsum.photos/248/152?r=',
-    offers: [1, 2, 3],
+    offers: getRandomArrayElements(options, 0),
     isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };
-
-export const points = new Array(POINT_COUNT).fill().map(generatePoint).sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
-export const addPointData = new Array(1).fill().map(generatePoint);

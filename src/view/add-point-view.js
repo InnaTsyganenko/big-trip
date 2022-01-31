@@ -1,8 +1,8 @@
-import {getRandomInteger} from '../utils/common.js';
-import AbstractView from './abstract.js';
-import {newPointDate} from '../utils/point.js';
-import {createPointTypesTemplate} from './point-types.js';
-import {randomAvailableOptions, createPointAvailableOptionsTemplate} from './point-options.js';
+import {getRandomInteger} from '../utils/common';
+import AbstractView from './abstract-view';
+import {newPointDate} from '../utils/point';
+import {createPointTypesTemplate} from './point-types-view';
+import {randomAvailableOptions, createPointAvailableOptionsTemplate} from './point-options-view';
 
 const BLANK_POINT = {
   type: '',
@@ -97,34 +97,34 @@ const createAddPointTemplate = (point = {}) => {
 };
 
 export default class AddPointView extends AbstractView{
+  #point = null;
+
   constructor(point = BLANK_POINT) {
     super();
-    this._point = point;
-    this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._formCancelHandler = this._formCancelHandler.bind(this);
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createAddPointTemplate(this._point);
+  get template() {
+    return createAddPointTemplate(this.#point);
   }
 
-  _formSubmitHandler(evt) {
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
+  #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit();
   }
 
-  _formCancelHandler(evt) {
+  setFormCancelHandler = (callback) => {
+    this._callback.formCancel = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formCancelHandler);
+  }
+
+  #formCancelHandler = (evt) => {
     evt.preventDefault();
     this._callback.formCancel();
-  }
-
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
-  }
-
-  setFormCancelHandler(callback) {
-    this._callback.formCancel = callback;
-    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formCancelHandler);
   }
 }

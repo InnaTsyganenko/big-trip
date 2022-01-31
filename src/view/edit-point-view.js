@@ -1,7 +1,7 @@
-import {createPointTypesTemplate} from './point-types.js';
-import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options.js';
+import {createPointTypesTemplate} from './point-types-view.js';
+import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options-view.js';
 import {newPointDate} from '../utils/point.js';
-import SmartView from './smart.js';
+import SmartView from './smart-view.js';
 
 const createEditPointTemplate = (data) => {
   const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = data;
@@ -81,12 +81,12 @@ export default class EditPointView extends SmartView{
 
     this._data = EditPointView.parsePointToData(point);
 
-    this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._formHideEditHandler = this._formHideEditHandler.bind(this);
-    this._formDeletePointHandler = this._formDeletePointHandler.bind(this);
-    this._typePointToggleHandler = this._typePointToggleHandler.bind(this);
+    this.#formSubmitHandler = this.#formSubmitHandler.bind(this);
+    this.#formHideEditHandler = this.#formHideEditHandler.bind(this);
+    this.#formDeletePointHandler = this.#formDeletePointHandler.bind(this);
+    this.#typePointToggleHandler = this.#typePointToggleHandler.bind(this);
 
-    this._setInnerHandlers();
+    this.#setInnerHandlers();
   }
 
   reset(point) {
@@ -95,7 +95,7 @@ export default class EditPointView extends SmartView{
     );
   }
 
-  getTemplate() {
+  get template() {
     return createEditPointTemplate(this._data);
   }
 
@@ -114,67 +114,67 @@ export default class EditPointView extends SmartView{
   }
 
   updateElement() {
-    const prevElement = this.getElement();
+    const prevElement = this.element;
     const parent = prevElement.parentElement;
     this.removeElement();
 
-    const newElement = this.getElement();
+    const newElement = this.element;
 
     parent.replaceChild(newElement, prevElement);
 
     this.restoreHandlers();
   }
 
-  restoreHandlers() {
-    this._setInnerHandlers();
+  restoreHandlers = () => {
+    this.#setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormHideEditHandler(this._callback.formHideEdit);
   }
 
-  _setInnerHandlers() {
-    this.getElement()
-      .querySelector('.event__type-group')
-      .addEventListener('change', this._typePointToggleHandler);
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
   }
 
-  _typePointToggleHandler(evt) {
+  setFormHideEditHandler = (callback) => {
+    this._callback.formHideEdit = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formHideEditHandler);
+  }
+
+  setDeletePointHandler = (callback) => {
+    this._callback.formDeletePoint = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeletePointHandler);
+  }
+
+  #setInnerHandlers = () => {
+    this.element
+      .querySelector('.event__type-group')
+      .addEventListener('change', this.#typePointToggleHandler);
+  }
+
+  #typePointToggleHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
       type: evt.target.value,
     });
   }
 
-  _formSubmitHandler(evt) {
+  #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit(EditPointView.parseDataToPoint(this._data));
   }
 
-  _formHideEditHandler(evt) {
+  #formHideEditHandler = (evt) => {
     evt.preventDefault();
     this._callback.formHideEdit();
   }
 
-  _formDeletePointHandler(evt) {
+  #formDeletePointHandler = (evt) => {
     evt.preventDefault();
     this._callback.formDeletePoint();
   }
 
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
-  }
-
-  setFormHideEditHandler(callback) {
-    this._callback.formHideEdit = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formHideEditHandler);
-  }
-
-  setDeletePointHandler(callback) {
-    this._callback.formDeletePoint = callback;
-    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeletePointHandler);
-  }
-
-  static parsePointToData(point) {
+  static parsePointToData = (point) => {
     return Object.assign(
       {},
       point,
@@ -183,7 +183,7 @@ export default class EditPointView extends SmartView{
     );
   }
 
-  static parseDataToPoint(data) {
+  static parseDataToPoint = (data) => {
     data = Object.assign({}, data);
 
     return data;

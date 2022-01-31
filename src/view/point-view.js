@@ -1,17 +1,15 @@
 import {getRandomArrayElements} from '../utils/common.js';
-import {options} from '../mock/point.js';
-import AbstractView from './abstract.js';
+import AbstractView from './abstract-view.js';
 
-const createPointOptionsTemplate = () => {
-  const randomOffers = getRandomArrayElements(options, 0);
-  return randomOffers.map((option) => `<li class="event__offer">
+const createPointOptionsTemplate = (options) => {
+  return options.map((option) => `<li class="event__offer">
   <span class="event__offer-title"style="white-space: pre;">${option.title}</span>&plus;&euro;&nbsp;
   <span class="event__offer-price">${option.price}</span>
   </li>`).join('\n');
 };
 
 const createPointTemplate = (point) => {
-  const {type, destination, datetimeStart, datetimeEnd, duration, price, isFavorite} = point;
+  const {type, destination, datetimeStart, datetimeEnd, duration, price, isFavorite, offers} = point;
 
   const calcDuration = () => {
     let result = duration + 'M';
@@ -52,7 +50,7 @@ const createPointTemplate = (point) => {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${createPointOptionsTemplate()}
+        ${createPointOptionsTemplate(offers)}
       </ul>
       <button class="event__favorite-btn ${favoriteClassName}" type="button">
         <span class="visually-hidden">Add to favorite</span>
@@ -75,7 +73,7 @@ export default class PointView extends AbstractView{
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
-  getTemplate() {
+  get template() {
     return createPointTemplate(this._point);
   }
 
@@ -91,11 +89,11 @@ export default class PointView extends AbstractView{
 
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
   }
 
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
-    this.getElement().querySelector('.event__favorite-btn').addEventListener('click', this._favoriteClickHandler);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this._favoriteClickHandler);
   }
 }
