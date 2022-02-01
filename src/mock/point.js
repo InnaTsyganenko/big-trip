@@ -53,21 +53,21 @@ export const options = [
 ];
 
 export const generatePoint = () => {
-  const datetimeStart = dayjs().add(getRandomInteger(-3000, 3000), 'm');
-  const datetimeEnd = datetimeStart.add(getRandomInteger(100, 3000), 'm');
-  const duration = datetimeEnd.diff(datetimeStart, 'm');
+  const dateFrom = dayjs().add(getRandomInteger(-3000, 3000), 'm');
+  const dateTo = dateFrom.add(getRandomInteger(30, 1500), 'm');
+  const duration = dateTo.diff(dateFrom, 'm');
 
   return {
-    id: nanoid(),
-    type: TYPES[getRandomInteger(0, TYPES.length - 1)],
-    destination: DESTINATION[getRandomInteger(0, DESTINATION.length - 1)],
-    datetimeStart,
-    datetimeEnd,
-    duration,
     price: getRandomInteger(20, 200),
+    dateFrom,
+    dateTo,
+    duration,
+    destination: DESTINATION[getRandomInteger(0, DESTINATION.length - 1)],
+    id: nanoid(),
+    isFavorite: Boolean(getRandomInteger(0, 1)),
+    offers: getRandomArrayElements(options, 0),
+    type: TYPES[getRandomInteger(0, TYPES.length - 1)],
     description: getRandomArrayElements(DESCRIPTION, 1),
     photos: 'http://picsum.photos/248/152?r=',
-    offers: getRandomArrayElements(options, 0),
-    isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };

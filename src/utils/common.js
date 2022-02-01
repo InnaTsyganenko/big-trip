@@ -20,13 +20,9 @@ export const getRandomArrayElements = function (arr, minValue) {
   return (shuffledArr.slice(min));
 };
 
-export const isEscEvent = (evt) => {
-  return evt.key === ('Escape' || 'Esc');
-};
+export const isEscEvent = (evt) => evt.key === ('Escape' || 'Esc');
 
-export const isInPage = (node) => {
-  return (node === document.body) ? false : document.body.contains(node);
-};
+export const isInPage = (node) => (node === document.body) ? false : document.body.contains(node);
 
 export const updateItem = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);

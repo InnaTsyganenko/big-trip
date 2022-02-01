@@ -23,7 +23,7 @@ export default class TripEvents {
   #currentSortType = null;
 
   #points = [];
-  #sourcedTripEvents = [];
+  #sourcedPoints = [];
 
   constructor(tripContainer) {
     this.#tripContainer = tripContainer;
@@ -39,7 +39,8 @@ export default class TripEvents {
 
   init(points) {
     this.#points = points;
-    this.#sourcedTripEvents = points;
+    this.#sourcedPoints = points.slice();
+
     render(this.#siteTripEventsElement, this.#pointListComponent.element, RenderPosition.BEFOREEND);
     this.#renderSort();
     this.#renderTripEvents();
@@ -47,7 +48,7 @@ export default class TripEvents {
 
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
-    this.#sourcedTripEvents = updateItem(this.#points, updatedPoint);
+    this.#sourcedPoints = updateItem(this.#points, updatedPoint);
     this.#pointPresenter[updatedPoint.id].init(updatedPoint);
   }
 
@@ -60,15 +61,14 @@ export default class TripEvents {
 
   #sortPoints = (sortType) => {
     switch (sortType) {
-      case SortType.TIME:
+      case `sort-${SortType.TIME}`:
         this.#points.sort((a, b) => b.duration - a.duration);
-        console.log(this.#points);
         break;
-      case SortType.PRICE:
+      case `sort-${SortType.PRICE}`:
         this.#points.sort((a, b) => b.price - a.price);
         break;
       default:
-        this.#points = this.#sourcedTripEvents;
+        this.#points = [...this.#sourcedPoints];
     }
 
     this.#currentSortType = sortType;
@@ -85,7 +85,7 @@ export default class TripEvents {
   }
 
   #renderSort = () => {
-    this.#sortComponent = new SortView(this.#currentSortType);
+    this.#sortComponent = new SortView();
     render(this.#siteTripEventsElement, this.#sortComponent.element, RenderPosition.AFTERBEGIN);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   }
@@ -102,7 +102,7 @@ export default class TripEvents {
 
   #renderAddPoint = () => {
     const addPointPresenter = new AddPointPresenter(this.#pointListComponent, this.#points.length);
-    addPointPresenter.init();
+    addPointPresenter.init(this.#points[0]);
     this.#addPointComponent = addPointPresenter;
   }
 
@@ -111,8 +111,12 @@ export default class TripEvents {
   }
 
   #renderTripEvents = () => {
-    (this.#points.length === 0) ? this.#renderNoPointsList()
-      : this.#renderPoints();
+    if (this.#points.length > 0) {
+      this.#renderPoints();
+    } else {
+      this.#renderNoPointsList();
+    }
+
     this.#renderAddPoint();
   }
 

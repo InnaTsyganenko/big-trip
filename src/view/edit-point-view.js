@@ -4,7 +4,7 @@ import {newPointDate} from '../utils/point.js';
 import SmartView from './smart-view.js';
 
 const createEditPointTemplate = (data) => {
-  const {type, destination, datetimeStart, datetimeEnd, price, description, offers} = data;
+  const {type, destination, dateFrom, dateTo, price, description, offers} = data;
 
   const typePointsTemplate = createPointTypesTemplate(type);
   return `<li class="trip-events__item">
@@ -39,10 +39,10 @@ const createEditPointTemplate = (data) => {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${newPointDate(datetimeStart)}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${newPointDate(dateFrom)}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${newPointDate(datetimeEnd)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${newPointDate(dateTo)}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -174,14 +174,7 @@ export default class EditPointView extends SmartView{
     this._callback.formDeletePoint();
   }
 
-  static parsePointToData = (point) => {
-    return Object.assign(
-      {},
-      point,
-      {
-      },
-    );
-  }
+  static parsePointToData = (point) => point;
 
   static parseDataToPoint = (data) => {
     data = Object.assign({}, data);
