@@ -10,15 +10,17 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "POINT_COUNT": () => (/* binding */ POINT_COUNT),
 /* harmony export */   "TYPES": () => (/* binding */ TYPES),
-/* harmony export */   "DESTINATION": () => (/* binding */ DESTINATION),
-/* harmony export */   "DESCRIPTION": () => (/* binding */ DESCRIPTION)
+/* harmony export */   "SortType": () => (/* binding */ SortType)
 /* harmony export */ });
-const POINT_COUNT = 5;
 const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Transport', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
-const DESTINATION = ['Amsterdam', 'Geneva', 'Chamonix'];
-const DESCRIPTION = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Cras aliquet varius magna, non porta ligula feugiat eget.', 'Fusce tristique felis at fermentum pharetra.', 'Aliquam id orci ut lectus varius viverra.', 'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.', 'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.', 'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.', 'Sed sed nisi sed augue convallis suscipit in sed felis.', 'Aliquam erat volutpat.', 'Nunc fermentum tortor ac porta dapibus.', 'In rutrum ac purus sit amet tempus.'];
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers'
+};
 
 /***/ }),
 
@@ -32,9 +34,7 @@ const DESCRIPTION = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "options": () => (/* binding */ options),
-/* harmony export */   "generatePoint": () => (/* binding */ generatePoint),
-/* harmony export */   "points": () => (/* binding */ points),
-/* harmony export */   "addPointData": () => (/* binding */ addPointData)
+/* harmony export */   "generatePoint": () => (/* binding */ generatePoint)
 /* harmony export */ });
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
@@ -45,6 +45,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const DESTINATION = ['Amsterdam', 'Geneva', 'Chamonix'];
+const DESCRIPTION = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Cras aliquet varius magna, non porta ligula feugiat eget.', 'Fusce tristique felis at fermentum pharetra.', 'Aliquam id orci ut lectus varius viverra.', 'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.', 'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.', 'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.', 'Sed sed nisi sed augue convallis suscipit in sed felis.', 'Aliquam erat volutpat.', 'Nunc fermentum tortor ac porta dapibus.', 'In rutrum ac purus sit amet tempus.'];
 const options = [{
   id: 1,
   value: 'luggage',
@@ -83,26 +85,24 @@ const generatePoint = () => {
   return {
     id: (0,nanoid__WEBPACK_IMPORTED_MODULE_3__.nanoid)(),
     type: _const_js__WEBPACK_IMPORTED_MODULE_2__.TYPES[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, _const_js__WEBPACK_IMPORTED_MODULE_2__.TYPES.length - 1)],
-    destination: _const_js__WEBPACK_IMPORTED_MODULE_2__.DESTINATION[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, _const_js__WEBPACK_IMPORTED_MODULE_2__.DESTINATION.length - 1)],
+    destination: DESTINATION[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, DESTINATION.length - 1)],
     datetimeStart,
     datetimeEnd,
     duration,
     price: (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(20, 200),
-    description: (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomArrayElements)(_const_js__WEBPACK_IMPORTED_MODULE_2__.DESCRIPTION, 1),
+    description: (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomArrayElements)(DESCRIPTION, 1),
     photos: 'http://picsum.photos/248/152?r=',
-    offers: [1, 2, 3],
+    offers: (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomArrayElements)(options, 0),
     isFavorite: Boolean((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, 1))
   };
 };
-const points = new Array(_const_js__WEBPACK_IMPORTED_MODULE_2__.POINT_COUNT).fill().map(generatePoint).sort((a, b) => a.datetimeStart - b.datetimeStart).slice(1);
-const addPointData = new Array(1).fill().map(generatePoint);
 
 /***/ }),
 
-/***/ "./src/presenter/add-point.js":
-/*!************************************!*\
-  !*** ./src/presenter/add-point.js ***!
-  \************************************/
+/***/ "./src/presenter/add-point-presenter.js":
+/*!**********************************************!*\
+  !*** ./src/presenter/add-point-presenter.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -110,11 +110,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ AddPointPresenter)
 /* harmony export */ });
-/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./src/utils/render.js");
-/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mock/point.js */ "./src/mock/point.js");
-/* harmony import */ var _view_no_point_list_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/no-point-list.js */ "./src/view/no-point-list.js");
-/* harmony import */ var _view_add_point_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view/add-point.js */ "./src/view/add-point.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
+/* harmony import */ var _utils_render__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render */ "./src/utils/render.js");
+/* harmony import */ var _view_no_point_list_view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/no-point-list-view */ "./src/view/no-point-list-view.js");
+/* harmony import */ var _view_add_point_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/add-point-view */ "./src/view/add-point-view.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 
 
@@ -124,90 +138,195 @@ const ModeAddPoint = {
   DEFAULT: 'DEFAULT',
   SHOW: 'SHOW'
 };
+
+var _pointListContainer = /*#__PURE__*/new WeakMap();
+
+var _addPointComponent = /*#__PURE__*/new WeakMap();
+
+var _mode = /*#__PURE__*/new WeakMap();
+
+var _body = /*#__PURE__*/new WeakMap();
+
+var _point = /*#__PURE__*/new WeakMap();
+
+var _sortDayInput = /*#__PURE__*/new WeakMap();
+
+var _siteTripEventsElement = /*#__PURE__*/new WeakMap();
+
+var _siteMainElement = /*#__PURE__*/new WeakMap();
+
+var _siteHeaderContainerElement = /*#__PURE__*/new WeakMap();
+
+var _addPointButton = /*#__PURE__*/new WeakMap();
+
+var _pointsLength = /*#__PURE__*/new WeakMap();
+
+var _handleFormSubmit = /*#__PURE__*/new WeakMap();
+
+var _handleHideEditClick = /*#__PURE__*/new WeakMap();
+
+var _handleCancelPointClick = /*#__PURE__*/new WeakMap();
+
+var _escKeyDownHandler = /*#__PURE__*/new WeakMap();
+
 class AddPointPresenter {
-  constructor(pointListContainer) {
-    this._pointListContainer = pointListContainer;
-    this._addPointComponent = null;
-    this._mode = ModeAddPoint.DEFAULT;
-    this._body = document.querySelector('.page-body');
-    this._siteMainElement = document.querySelector('.page-main');
-    this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this._handleCancelPointClick = this._handleCancelPointClick.bind(this);
-    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+  constructor(pointListContainer, pointsLength) {
+    _classPrivateFieldInitSpec(this, _pointListContainer, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _addPointComponent, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _mode, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _body, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _point, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _sortDayInput, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _siteTripEventsElement, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _siteMainElement, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _siteHeaderContainerElement, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _addPointButton, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _pointsLength, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _handleFormSubmit, {
+      writable: true,
+      value: () => {
+        this.closeAddForm();
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _handleHideEditClick, {
+      writable: true,
+      value: () => {
+        this.closeAddForm();
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _handleCancelPointClick, {
+      writable: true,
+      value: () => {
+        this.closeAddForm();
+
+        if (_classPrivateFieldGet(this, _pointListContainer).element.querySelector('.trip-events__item') === null) {
+          (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(_classPrivateFieldGet(this, _siteTripEventsElement), new _view_no_point_list_view__WEBPACK_IMPORTED_MODULE_2__["default"]().element, _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
+        }
+
+        _classPrivateFieldGet(this, _body).removeEventListener('keydown', _classPrivateFieldGet(this, _escKeyDownHandler));
+      }
+    });
+
+    _defineProperty(this, "closeAddForm", () => {
+      if (_classPrivateFieldGet(this, _mode) == ModeAddPoint.SHOW) {
+        _classPrivateFieldSet(this, _mode, ModeAddPoint.DEFAULT);
+
+        _classPrivateFieldGet(this, _pointListContainer).element.querySelector('.trip-events__item').remove();
+
+        _classPrivateFieldGet(this, _addPointButton).disabled = false;
+        _classPrivateFieldGet(this, _pointsLength) === 0 ? _classPrivateFieldGet(this, _siteMainElement).querySelector('.trip-events__msg').style = 'display: block;' : false;
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _escKeyDownHandler, {
+      writable: true,
+      value: evt => {
+        if ((0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.isEscEvent)(evt)) {
+          evt.preventDefault();
+          this.closeAddForm();
+
+          _classPrivateFieldGet(this, _body).removeEventListener('keydown', _classPrivateFieldGet(this, _escKeyDownHandler));
+        }
+      }
+    });
+
+    _classPrivateFieldSet(this, _pointListContainer, pointListContainer);
+
+    _classPrivateFieldSet(this, _pointsLength, pointsLength);
+
+    _classPrivateFieldSet(this, _addPointComponent, null);
+
+    _classPrivateFieldSet(this, _mode, ModeAddPoint.DEFAULT);
+
+    _classPrivateFieldSet(this, _body, document.querySelector('.page-body'));
+
+    _classPrivateFieldSet(this, _siteMainElement, document.querySelector('.page-main'));
   }
 
   init(point) {
-    this._point = point;
-    this._siteHeaderContainerElement = document.querySelector('.page-header__container');
-    this._addPointButton = this._siteHeaderContainerElement.querySelector('.trip-main__event-add-btn');
-    this._addPointComponent = new _view_add_point_js__WEBPACK_IMPORTED_MODULE_4__["default"](point);
+    _classPrivateFieldSet(this, _point, point);
 
-    this._addPointButton.addEventListener('click', () => {
-      this._mode = ModeAddPoint.SHOW;
-      this._pointListContainer.getElement().querySelector('.event--edit') ? this._pointListContainer.getElement().querySelector('.event--edit').querySelector('.event__rollup-btn').click() : false;
-      this._body.querySelector('.trip-events__msg') ? this._body.querySelector('.trip-events__msg').style = 'display: none;' : false;
-      this._sortDayInput.checked = true;
-      (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._pointListContainer, this._addPointComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.AFTERBEGIN);
-      this._addPointButton.disabled = true;
+    _classPrivateFieldSet(this, _siteHeaderContainerElement, document.querySelector('.page-header__container'));
 
-      this._body.addEventListener('keydown', this._escKeyDownHandler);
+    _classPrivateFieldSet(this, _addPointButton, _classPrivateFieldGet(this, _siteHeaderContainerElement).querySelector('.trip-main__event-add-btn'));
+
+    _classPrivateFieldSet(this, _addPointComponent, new _view_add_point_view__WEBPACK_IMPORTED_MODULE_3__["default"](point));
+
+    _classPrivateFieldGet(this, _addPointButton).addEventListener('click', () => {
+      _classPrivateFieldSet(this, _mode, ModeAddPoint.SHOW);
+
+      _classPrivateFieldGet(this, _pointListContainer).element.querySelector('.event--edit') ? _classPrivateFieldGet(this, _pointListContainer).element.querySelector('.event--edit').querySelector('.event__rollup-btn').click() : false;
+      _classPrivateFieldGet(this, _body).querySelector('.trip-events__msg') ? _classPrivateFieldGet(this, _body).querySelector('.trip-events__msg').style = 'display: none;' : false;
+      _classPrivateFieldGet(this, _sortDayInput).checked = true;
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(_classPrivateFieldGet(this, _pointListContainer), _classPrivateFieldGet(this, _addPointComponent), _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.AFTERBEGIN);
+      _classPrivateFieldGet(this, _addPointButton).disabled = true;
+
+      _classPrivateFieldGet(this, _body).addEventListener('keydown', _classPrivateFieldGet(this, _escKeyDownHandler));
     });
 
-    this._siteTripEventsElement = this._siteMainElement.querySelector('.trip-events');
-    this._sortDayInput = this._siteTripEventsElement.querySelector('#sort-day');
+    _classPrivateFieldSet(this, _siteTripEventsElement, _classPrivateFieldGet(this, _siteMainElement).querySelector('.trip-events'));
 
-    this._addPointComponent.setFormSubmitHandler(this._handleFormSubmit);
+    _classPrivateFieldSet(this, _sortDayInput, _classPrivateFieldGet(this, _siteTripEventsElement).querySelector('#sort-day'));
 
-    this._addPointComponent.setFormCancelHandler(this._handleCancelPointClick);
-  }
+    _classPrivateFieldGet(this, _addPointComponent).setFormSubmitHandler(_classPrivateFieldGet(this, _handleFormSubmit));
 
-  _handleFormSubmit() {
-    this._closeAddForm();
-  }
-
-  _handleHideEditClick() {
-    this._closeAddForm();
-  }
-
-  _handleCancelPointClick() {
-    this._closeAddForm();
-
-    if (this._pointListContainer.getElement().querySelector('.trip-events__item') === null) {
-      (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._siteTripEventsElement, new _view_no_point_list_js__WEBPACK_IMPORTED_MODULE_3__["default"]().getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
-    }
-
-    this._body.removeEventListener('keydown', this._escKeyDownHandler);
-  }
-
-  _closeAddForm() {
-    if (this._mode == ModeAddPoint.SHOW) {
-      this._mode = ModeAddPoint.DEFAULT;
-
-      this._pointListContainer.getElement().querySelector('.trip-events__item').remove();
-
-      this._addPointButton.disabled = false;
-      _mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points.length === 0 ? this._siteMainElement.querySelector('.trip-events__msg').style = 'display: block;' : false;
-    }
-  }
-
-  _escKeyDownHandler(evt) {
-    if ((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.isEscEvent)(evt)) {
-      evt.preventDefault();
-
-      this._closeAddForm();
-
-      this._body.removeEventListener('keydown', this._escKeyDownHandler);
-    }
+    _classPrivateFieldGet(this, _addPointComponent).setFormCancelHandler(_classPrivateFieldGet(this, _handleCancelPointClick));
   }
 
 }
 
 /***/ }),
 
-/***/ "./src/presenter/point.js":
-/*!********************************!*\
-  !*** ./src/presenter/point.js ***!
-  \********************************/
+/***/ "./src/presenter/point-presenter.js":
+/*!******************************************!*\
+  !*** ./src/presenter/point-presenter.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -215,11 +334,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Point)
 /* harmony export */ });
-/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./src/utils/render.js");
-/* harmony import */ var _view_no_point_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/no-point-list.js */ "./src/view/no-point-list.js");
-/* harmony import */ var _view_point_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/point.js */ "./src/view/point.js");
-/* harmony import */ var _view_edit_point_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view/edit-point.js */ "./src/view/edit-point.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
+/* harmony import */ var _utils_render__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render */ "./src/utils/render.js");
+/* harmony import */ var _view_no_point_list_view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/no-point-list-view */ "./src/view/no-point-list-view.js");
+/* harmony import */ var _view_point_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/point-view */ "./src/view/point-view.js");
+/* harmony import */ var _view_edit_point_view__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view/edit-point-view */ "./src/view/edit-point-view.js");
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
 
 
 
@@ -229,8 +358,36 @@ const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
 };
+
+var _replaceCardToForm = /*#__PURE__*/new WeakMap();
+
+var _replaceFormToCard = /*#__PURE__*/new WeakMap();
+
 class Point {
   constructor(pointListContainer, changeData, changeMode) {
+    _classPrivateFieldInitSpec(this, _replaceCardToForm, {
+      writable: true,
+      value: () => {
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointEditComponent, this._pointComponent);
+
+        this._changeMode();
+
+        this._mode = Mode.EDITING;
+
+        this._body.addEventListener('keydown', this._escKeyDownHandler);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _replaceFormToCard, {
+      writable: true,
+      value: () => {
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointComponent, this._pointEditComponent);
+        this._mode = Mode.DEFAULT;
+
+        this._body.removeEventListener('keydown', this._escKeyDownHandler);
+      }
+    });
+
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
@@ -252,8 +409,8 @@ class Point {
     this._point = point;
     const prevPointComponent = this._pointComponent;
     const prevPointEditComponent = this._pointEditComponent;
-    this._pointComponent = new _view_point_js__WEBPACK_IMPORTED_MODULE_3__["default"](point);
-    this._pointEditComponent = new _view_edit_point_js__WEBPACK_IMPORTED_MODULE_4__["default"](point);
+    this._pointComponent = new _view_point_view__WEBPACK_IMPORTED_MODULE_3__["default"](point);
+    this._pointEditComponent = new _view_edit_point_view__WEBPACK_IMPORTED_MODULE_4__["default"](point);
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
 
@@ -266,64 +423,47 @@ class Point {
     this._pointEditComponent.setFormHideEditHandler(this._handleHideEditClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
-      (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._pointListContainer, this._pointComponent, _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(this._pointListContainer, this._pointComponent, _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
       return;
     }
 
     if (this._mode === Mode.DEFAULT) {
-      (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointComponent, prevPointComponent);
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointComponent, prevPointComponent);
     }
 
     if (this._mode === Mode.EDITING) {
-      (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointEditComponent, prevPointEditComponent);
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointEditComponent, prevPointEditComponent);
     }
 
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.remove)(prevPointComponent);
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.remove)(prevPointEditComponent);
+    (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.remove)(prevPointComponent);
+    (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.remove)(prevPointEditComponent);
   }
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._replaceFormToCard();
+      _classPrivateFieldGet(this, _replaceFormToCard).call(this);
     }
   }
 
   destroy() {
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.remove)(this._pointComponent);
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.remove)(this._pointEditComponent);
-  }
-
-  _replaceCardToForm() {
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointEditComponent, this._pointComponent);
-
-    this._changeMode();
-
-    this._mode = Mode.EDITING;
-
-    this._body.addEventListener('keydown', this._escKeyDownHandler);
-  }
-
-  _replaceFormToCard() {
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.replace)(this._pointComponent, this._pointEditComponent);
-    this._mode = Mode.DEFAULT;
-
-    this._body.removeEventListener('keydown', this._escKeyDownHandler);
+    (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.remove)(this._pointComponent);
+    (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.remove)(this._pointEditComponent);
   }
 
   _escKeyDownHandler(evt) {
-    if ((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.isEscEvent)(evt)) {
+    if ((0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.isEscEvent)(evt)) {
       evt.preventDefault();
 
       this._pointEditComponent.reset(this._point);
 
-      this._replaceFormToCard();
+      _classPrivateFieldGet(this, _replaceFormToCard).call(this);
 
       this._body.removeEventListener('keydown', this._escKeyDownHandler);
     }
   }
 
   _handleEditClick() {
-    this._replaceCardToForm();
+    _classPrivateFieldGet(this, _replaceCardToForm).call(this);
   }
 
   _handleFavoriteClick() {
@@ -335,22 +475,22 @@ class Point {
   _handleFormSubmit(point) {
     this._changeData(point);
 
-    this._replaceFormToCard();
+    _classPrivateFieldGet(this, _replaceFormToCard).call(this);
 
     this._body.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
   _handleHideEditClick() {
-    this._replaceFormToCard();
+    _classPrivateFieldGet(this, _replaceFormToCard).call(this);
 
     this._body.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
   _handleDeletePointClick() {
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.remove)(this._pointEditComponent);
+    (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.remove)(this._pointEditComponent);
 
-    if (this._pointListContainer.getElement().querySelector('.trip-events__item') === null) {
-      (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._siteTripEventsElement, new _view_no_point_list_js__WEBPACK_IMPORTED_MODULE_2__["default"]().getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
+    if (this._pointListContainer.element.querySelector('.trip-events__item') === null) {
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(this._siteTripEventsElement, new _view_no_point_list_view__WEBPACK_IMPORTED_MODULE_2__["default"]().element, _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
     }
 
     this._body.removeEventListener('keydown', this._escKeyDownHandler);
@@ -360,10 +500,10 @@ class Point {
 
 /***/ }),
 
-/***/ "./src/presenter/trip.js":
-/*!*******************************!*\
-  !*** ./src/presenter/trip.js ***!
-  \*******************************/
+/***/ "./src/presenter/trip-presenter.js":
+/*!*****************************************!*\
+  !*** ./src/presenter/trip-presenter.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -371,14 +511,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ TripEvents)
 /* harmony export */ });
-/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render.js */ "./src/utils/render.js");
-/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mock/point.js */ "./src/mock/point.js");
-/* harmony import */ var _view_sorting_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/sorting.js */ "./src/view/sorting.js");
-/* harmony import */ var _view_no_point_list_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view/no-point-list.js */ "./src/view/no-point-list.js");
-/* harmony import */ var _view_point_list_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/point-list.js */ "./src/view/point-list.js");
-/* harmony import */ var _point_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./point.js */ "./src/presenter/point.js");
-/* harmony import */ var _add_point_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./add-point.js */ "./src/presenter/add-point.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
+/* harmony import */ var _utils_render__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/render */ "./src/utils/render.js");
+/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../const */ "./src/const.js");
+/* harmony import */ var _view_sort_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/sort-view */ "./src/view/sort-view.js");
+/* harmony import */ var _view_no_point_list_view__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view/no-point-list-view */ "./src/view/no-point-list-view.js");
+/* harmony import */ var _view_point_list_view__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/point-list-view */ "./src/view/point-list-view.js");
+/* harmony import */ var _point_presenter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./point-presenter */ "./src/presenter/point-presenter.js");
+/* harmony import */ var _add_point_presenter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./add-point-presenter */ "./src/presenter/add-point-presenter.js");
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 
 
@@ -386,114 +539,256 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+var _tripContainer = /*#__PURE__*/new WeakMap();
+
+var _addPointComponent = /*#__PURE__*/new WeakMap();
+
+var _sortComponent = /*#__PURE__*/new WeakMap();
+
+var _pointListComponent = /*#__PURE__*/new WeakMap();
+
+var _noPointListComponent = /*#__PURE__*/new WeakMap();
+
+var _pointPresenter = /*#__PURE__*/new WeakMap();
+
+var _siteMainElement = /*#__PURE__*/new WeakMap();
+
+var _siteTripEventsElement = /*#__PURE__*/new WeakMap();
+
+var _currentSortType = /*#__PURE__*/new WeakMap();
+
+var _points = /*#__PURE__*/new WeakMap();
+
+var _sourcedTripEvents = /*#__PURE__*/new WeakMap();
+
+var _handlePointChange = /*#__PURE__*/new WeakMap();
+
+var _handleModeChange = /*#__PURE__*/new WeakMap();
+
+var _sortPoints = /*#__PURE__*/new WeakMap();
+
+var _handleSortTypeChange = /*#__PURE__*/new WeakMap();
+
+var _renderSort = /*#__PURE__*/new WeakMap();
+
+var _renderNoPointsList = /*#__PURE__*/new WeakMap();
+
+var _renderPoint = /*#__PURE__*/new WeakMap();
+
+var _renderAddPoint = /*#__PURE__*/new WeakMap();
+
+var _renderPoints = /*#__PURE__*/new WeakMap();
+
+var _renderTripEvents = /*#__PURE__*/new WeakMap();
+
+var _clearPointList = /*#__PURE__*/new WeakMap();
 
 class TripEvents {
   constructor(tripContainer) {
-    this._tripContainer = tripContainer;
-    this._pointPresenter = {};
-    this._addPointComponent = null;
-    this._currentSortType = 'sort-everything';
-    this._body = document.querySelector('.page-body');
-    this._siteHeaderContainerElement = document.querySelector('.page-header__container');
-    this._siteMainElement = document.querySelector('.page-main');
-    this._siteTripEventsElement = this._siteMainElement.querySelector('.trip-events');
-    this._sortingComponent = new _view_sorting_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
-    this._noPointListComponent = new _view_no_point_list_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
-    this._pointListComponent = new _view_point_list_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
-    this._handlePointChange = this._handlePointChange.bind(this);
-    this._handleModeChange = this._handleModeChange.bind(this);
-    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    _classPrivateFieldInitSpec(this, _tripContainer, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _addPointComponent, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _sortComponent, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _pointListComponent, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _noPointListComponent, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _pointPresenter, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _siteMainElement, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _siteTripEventsElement, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _currentSortType, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _points, {
+      writable: true,
+      value: []
+    });
+
+    _classPrivateFieldInitSpec(this, _sourcedTripEvents, {
+      writable: true,
+      value: []
+    });
+
+    _classPrivateFieldInitSpec(this, _handlePointChange, {
+      writable: true,
+      value: updatedPoint => {
+        _classPrivateFieldSet(this, _points, (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.updateItem)(_classPrivateFieldGet(this, _points), updatedPoint));
+
+        _classPrivateFieldSet(this, _sourcedTripEvents, (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.updateItem)(_classPrivateFieldGet(this, _points), updatedPoint));
+
+        _classPrivateFieldGet(this, _pointPresenter)[updatedPoint.id].init(updatedPoint);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _handleModeChange, {
+      writable: true,
+      value: () => {
+        Object.values(_classPrivateFieldGet(this, _pointPresenter)).forEach(presenter => presenter.resetView());
+
+        _classPrivateFieldGet(this, _addPointComponent).closeAddForm();
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _sortPoints, {
+      writable: true,
+      value: sortType => {
+        switch (sortType) {
+          case _const__WEBPACK_IMPORTED_MODULE_2__.SortType.TIME:
+            _classPrivateFieldGet(this, _points).sort((a, b) => b.duration - a.duration);
+
+            console.log(_classPrivateFieldGet(this, _points));
+            break;
+
+          case _const__WEBPACK_IMPORTED_MODULE_2__.SortType.PRICE:
+            _classPrivateFieldGet(this, _points).sort((a, b) => b.price - a.price);
+
+            break;
+
+          default:
+            _classPrivateFieldSet(this, _points, _classPrivateFieldGet(this, _sourcedTripEvents));
+
+        }
+
+        _classPrivateFieldSet(this, _currentSortType, sortType);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _handleSortTypeChange, {
+      writable: true,
+      value: sortType => {
+        if (_classPrivateFieldGet(this, _currentSortType) === sortType) {
+          return;
+        }
+
+        _classPrivateFieldGet(this, _sortPoints).call(this, sortType);
+
+        _classPrivateFieldGet(this, _clearPointList).call(this);
+
+        _classPrivateFieldGet(this, _renderTripEvents).call(this);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderSort, {
+      writable: true,
+      value: () => {
+        _classPrivateFieldSet(this, _sortComponent, new _view_sort_view__WEBPACK_IMPORTED_MODULE_3__["default"](_classPrivateFieldGet(this, _currentSortType)));
+
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(_classPrivateFieldGet(this, _siteTripEventsElement), _classPrivateFieldGet(this, _sortComponent).element, _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.AFTERBEGIN);
+
+        _classPrivateFieldGet(this, _sortComponent).setSortTypeChangeHandler(_classPrivateFieldGet(this, _handleSortTypeChange));
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderNoPointsList, {
+      writable: true,
+      value: () => {
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(_classPrivateFieldGet(this, _siteTripEventsElement), _classPrivateFieldGet(this, _noPointListComponent).element, _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderPoint, {
+      writable: true,
+      value: point => {
+        const pointPresenter = new _point_presenter__WEBPACK_IMPORTED_MODULE_6__["default"](_classPrivateFieldGet(this, _pointListComponent), _classPrivateFieldGet(this, _handlePointChange), _classPrivateFieldGet(this, _handleModeChange));
+        pointPresenter.init(point);
+        _classPrivateFieldGet(this, _pointPresenter)[point.id] = pointPresenter;
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderAddPoint, {
+      writable: true,
+      value: () => {
+        const addPointPresenter = new _add_point_presenter__WEBPACK_IMPORTED_MODULE_7__["default"](_classPrivateFieldGet(this, _pointListComponent), _classPrivateFieldGet(this, _points).length);
+        addPointPresenter.init();
+
+        _classPrivateFieldSet(this, _addPointComponent, addPointPresenter);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderPoints, {
+      writable: true,
+      value: () => {
+        _classPrivateFieldGet(this, _points).forEach(tripEvent => _classPrivateFieldGet(this, _renderPoint).call(this, tripEvent));
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderTripEvents, {
+      writable: true,
+      value: () => {
+        _classPrivateFieldGet(this, _points).length === 0 ? _classPrivateFieldGet(this, _renderNoPointsList).call(this) : _classPrivateFieldGet(this, _renderPoints).call(this);
+
+        _classPrivateFieldGet(this, _renderAddPoint).call(this);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _clearPointList, {
+      writable: true,
+      value: () => {
+        Object.values(_classPrivateFieldGet(this, _pointPresenter)).forEach(presenter => presenter.destroy());
+
+        _classPrivateFieldSet(this, _pointPresenter, {});
+      }
+    });
+
+    _classPrivateFieldSet(this, _tripContainer, tripContainer);
+
+    _classPrivateFieldSet(this, _pointPresenter, {});
+
+    _classPrivateFieldSet(this, _currentSortType, 'sort-day');
+
+    _classPrivateFieldSet(this, _siteMainElement, document.querySelector('.page-main'));
+
+    _classPrivateFieldSet(this, _siteTripEventsElement, _classPrivateFieldGet(this, _siteMainElement).querySelector('.trip-events'));
+
+    _classPrivateFieldSet(this, _noPointListComponent, new _view_no_point_list_view__WEBPACK_IMPORTED_MODULE_4__["default"]());
+
+    _classPrivateFieldSet(this, _pointListComponent, new _view_point_list_view__WEBPACK_IMPORTED_MODULE_5__["default"]());
   }
 
-  init(tripEvents) {
-    this._tripEvents = tripEvents.slice();
-    this._sourcedTripEvents = tripEvents.slice();
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._siteTripEventsElement, this._pointListComponent.getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
+  init(points) {
+    _classPrivateFieldSet(this, _points, points);
 
-    this._renderTripEvents();
-  }
+    _classPrivateFieldSet(this, _sourcedTripEvents, points);
 
-  _handlePointChange(updatedPoint) {
-    this._tripEvents = (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.updateItem)(this._tripEvents, updatedPoint);
-    this._sourcedTripEvents = (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.updateItem)(this._tripEvents, updatedPoint);
+    (0,_utils_render__WEBPACK_IMPORTED_MODULE_1__.render)(_classPrivateFieldGet(this, _siteTripEventsElement), _classPrivateFieldGet(this, _pointListComponent).element, _utils_render__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
 
-    this._pointPresenter[updatedPoint.id].init(updatedPoint);
-  }
+    _classPrivateFieldGet(this, _renderSort).call(this);
 
-  _handleModeChange() {
-    Object.values(this._pointPresenter).forEach(presenter => presenter.resetView());
-
-    this._addPointComponent._closeAddForm();
-  }
-
-  _sortPoints(sortType) {
-    switch (sortType) {
-      case 'sort-time':
-        this._tripEvents.sort((a, b) => b.duration - a.duration);
-
-        break;
-
-      case 'sort-price':
-        this._tripEvents.sort((a, b) => b.price - a.price);
-
-        break;
-
-      default:
-        this._tripEvents = this._sourcedTripEvents;
-    }
-
-    this._currentSortType = sortType;
-  }
-
-  _handleSortTypeChange(sortType) {
-    if (this._currentSortType === sortType) {
-      return;
-    }
-
-    this._sortPoints(sortType);
-
-    this._clearPointList();
-
-    this._renderTripEvents();
-  }
-
-  _renderSorting() {
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._siteTripEventsElement, this._sortingComponent.getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.AFTERBEGIN);
-
-    this._sortingComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
-  }
-
-  _renderNoPointsList() {
-    (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_1__.render)(this._siteTripEventsElement, this._noPointListComponent.getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_1__.RenderPosition.BEFOREEND);
-  }
-
-  _renderPoint(point) {
-    const pointPresenter = new _point_js__WEBPACK_IMPORTED_MODULE_6__["default"](this._pointListComponent, this._handlePointChange, this._handleModeChange);
-    pointPresenter.init(point);
-    this._pointPresenter[point.id] = pointPresenter;
-  }
-
-  _renderAddPoint(point) {
-    const addPointPresenter = new _add_point_js__WEBPACK_IMPORTED_MODULE_7__["default"](this._pointListComponent);
-    addPointPresenter.init(point);
-    this._addPointComponent = addPointPresenter;
-  }
-
-  _renderPoints() {
-    this._tripEvents.forEach(tripEvent => this._renderPoint(tripEvent));
-  }
-
-  _renderTripEvents() {
-    this._renderSorting();
-
-    _mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points.length === 0 ? this._renderNoPointsList() : this._renderPoints();
-
-    this._renderAddPoint(_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.addPointData[0]);
-  }
-
-  _clearPointList() {
-    Object.values(this._pointPresenter).forEach(presenter => presenter.destroy());
-    this._pointPresenter = {};
+    _classPrivateFieldGet(this, _renderTripEvents).call(this);
   }
 
 }
@@ -590,75 +885,79 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RenderPosition": () => (/* binding */ RenderPosition),
 /* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "makeElement": () => (/* binding */ makeElement),
+/* harmony export */   "createElement": () => (/* binding */ createElement),
 /* harmony export */   "replace": () => (/* binding */ replace),
 /* harmony export */   "remove": () => (/* binding */ remove)
 /* harmony export */ });
-/* harmony import */ var _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _view_abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/abstract-view.js */ "./src/view/abstract-view.js");
 
 const RenderPosition = {
+  BEFOREBEGIN: 'beforebegin',
   AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend'
+  BEFOREEND: 'beforeend',
+  AFTEREND: 'afterend'
 };
-const render = (container, child, place) => {
-  if (container instanceof _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
-    container = container.getElement();
-  }
-
-  if (child instanceof _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
-    child = child.getElement();
-  }
+const render = (container, element, place) => {
+  const parent = container instanceof _view_abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? container.element : container;
+  const child = element instanceof _view_abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? element.element : element;
 
   switch (place) {
+    case RenderPosition.BEFOREBEGIN:
+      parent.before(child);
+      break;
+
     case RenderPosition.AFTERBEGIN:
-      container.prepend(child);
+      parent.prepend(child);
       break;
 
     case RenderPosition.BEFOREEND:
-      container.append(child);
+      parent.append(child);
       break;
 
-    default:
-      container.append(child).BEFOREEND;
+    case RenderPosition.AFTEREND:
+      parent.after(child);
+      break;
   }
 };
-const makeElement = template => {
+const createElement = template => {
   const newElement = document.createElement('div');
   newElement.innerHTML = template;
   return newElement.firstChild;
 };
-const replace = (newChild, oldChild) => {
-  if (oldChild instanceof _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
-    oldChild = oldChild.getElement();
+const replace = (newElement, oldElement) => {
+  if (newElement === null || oldElement === null) {
+    throw new Error('Can\'t replace unexisting elements');
   }
 
-  if (newChild instanceof _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
-    newChild = newChild.getElement();
-  }
-
+  const newChild = newElement instanceof _view_abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? newElement.element : newElement;
+  const oldChild = oldElement instanceof _view_abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? oldElement.element : oldElement;
   const parent = oldChild.parentElement;
 
-  if (parent === null || oldChild === null || newChild === null) {
-    throw new Error('Can\'t replace unexisting elements');
+  if (parent === null) {
+    throw new Error('Parent element doesn\'t exist');
   }
 
   parent.replaceChild(newChild, oldChild);
 };
 const remove = component => {
-  if (!(component instanceof _view_abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"])) {
+  if (component === null) {
+    return;
+  }
+
+  if (!(component instanceof _view_abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"])) {
     throw new Error('Can remove only components');
   }
 
-  component.getElement().remove();
+  component.element.remove();
   component.removeElement();
 };
 
 /***/ }),
 
-/***/ "./src/view/abstract.js":
-/*!******************************!*\
-  !*** ./src/view/abstract.js ***!
-  \******************************/
+/***/ "./src/view/abstract-view.js":
+/*!***********************************!*\
+  !*** ./src/view/abstract-view.js ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -667,41 +966,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ AbstractView)
 /* harmony export */ });
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/render.js */ "./src/utils/render.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
+var _element = /*#__PURE__*/new WeakMap();
 
 class AbstractView {
   constructor() {
+    _classPrivateFieldInitSpec(this, _element, {
+      writable: true,
+      value: null
+    });
+
+    _defineProperty(this, "_callback", {});
+
     if (new.target === AbstractView) {
-      throw new Error('Can\'t instantiate Abstract, only concrete one.');
+      throw new Error('Can\'t instantiate AbstractView, only concrete one.');
     }
-
-    this._callback = {};
-    this._element = null;
   }
 
-  getTemplate() {
-    throw new Error('Abstract method not implemented: getTemplate');
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.makeElement)(this.getTemplate());
+  get element() {
+    if (!_classPrivateFieldGet(this, _element)) {
+      _classPrivateFieldSet(this, _element, (0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.createElement)(this.template));
     }
 
-    return this._element;
+    return _classPrivateFieldGet(this, _element);
+  }
+
+  get template() {
+    throw new Error('Abstract method not implemented: get template');
   }
 
   removeElement() {
-    this._element = null;
+    _classPrivateFieldSet(this, _element, null);
+  }
+
+  shake(callback) {
+    this.element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    setTimeout(() => {
+      this.element.style.animation = '';
+      callback();
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
 }
 
 /***/ }),
 
-/***/ "./src/view/add-point.js":
-/*!*******************************!*\
-  !*** ./src/view/add-point.js ***!
-  \*******************************/
+/***/ "./src/view/add-point-view.js":
+/*!************************************!*\
+  !*** ./src/view/add-point-view.js ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -709,11 +1040,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ AddPointView)
 /* harmony export */ });
-/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
-/* harmony import */ var _utils_point_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/point.js */ "./src/utils/point.js");
-/* harmony import */ var _point_types_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./point-types.js */ "./src/view/point-types.js");
-/* harmony import */ var _point_options_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./point-options.js */ "./src/view/point-options.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
+/* harmony import */ var _abstract_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./abstract-view */ "./src/view/abstract-view.js");
+/* harmony import */ var _utils_point__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/point */ "./src/utils/point.js");
+/* harmony import */ var _point_types_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./point-types-view */ "./src/view/point-types-view.js");
+/* harmony import */ var _point_options_view__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./point-options-view */ "./src/view/point-options-view.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
 
 
 
@@ -742,8 +1089,8 @@ const createAddPointTemplate = (point = {}) => {
     photos,
     offers
   } = point;
-  const typesTemplate = (0,_point_types_js__WEBPACK_IMPORTED_MODULE_3__.createPointTypesTemplate)(type);
-  const offersTemplate = (0,_point_options_js__WEBPACK_IMPORTED_MODULE_4__.createPointAvailableOptionsTemplate)(offers);
+  const typesTemplate = (0,_point_types_view__WEBPACK_IMPORTED_MODULE_3__.createPointTypesTemplate)(type);
+  const offersTemplate = (0,_point_options_view__WEBPACK_IMPORTED_MODULE_4__.createPointAvailableOptionsTemplate)(offers);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -776,10 +1123,10 @@ const createAddPointTemplate = (point = {}) => {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${(0,_utils_point_js__WEBPACK_IMPORTED_MODULE_2__.newPointDate)(datetimeStart)}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${(0,_utils_point__WEBPACK_IMPORTED_MODULE_2__.newPointDate)(datetimeStart)}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${(0,_utils_point_js__WEBPACK_IMPORTED_MODULE_2__.newPointDate)(datetimeEnd)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${(0,_utils_point__WEBPACK_IMPORTED_MODULE_2__.newPointDate)(datetimeEnd)}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -794,7 +1141,7 @@ const createAddPointTemplate = (point = {}) => {
     <button class="event__reset-btn" type="reset">Cancel</button>
   </header>
   <section class="event__details">
-  ${_point_options_js__WEBPACK_IMPORTED_MODULE_4__.randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
+  ${_point_options_view__WEBPACK_IMPORTED_MODULE_4__.randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
         ${offersTemplate}
@@ -806,11 +1153,11 @@ const createAddPointTemplate = (point = {}) => {
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          <img class="event__photo" src="${photos + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
+          <img class="event__photo" src="${photos + (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
+          <img class="event__photo" src="${photos + (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
+          <img class="event__photo" src="${photos + (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
+          <img class="event__photo" src="${photos + (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
+          <img class="event__photo" src="${photos + (0,_utils_common__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 15)}" alt="Event photo">
         </div>
       </div>
     </section>` : ''}
@@ -819,48 +1166,64 @@ const createAddPointTemplate = (point = {}) => {
 </li>`;
 };
 
-class AddPointView extends _abstract_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+var _point = /*#__PURE__*/new WeakMap();
+
+var _formSubmitHandler = /*#__PURE__*/new WeakMap();
+
+var _formCancelHandler = /*#__PURE__*/new WeakMap();
+
+class AddPointView extends _abstract_view__WEBPACK_IMPORTED_MODULE_1__["default"] {
   constructor(point = BLANK_POINT) {
     super();
-    this._point = point;
-    this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._formCancelHandler = this._formCancelHandler.bind(this);
+
+    _classPrivateFieldInitSpec(this, _point, {
+      writable: true,
+      value: null
+    });
+
+    _defineProperty(this, "setFormSubmitHandler", callback => {
+      this._callback.formSubmit = callback;
+      this.element.querySelector('form').addEventListener('submit', _classPrivateFieldGet(this, _formSubmitHandler));
+    });
+
+    _classPrivateFieldInitSpec(this, _formSubmitHandler, {
+      writable: true,
+      value: evt => {
+        evt.preventDefault();
+
+        this._callback.formSubmit();
+      }
+    });
+
+    _defineProperty(this, "setFormCancelHandler", callback => {
+      this._callback.formCancel = callback;
+      this.element.querySelector('.event__reset-btn').addEventListener('click', _classPrivateFieldGet(this, _formCancelHandler));
+    });
+
+    _classPrivateFieldInitSpec(this, _formCancelHandler, {
+      writable: true,
+      value: evt => {
+        evt.preventDefault();
+
+        this._callback.formCancel();
+      }
+    });
+
+    _classPrivateFieldSet(this, _point, point);
   }
 
-  getTemplate() {
-    return createAddPointTemplate(this._point);
-  }
-
-  _formSubmitHandler(evt) {
-    evt.preventDefault();
-
-    this._callback.formSubmit();
-  }
-
-  _formCancelHandler(evt) {
-    evt.preventDefault();
-
-    this._callback.formCancel();
-  }
-
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
-  }
-
-  setFormCancelHandler(callback) {
-    this._callback.formCancel = callback;
-    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formCancelHandler);
+  get template() {
+    return createAddPointTemplate(_classPrivateFieldGet(this, _point));
   }
 
 }
 
 /***/ }),
 
-/***/ "./src/view/edit-point.js":
-/*!********************************!*\
-  !*** ./src/view/edit-point.js ***!
-  \********************************/
+/***/ "./src/view/edit-point-view.js":
+/*!*************************************!*\
+  !*** ./src/view/edit-point-view.js ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -868,10 +1231,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ EditPointView)
 /* harmony export */ });
-/* harmony import */ var _point_types_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./point-types.js */ "./src/view/point-types.js");
-/* harmony import */ var _point_options_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./point-options.js */ "./src/view/point-options.js");
+/* harmony import */ var _point_types_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./point-types-view.js */ "./src/view/point-types-view.js");
+/* harmony import */ var _point_options_view_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./point-options-view.js */ "./src/view/point-options-view.js");
 /* harmony import */ var _utils_point_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/point.js */ "./src/utils/point.js");
-/* harmony import */ var _smart_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./smart.js */ "./src/view/smart.js");
+/* harmony import */ var _smart_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./smart-view.js */ "./src/view/smart-view.js");
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
 
 
 
@@ -887,7 +1266,7 @@ const createEditPointTemplate = data => {
     description,
     offers
   } = data;
-  const typePointsTemplate = (0,_point_types_js__WEBPACK_IMPORTED_MODULE_0__.createPointTypesTemplate)(type);
+  const typePointsTemplate = (0,_point_types_view_js__WEBPACK_IMPORTED_MODULE_0__.createPointTypesTemplate)(type);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -941,10 +1320,10 @@ const createEditPointTemplate = data => {
     </button>
   </header>
   <section class="event__details">
-    ${_point_options_js__WEBPACK_IMPORTED_MODULE_1__.randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
+    ${_point_options_view_js__WEBPACK_IMPORTED_MODULE_1__.randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         <div class="event__available-offers">
-          ${(0,_point_options_js__WEBPACK_IMPORTED_MODULE_1__.createPointAvailableOptionsTemplate)(offers)}
+          ${(0,_point_options_view_js__WEBPACK_IMPORTED_MODULE_1__.createPointAvailableOptionsTemplate)(offers)}
         </div>
       </section>` : ''}
       ${description.length !== 0 ? `<section class="event__section  event__section--destination">
@@ -956,23 +1335,104 @@ const createEditPointTemplate = data => {
 </li>`;
 };
 
-class EditPointView extends _smart_js__WEBPACK_IMPORTED_MODULE_3__["default"] {
+var _setInnerHandlers = /*#__PURE__*/new WeakMap();
+
+var _typePointToggleHandler = /*#__PURE__*/new WeakMap();
+
+var _formSubmitHandler = /*#__PURE__*/new WeakMap();
+
+var _formHideEditHandler = /*#__PURE__*/new WeakMap();
+
+var _formDeletePointHandler = /*#__PURE__*/new WeakMap();
+
+class EditPointView extends _smart_view_js__WEBPACK_IMPORTED_MODULE_3__["default"] {
   constructor(point) {
     super();
-    this._data = EditPointView.parsePointToData(point);
-    this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._formHideEditHandler = this._formHideEditHandler.bind(this);
-    this._formDeletePointHandler = this._formDeletePointHandler.bind(this);
-    this._typePointToggleHandler = this._typePointToggleHandler.bind(this);
 
-    this._setInnerHandlers();
+    _defineProperty(this, "restoreHandlers", () => {
+      _classPrivateFieldGet(this, _setInnerHandlers).call(this);
+
+      this.setFormSubmitHandler(this._callback.formSubmit);
+      this.setFormHideEditHandler(this._callback.formHideEdit);
+    });
+
+    _defineProperty(this, "setFormSubmitHandler", callback => {
+      this._callback.formSubmit = callback;
+      this.element.querySelector('form').addEventListener('submit', _classPrivateFieldGet(this, _formSubmitHandler));
+    });
+
+    _defineProperty(this, "setFormHideEditHandler", callback => {
+      this._callback.formHideEdit = callback;
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', _classPrivateFieldGet(this, _formHideEditHandler));
+    });
+
+    _defineProperty(this, "setDeletePointHandler", callback => {
+      this._callback.formDeletePoint = callback;
+      this.element.querySelector('.event__reset-btn').addEventListener('click', _classPrivateFieldGet(this, _formDeletePointHandler));
+    });
+
+    _classPrivateFieldInitSpec(this, _setInnerHandlers, {
+      writable: true,
+      value: () => {
+        this.element.querySelector('.event__type-group').addEventListener('change', _classPrivateFieldGet(this, _typePointToggleHandler));
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _typePointToggleHandler, {
+      writable: true,
+      value: evt => {
+        evt.preventDefault();
+        this.updateData({
+          type: evt.target.value
+        });
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _formSubmitHandler, {
+      writable: true,
+      value: evt => {
+        evt.preventDefault();
+
+        this._callback.formSubmit(EditPointView.parseDataToPoint(this._data));
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _formHideEditHandler, {
+      writable: true,
+      value: evt => {
+        evt.preventDefault();
+
+        this._callback.formHideEdit();
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _formDeletePointHandler, {
+      writable: true,
+      value: evt => {
+        evt.preventDefault();
+
+        this._callback.formDeletePoint();
+      }
+    });
+
+    this._data = EditPointView.parsePointToData(point);
+
+    _classPrivateFieldSet(this, _formSubmitHandler, _classPrivateFieldGet(this, _formSubmitHandler).bind(this));
+
+    _classPrivateFieldSet(this, _formHideEditHandler, _classPrivateFieldGet(this, _formHideEditHandler).bind(this));
+
+    _classPrivateFieldSet(this, _formDeletePointHandler, _classPrivateFieldGet(this, _formDeletePointHandler).bind(this));
+
+    _classPrivateFieldSet(this, _typePointToggleHandler, _classPrivateFieldGet(this, _typePointToggleHandler).bind(this));
+
+    _classPrivateFieldGet(this, _setInnerHandlers).call(this);
   }
 
   reset(point) {
     this.updateData(EditPointView.parsePointToData(point));
   }
 
-  getTemplate() {
+  get template() {
     return createEditPointTemplate(this._data);
   }
 
@@ -986,82 +1446,31 @@ class EditPointView extends _smart_js__WEBPACK_IMPORTED_MODULE_3__["default"] {
   }
 
   updateElement() {
-    const prevElement = this.getElement();
+    const prevElement = this.element;
     const parent = prevElement.parentElement;
     this.removeElement();
-    const newElement = this.getElement();
+    const newElement = this.element;
     parent.replaceChild(newElement, prevElement);
     this.restoreHandlers();
   }
 
-  restoreHandlers() {
-    this._setInnerHandlers();
-
-    this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setFormHideEditHandler(this._callback.formHideEdit);
-  }
-
-  _setInnerHandlers() {
-    this.getElement().querySelector('.event__type-group').addEventListener('change', this._typePointToggleHandler);
-  }
-
-  _typePointToggleHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      type: evt.target.value
-    });
-  }
-
-  _formSubmitHandler(evt) {
-    evt.preventDefault();
-
-    this._callback.formSubmit(EditPointView.parseDataToPoint(this._data));
-  }
-
-  _formHideEditHandler(evt) {
-    evt.preventDefault();
-
-    this._callback.formHideEdit();
-  }
-
-  _formDeletePointHandler(evt) {
-    evt.preventDefault();
-
-    this._callback.formDeletePoint();
-  }
-
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
-  }
-
-  setFormHideEditHandler(callback) {
-    this._callback.formHideEdit = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formHideEditHandler);
-  }
-
-  setDeletePointHandler(callback) {
-    this._callback.formDeletePoint = callback;
-    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeletePointHandler);
-  }
-
-  static parsePointToData(point) {
-    return Object.assign({}, point, {});
-  }
-
-  static parseDataToPoint(data) {
-    data = Object.assign({}, data);
-    return data;
-  }
-
 }
+
+_defineProperty(EditPointView, "parsePointToData", point => {
+  return Object.assign({}, point, {});
+});
+
+_defineProperty(EditPointView, "parseDataToPoint", data => {
+  data = Object.assign({}, data);
+  return data;
+});
 
 /***/ }),
 
-/***/ "./src/view/filters.js":
-/*!*****************************!*\
-  !*** ./src/view/filters.js ***!
-  \*****************************/
+/***/ "./src/view/filters-view.js":
+/*!**********************************!*\
+  !*** ./src/view/filters-view.js ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1069,7 +1478,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ FiltersView)
 /* harmony export */ });
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
 
 
 const createFiltersTemplate = () => {
@@ -1096,8 +1505,8 @@ const createFiltersTemplate = () => {
 </div>`;
 };
 
-class FiltersView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  getTemplate() {
+class FiltersView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  get template() {
     return createFiltersTemplate();
   }
 
@@ -1105,10 +1514,10 @@ class FiltersView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
-/***/ "./src/view/no-point-list.js":
-/*!***********************************!*\
-  !*** ./src/view/no-point-list.js ***!
-  \***********************************/
+/***/ "./src/view/no-point-list-view.js":
+/*!****************************************!*\
+  !*** ./src/view/no-point-list-view.js ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1116,15 +1525,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ NoPointListView)
 /* harmony export */ });
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
 
 
 const createNoPointListTemplate = () => {
   return '<p class="trip-events__msg">Click New Event to create your first point</p>';
 };
 
-class NoPointListView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  getTemplate() {
+class NoPointListView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  get template() {
     return createNoPointListTemplate();
   }
 
@@ -1132,10 +1541,10 @@ class NoPointListView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default
 
 /***/ }),
 
-/***/ "./src/view/point-list.js":
-/*!********************************!*\
-  !*** ./src/view/point-list.js ***!
-  \********************************/
+/***/ "./src/view/point-list-view.js":
+/*!*************************************!*\
+  !*** ./src/view/point-list-view.js ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1143,15 +1552,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ PointListView)
 /* harmony export */ });
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
 
 
 const createPointListTemplate = () => {
   return '<ul class="trip-events__list"></ul>';
 };
 
-class PointListView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  getTemplate() {
+class PointListView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  get template() {
     return createPointListTemplate();
   }
 
@@ -1159,10 +1568,10 @@ class PointListView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"]
 
 /***/ }),
 
-/***/ "./src/view/point-options.js":
-/*!***********************************!*\
-  !*** ./src/view/point-options.js ***!
-  \***********************************/
+/***/ "./src/view/point-options-view.js":
+/*!****************************************!*\
+  !*** ./src/view/point-options-view.js ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1189,10 +1598,10 @@ const createPointAvailableOptionsTemplate = () => {
 
 /***/ }),
 
-/***/ "./src/view/point-types.js":
-/*!*********************************!*\
-  !*** ./src/view/point-types.js ***!
-  \*********************************/
+/***/ "./src/view/point-types-view.js":
+/*!**************************************!*\
+  !*** ./src/view/point-types-view.js ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1219,10 +1628,10 @@ const createPointTypesTemplate = currentType => {
 
 /***/ }),
 
-/***/ "./src/view/point.js":
-/*!***************************!*\
-  !*** ./src/view/point.js ***!
-  \***************************/
+/***/ "./src/view/point-view.js":
+/*!********************************!*\
+  !*** ./src/view/point-view.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1231,15 +1640,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ PointView)
 /* harmony export */ });
 /* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mock/point.js */ "./src/mock/point.js");
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
 
 
 
-
-const createPointOptionsTemplate = () => {
-  const randomOffers = (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomArrayElements)(_mock_point_js__WEBPACK_IMPORTED_MODULE_1__.options, 0);
-  return randomOffers.map(option => `<li class="event__offer">
+const createPointOptionsTemplate = options => {
+  return options.map(option => `<li class="event__offer">
   <span class="event__offer-title"style="white-space: pre;">${option.title}</span>&plus;&euro;&nbsp;
   <span class="event__offer-price">${option.price}</span>
   </li>`).join('\n');
@@ -1253,7 +1659,8 @@ const createPointTemplate = point => {
     datetimeEnd,
     duration,
     price,
-    isFavorite
+    isFavorite,
+    offers
   } = point;
 
   const calcDuration = () => {
@@ -1294,7 +1701,7 @@ const createPointTemplate = point => {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${createPointOptionsTemplate()}
+        ${createPointOptionsTemplate(offers)}
       </ul>
       <button class="event__favorite-btn ${favoriteClassName}" type="button">
         <span class="visually-hidden">Add to favorite</span>
@@ -1309,7 +1716,7 @@ const createPointTemplate = point => {
   </li>`;
 };
 
-class PointView extends _abstract_js__WEBPACK_IMPORTED_MODULE_2__["default"] {
+class PointView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   constructor(point) {
     super();
     this._point = point;
@@ -1317,7 +1724,7 @@ class PointView extends _abstract_js__WEBPACK_IMPORTED_MODULE_2__["default"] {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
-  getTemplate() {
+  get template() {
     return createPointTemplate(this._point);
   }
 
@@ -1335,22 +1742,22 @@ class PointView extends _abstract_js__WEBPACK_IMPORTED_MODULE_2__["default"] {
 
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
   }
 
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
-    this.getElement().querySelector('.event__favorite-btn').addEventListener('click', this._favoriteClickHandler);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this._favoriteClickHandler);
   }
 
 }
 
 /***/ }),
 
-/***/ "./src/view/route-info.js":
-/*!********************************!*\
-  !*** ./src/view/route-info.js ***!
-  \********************************/
+/***/ "./src/view/route-info-view.js":
+/*!*************************************!*\
+  !*** ./src/view/route-info-view.js ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1358,9 +1765,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ RouteInfoView)
 /* harmony export */ });
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
 /* harmony import */ var _utils_point_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/point.js */ "./src/utils/point.js");
-/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mock/point.js */ "./src/mock/point.js");
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 
 
@@ -1387,20 +1806,20 @@ const displayDestinations = dest => {
   return dest;
 };
 
-const createRouteInfoTemplate = () => {
+const createRouteInfoTemplate = points => {
   const arrDestinations = [];
   let arrPrices = [];
 
-  for (let i = 0; i < _mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points.length; i++) {
-    arrDestinations.push(_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points[i].destination);
-    arrPrices.push(_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points[i].price);
+  for (let i = 0; i < points.length; i++) {
+    arrDestinations.push(points[i].destination);
+    arrPrices.push(points[i].price);
   }
 
   arrPrices = arrPrices > '0' ? arrPrices.reduce((total, amount) => total + amount) : '0';
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
-    <h1 class="trip-info__title">${_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points.length > 1 ? displayDestinations(arrDestinations) : ''}</h1>
-    <p class="trip-info__dates">${_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points.length > 1 ? (0,_utils_point_js__WEBPACK_IMPORTED_MODULE_1__.headerDate)(_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points[0].datetimeStart) + ' ' + '&mdash;' + ' ' + (0,_utils_point_js__WEBPACK_IMPORTED_MODULE_1__.headerDate)(_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points[_mock_point_js__WEBPACK_IMPORTED_MODULE_2__.points.length - 1].datetimeEnd) : ''}</p>
+    <h1 class="trip-info__title">${points.length > 1 ? displayDestinations(arrDestinations) : ''}</h1>
+    <p class="trip-info__dates">${points.length > 1 ? (0,_utils_point_js__WEBPACK_IMPORTED_MODULE_1__.headerDate)(points[0].datetimeStart) + ' ' + '&mdash;' + ' ' + (0,_utils_point_js__WEBPACK_IMPORTED_MODULE_1__.headerDate)(points[points.length - 1].datetimeEnd) : ''}</p>
   </div>
   <p class="trip-info__cost">
   Total: &euro;&nbsp;<span class="trip-info__cost-value">${arrPrices}</span>
@@ -1408,19 +1827,32 @@ const createRouteInfoTemplate = () => {
 </section>`;
 };
 
-class RouteInfoView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  getTemplate() {
-    return createRouteInfoTemplate();
+var _points = /*#__PURE__*/new WeakMap();
+
+class RouteInfoView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(points) {
+    super();
+
+    _classPrivateFieldInitSpec(this, _points, {
+      writable: true,
+      value: []
+    });
+
+    _classPrivateFieldSet(this, _points, points);
+  }
+
+  get template() {
+    return createRouteInfoTemplate(_classPrivateFieldGet(this, _points));
   }
 
 }
 
 /***/ }),
 
-/***/ "./src/view/site-menu.js":
-/*!*******************************!*\
-  !*** ./src/view/site-menu.js ***!
-  \*******************************/
+/***/ "./src/view/site-menu-view.js":
+/*!************************************!*\
+  !*** ./src/view/site-menu-view.js ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1428,7 +1860,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SiteMenuView)
 /* harmony export */ });
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
 
 
 const createSiteMenuTemplate = () => {
@@ -1441,8 +1873,8 @@ const createSiteMenuTemplate = () => {
 </div>`;
 };
 
-class SiteMenuView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  getTemplate() {
+class SiteMenuView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  get template() {
     return createSiteMenuTemplate();
   }
 
@@ -1450,10 +1882,10 @@ class SiteMenuView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] 
 
 /***/ }),
 
-/***/ "./src/view/smart.js":
-/*!***************************!*\
-  !*** ./src/view/smart.js ***!
-  \***************************/
+/***/ "./src/view/smart-view.js":
+/*!********************************!*\
+  !*** ./src/view/smart-view.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1461,49 +1893,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SmartView)
 /* harmony export */ });
-/* harmony import */ var _abstract__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-class SmartView extends _abstract__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor() {
-    super();
-    this._data = {};
-  }
 
-  updateData(update, justDataUpdating) {
-    if (!update) {
-      return;
-    }
+class SmartView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(...args) {
+    super(...args);
 
-    this._data = Object.assign({}, this._data, update);
+    _defineProperty(this, "_data", {});
 
-    if (justDataUpdating) {
-      return;
-    }
+    _defineProperty(this, "updateData", (update, justDataUpdating) => {
+      if (!update) {
+        return;
+      }
 
-    this.updateElement();
-  }
+      this._data = { ...this._data,
+        ...update
+      };
 
-  updateElement() {
-    const prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-    const newElement = this.getElement();
-    parent.replaceChild(newElement, prevElement);
-    this.restoreHandlers();
-  }
+      if (justDataUpdating) {
+        return;
+      }
 
-  restoreHandlers() {
-    throw new Error('Abstract method not implemented: resetHandlers');
+      this.updateElement();
+    });
+
+    _defineProperty(this, "updateElement", () => {
+      const prevElement = this.element;
+      const parent = prevElement.parentElement;
+      this.removeElement();
+      const newElement = this.element;
+      parent.replaceChild(newElement, prevElement);
+      this.restoreHandlers();
+    });
+
+    _defineProperty(this, "restoreHandlers", () => {
+      throw new Error('Abstract method not implemented: restoreHandlers');
+    });
   }
 
 }
 
 /***/ }),
 
-/***/ "./src/view/sorting.js":
-/*!*****************************!*\
-  !*** ./src/view/sorting.js ***!
-  \*****************************/
+/***/ "./src/view/sort-view.js":
+/*!*******************************!*\
+  !*** ./src/view/sort-view.js ***!
+  \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1511,61 +1948,91 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SortView)
 /* harmony export */ });
-/* harmony import */ var _abstract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract.js */ "./src/view/abstract.js");
+/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
+/* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./src/const.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 
-const createSortingTemplate = () => {
-  return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-  <div class="trip-sort__item  trip-sort__item--day">
-    <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day" checked>
-    <label class="trip-sort__btn" for="sort-day">Day</label>
-  </div>
 
-  <div class="trip-sort__item  trip-sort__item--event">
-    <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" disabled>
-    <label class="trip-sort__btn" for="sort-event">Event</label>
-  </div>
 
-  <div class="trip-sort__item  trip-sort__item--time">
-    <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-    <label class="trip-sort__btn" for="sort-time">Time</label>
-  </div>
+const createSortingTemplate = (currentSortType, sorts) => `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+  ${sorts.map(sort => `<div class="trip-sort__item  trip-sort__item--${sort.type}">
+  <input id="sort-${sort.type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${sort.type}" ${sort.type === _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.DAY ? 'checked' : ''} ${sort.type === _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.EVENT || sort.type === _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.OFFERS ? 'disabled' : ''}>
+  <label class="trip-sort__btn" for="sort-${sort.type}">${sort.type}</label>
+</div>`).join('')}
+    </form>`;
 
-  <div class="trip-sort__item  trip-sort__item--price">
-    <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price">
-    <label class="trip-sort__btn" for="sort-price">Price</label>
-  </div>
+var _currentSortType = /*#__PURE__*/new WeakMap();
 
-  <div class="trip-sort__item  trip-sort__item--offer">
-    <input id="sort-offer" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-offer" disabled>
-    <label class="trip-sort__btn" for="sort-offer">Offers</label>
-  </div>
-</form>`;
-};
+var _getSorts = /*#__PURE__*/new WeakMap();
 
-class SortView extends _abstract_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor() {
+var _sortTypeChangeHandler = /*#__PURE__*/new WeakMap();
+
+class SortView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  constructor(currentSortType) {
     super();
-    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+
+    _classPrivateFieldInitSpec(this, _currentSortType, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _getSorts, {
+      writable: true,
+      value: () => [{
+        type: _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.DAY
+      }, {
+        type: _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.EVENT
+      }, {
+        type: _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.TIME
+      }, {
+        type: _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.PRICE
+      }, {
+        type: _const_js__WEBPACK_IMPORTED_MODULE_1__.SortType.OFFERS
+      }]
+    });
+
+    _defineProperty(this, "setSortTypeChangeHandler", callback => {
+      this._callback.sortTypeChange = callback;
+      this.element.addEventListener('change', _classPrivateFieldGet(this, _sortTypeChangeHandler));
+    });
+
+    _classPrivateFieldInitSpec(this, _sortTypeChangeHandler, {
+      writable: true,
+      value: evt => {
+        if (evt.target.tagName !== 'INPUT') {
+          return;
+        }
+
+        evt.preventDefault();
+
+        _classPrivateFieldSet(this, _currentSortType, evt.target.id);
+
+        this._callback.sortTypeChange(evt.target.id);
+      }
+    });
+
+    _classPrivateFieldSet(this, _currentSortType, currentSortType);
+
+    console.log(_classPrivateFieldGet(this, _currentSortType));
   }
 
-  getTemplate() {
-    return createSortingTemplate();
-  }
-
-  _sortTypeChangeHandler(evt) {
-    if (evt.target.tagName !== 'INPUT') {
-      return;
-    }
-
-    evt.preventDefault();
-
-    this._callback.sortTypeChange(evt.target.id);
-  }
-
-  setSortTypeChangeHandler(callback) {
-    this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener('change', this._sortTypeChangeHandler);
+  get template() {
+    return createSortingTemplate(_classPrivateFieldGet(this, _currentSortType), _classPrivateFieldGet(this, _getSorts).call(this));
   }
 
 }
@@ -1819,10 +2286,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/render.js */ "./src/utils/render.js");
 /* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mock/point.js */ "./src/mock/point.js");
-/* harmony import */ var _view_site_menu_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view/site-menu.js */ "./src/view/site-menu.js");
-/* harmony import */ var _view_route_info_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./view/route-info.js */ "./src/view/route-info.js");
-/* harmony import */ var _view_filters_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./view/filters.js */ "./src/view/filters.js");
-/* harmony import */ var _presenter_trip_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./presenter/trip.js */ "./src/presenter/trip.js");
+/* harmony import */ var _view_site_menu_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view/site-menu-view.js */ "./src/view/site-menu-view.js");
+/* harmony import */ var _view_route_info_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./view/route-info-view.js */ "./src/view/route-info-view.js");
+/* harmony import */ var _view_filters_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./view/filters-view.js */ "./src/view/filters-view.js");
+/* harmony import */ var _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./presenter/trip-presenter.js */ "./src/presenter/trip-presenter.js");
 
 
 dayjs__WEBPACK_IMPORTED_MODULE_0___default().extend(dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1__);
@@ -1832,17 +2299,24 @@ dayjs__WEBPACK_IMPORTED_MODULE_0___default().extend(dayjs_plugin_isSameOrAfter__
 
 
 
+const POINT_COUNT = 5;
+const points = Array.from({
+  length: POINT_COUNT
+}, _mock_point_js__WEBPACK_IMPORTED_MODULE_3__.generatePoint);
+const routeInfoComponent = new _view_route_info_view_js__WEBPACK_IMPORTED_MODULE_5__["default"](points);
+const siteMenuComponent = new _view_site_menu_view_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+const filtersComponent = new _view_filters_view_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
 const siteHeaderContainerElement = document.querySelector('.page-header__container');
 const siteTripInfoElement = siteHeaderContainerElement.querySelector('.trip-main');
 const siteNavigationElement = siteHeaderContainerElement.querySelector('.trip-controls__navigation');
 const siteFiltersElement = siteHeaderContainerElement.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main');
 const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteTripInfoElement, new _view_route_info_js__WEBPACK_IMPORTED_MODULE_5__["default"]().getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteNavigationElement, new _view_site_menu_js__WEBPACK_IMPORTED_MODULE_4__["default"]().getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteFiltersElement, new _view_filters_js__WEBPACK_IMPORTED_MODULE_6__["default"]().getElement(), _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
-const tripPresenter = new _presenter_trip_js__WEBPACK_IMPORTED_MODULE_7__["default"](siteTripEventsElement);
-tripPresenter.init(_mock_point_js__WEBPACK_IMPORTED_MODULE_3__.points);
+(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteTripInfoElement, routeInfoComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
+(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteNavigationElement, siteMenuComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
+(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteFiltersElement, filtersComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
+const tripPresenter = new _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_7__["default"](siteTripEventsElement);
+tripPresenter.init(points);
 })();
 
 /******/ })()

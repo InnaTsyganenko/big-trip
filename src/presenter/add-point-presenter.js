@@ -42,10 +42,15 @@ export default class AddPointPresenter {
 
     this.#addPointButton.addEventListener('click', () => {
       this.#mode = ModeAddPoint.SHOW;
-      ((this.#pointListContainer.element.querySelector('.event--edit'))) ?
-        this.#pointListContainer.element.querySelector('.event--edit').querySelector('.event__rollup-btn').click() : false;
-      (this.#body.querySelector('.trip-events__msg')) ?
-        this.#body.querySelector('.trip-events__msg').style = 'display: none;' : false;
+
+      if (this.#pointListContainer && this.#pointListContainer.element.querySelector('.event--edit')) {
+        this.#pointListContainer.element.querySelector('.event--edit').querySelector('.event__rollup-btn').click();
+      }
+
+      if (this.#body.querySelector('.trip-events__msg')) {
+        this.#body.querySelector('.trip-events__msg').style = 'display: none;';
+      }
+
       this.#sortDayInput.checked = true;
       render(this.#pointListContainer, this.#addPointComponent, RenderPosition.AFTERBEGIN);
       this.#addPointButton.disabled = true;
@@ -77,12 +82,13 @@ export default class AddPointPresenter {
   }
 
   closeAddForm = () => {
-    if (this.#mode == ModeAddPoint.SHOW) {
+    if (this.#mode === ModeAddPoint.SHOW) {
       this.#mode = ModeAddPoint.DEFAULT;
       this.#pointListContainer.element.querySelector('.trip-events__item').remove();
       this.#addPointButton.disabled = false;
-      (this.#pointsLength === 0) ?
-        this.#siteMainElement.querySelector('.trip-events__msg').style = 'display: block;' : false;
+      if (this.#pointsLength === 0) {
+        this.#siteMainElement.querySelector('.trip-events__msg').style = 'display: block;';
+      }
     }
   }
 

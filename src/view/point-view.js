@@ -1,30 +1,40 @@
-import {getRandomArrayElements} from '../utils/common.js';
 import AbstractView from './abstract-view.js';
 
-const createPointOptionsTemplate = (options) => {
-  return options.map((option) => `<li class="event__offer">
+const calcDuration = (duration) => {
+  let days;
+  let hours;
+  let minutes;
+  let result;
+
+  const addNull = (count) => count < 10 ? `0${count}` : count;
+
+  if (duration < 60) {
+    result = addNull(`${duration}M`);
+  }
+
+  if (duration >= 60 && duration < 1440) {
+    hours = Math.floor(duration / 60).toString();
+    minutes = (duration % 60).toString();
+    result = `${addNull(hours)}H ${addNull(minutes)}M`;
+  }
+
+  if (duration >= 1440) {
+    days = Math.floor(duration / 1440).toString();
+    hours = Math.floor(duration % 1440 / 60).toString();
+    minutes = ((duration % 1440 % 60)).toString();
+    result = `${addNull(days)}D ${addNull(hours)}H ${addNull(minutes)}M`;
+  }
+
+  return result;
+};
+
+const createPointOptionsTemplate = (options) => options.map((option) => `<li class="event__offer">
   <span class="event__offer-title"style="white-space: pre;">${option.title}</span>&plus;&euro;&nbsp;
   <span class="event__offer-price">${option.price}</span>
   </li>`).join('\n');
-};
 
 const createPointTemplate = (point) => {
-  const {type, destination, datetimeStart, datetimeEnd, duration, price, isFavorite, offers} = point;
-
-  const calcDuration = () => {
-    let result = duration + 'M';
-    if (duration >= 60 & duration < 1440) {
-      const hours = Math.floor(duration / 60).toString();
-      const minutes = (duration % 60).toString();
-      result = (hours.length === 1 ? '0' : '') + hours + 'H ' + (minutes.length === 1 ? '0' : '') + minutes + 'M';
-    } else if (duration > 1440) {
-      const days = Math.floor(duration / 1440).toString();
-      const hours = Math.floor(duration % 1440 / 60).toString();
-      const minutes = ((duration % 1440 % 60)).toString();
-      result = (days.length === 1 ? '0' : '') + days + 'D ' + (hours.length === 1 ? '0' : '') + hours + 'H ' + (minutes.length === 1 ? '0' : '') + minutes + 'M';
-    }
-    return result;
-  };
+  const {type, destination, dateFrom, dateTo, duration, price, isFavorite, offers} = point;
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
@@ -39,11 +49,11 @@ const createPointTemplate = (point) => {
       <h3 class="event__title">${type} ${destination}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${datetimeStart.format('YYYY-MM-DDTHH:mm:s.Z')}">${datetimeStart.format('DD / HH:mm')}</time>
+          <time class="event__start-time" datetime="${dateFrom.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateFrom.format('DD / HH:mm')}</time>
           &mdash;
-          <time class="event__end-time" datetime="${datetimeEnd.format('YYYY-MM-DDTHH:mm:s.Z')}">${datetimeEnd.format('DD / HH:mm')}</time>
+          <time class="event__end-time" datetime="${dateTo.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateTo.format('DD / HH:mm')}</time>
         </p>
-        <p class="event__duration">${calcDuration()}</p>
+        <p class="event__duration">${calcDuration(duration)}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${price}</span>
