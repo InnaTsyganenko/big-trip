@@ -118,6 +118,7 @@ export default class Point {
   }
 
   _handleHideEditClick() {
+    this._pointEditComponent.reset(this._point);
     this.#replaceFormToCard();
     this._body.removeEventListener('keydown', this._escKeyDownHandler);
   }
