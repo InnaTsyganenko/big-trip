@@ -1,22 +1,6 @@
 import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
-import {getRandomInteger, getRandomArrayElements} from '../utils/common.js';
-import {TYPES} from '../const.js';
-
-const DESTINATION = ['Amsterdam', 'Geneva', 'Chamonix'];
-const DESCRIPTION = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Cras aliquet varius magna, non porta ligula feugiat eget.',
-  'Fusce tristique felis at fermentum pharetra.',
-  'Aliquam id orci ut lectus varius viverra.',
-  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
-  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
-  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
-  'Sed sed nisi sed augue convallis suscipit in sed felis.',
-  'Aliquam erat volutpat.',
-  'Nunc fermentum tortor ac porta dapibus.',
-  'In rutrum ac purus sit amet tempus.',
-];
+import {getRandomInteger} from '../utils/common.js';
 
 export const options = [
   {
@@ -24,31 +8,150 @@ export const options = [
     value: 'luggage',
     title: 'Add luggage',
     price: 30,
-    isChecked: Boolean(getRandomInteger(0, 1)),
+    isChecked: false,
   }, {
     id: 2,
     value: 'comfort',
     title: 'Switch to comfort class',
     price: 100,
-    isChecked: Boolean(getRandomInteger(0, 1)),
+    isChecked: false,
   }, {
     id: 3,
     value: 'meal',
     title: 'Add meal',
     price: 15,
-    isChecked: Boolean(getRandomInteger(0, 1)),
+    isChecked: false,
   }, {
     id: 4,
     value: 'seats',
     title: 'Choose seats',
     price: 5,
-    isChecked: Boolean(getRandomInteger(0, 1)),
+    isChecked: false,
   }, {
     id: 5,
     value: 'train',
     title: 'Travel by train',
     price: 40,
-    isChecked: Boolean(getRandomInteger(0, 1)),
+    isChecked: false,
+  },
+];
+
+export const types = {
+  'taxi': [1, 2],
+  'bus': [4],
+  'train': [2, 3],
+  'ship': [5],
+  'drive': [5],
+  'flight': [1, 2, 4],
+  'check-in': [3],
+  'sightseeing': [],
+  'restaurant': [],
+};
+
+export const destinations = [
+  {
+    name: 'Amsterdam',
+    description: 'Amsterdam, city and port, western Netherlands, located on the IJsselmeer and connected to the North Sea. It is the capital and the principal commercial and financial centre of the Netherlands.',
+    pictures: [
+      {
+        src: [getRandomInteger(1, 2)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(3, 5)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(6, 8)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(9, 11)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(12, 14)],
+        description: 'Amsterdam parlament building',
+      }
+    ]
+  },
+  {
+    name: 'Geneva',
+    description: 'Geneva is the capital of the Swiss Canton of Geneva located in the south-westernmost corner of Switzerland. The city is situated along the banks of Europes largest lake, Lake Geneva (Lac Léman), at the mouth of the Rhone River and is bordered by the Jura Mountains to the west and the French Alps in the east.',
+    pictures: [
+      {
+        src: [getRandomInteger(15, 17)],
+        description: 'Geneva parlament building',
+      },
+      {
+        src: [getRandomInteger(18, 20)],
+        description: 'Geneva parlament building',
+      },
+      {
+        src: [getRandomInteger(21, 23)],
+        description: 'Geneva parlament building',
+      },
+    ]
+  },
+  {
+    name: 'Vienna',
+    description: 'Vienna is the federal capital, largest city and one of nine states of Austria. Vienna is Austria&apos;s primate city, with a population of about 1.9 million. It is the 7th-largest city by population within city limits in the European Union. These regions work together in a European Centrope border region.',
+    pictures: [
+      {
+        src: [getRandomInteger(24, 26)],
+        description: 'Vienna',
+      },
+      {
+        src: [getRandomInteger(27, 29)],
+        description: 'Vienna',
+      },
+      {
+        src: [getRandomInteger(30, 32)],
+        description: 'Vienna',
+      },
+      {
+        src: [getRandomInteger(34, 36)],
+        description: 'Vienna',
+      },
+      {
+        src: [getRandomInteger(37, 39)],
+        description: 'Vienna',
+      },
+      {
+        src: [getRandomInteger(40, 42)],
+        description: 'Vienna',
+      },
+      {
+        src: [getRandomInteger(43, 45)],
+        description: 'Vienna',
+      }
+    ]
+  },
+  {
+    name: 'Amsterdam',
+    description: 'Amsterdam, city and port, western Netherlands, located on the IJsselmeer and connected to the North Sea. It is the capital and the principal commercial and financial centre of the Netherlands.',
+    pictures: [
+      {
+        src: [getRandomInteger(1, 2)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(3, 5)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(6, 8)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(9, 11)],
+        description: 'Amsterdam parlament building',
+      },
+      {
+        src: [getRandomInteger(12, 14)],
+        description: 'Amsterdam parlament building',
+      }
+    ]
   },
 ];
 
@@ -56,18 +159,17 @@ export const generatePoint = () => {
   const dateFrom = dayjs().add(getRandomInteger(-3000, 3000), 'm');
   const dateTo = dateFrom.add(getRandomInteger(30, 1500), 'm');
   const duration = dateTo.diff(dateFrom, 'm');
+  const type = Object.keys(types)[getRandomInteger(0, Object.keys(types).length - 1)];
 
   return {
     price: getRandomInteger(20, 200),
     dateFrom,
     dateTo,
     duration,
-    destination: DESTINATION[getRandomInteger(0, DESTINATION.length - 1)],
     id: nanoid(),
     isFavorite: Boolean(getRandomInteger(0, 1)),
-    offers: getRandomArrayElements(options, 0),
-    type: TYPES[getRandomInteger(0, TYPES.length - 1)],
-    description: getRandomArrayElements(DESCRIPTION, 1),
-    photos: 'http://picsum.photos/248/152?r=',
+    type,
+    offers: [],
+    destination: destinations[getRandomInteger(0, destinations.length - 1)],
   };
 };

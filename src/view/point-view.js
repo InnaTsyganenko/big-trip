@@ -34,7 +34,7 @@ const createPointOptionsTemplate = (options) => options.map((option) => `<li cla
   </li>`).join('\n');
 
 const createPointTemplate = (point) => {
-  const {type, destination, dateFrom, dateTo, duration, price, isFavorite, offers} = point;
+  const {price, dateFrom, dateTo, duration, type, offers, destination, isFavorite} = point;
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
@@ -46,7 +46,7 @@ const createPointTemplate = (point) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${destination}</h3>
+      <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${dateFrom.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateFrom.format('DD / HH:mm')}</time>

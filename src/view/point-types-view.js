@@ -1,6 +1,6 @@
-import {TYPES} from '../const.js';
+import {types} from '../mock/point';
 
-export const createPointTypesTemplate = (currentType) => TYPES.map((type) => `<div class="event__type-item">
+export const createPointTypesTemplate = (currentType) => Object.keys(types).map((type) => `<div class="event__type-item">
   <input
   id="event-type-${type}-1"
   class="event__type-input  visually-hidden"

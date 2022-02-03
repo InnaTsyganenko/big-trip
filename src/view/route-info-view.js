@@ -26,7 +26,7 @@ const createRouteInfoTemplate = (points) => {
   let arrPrices = [];
 
   points.forEach((point) => {
-    arrDestinations.push(point.destination);
+    arrDestinations.push(point.destination.name);
     arrPrices.push(point.price);
   });
 

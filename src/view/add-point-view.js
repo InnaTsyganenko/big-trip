@@ -1,8 +1,8 @@
-import {getRandomInteger} from '../utils/common';
 import AbstractView from './abstract-view';
 import {newPointDate} from '../utils/point';
 import {createPointTypesTemplate} from './point-types-view';
-import {randomAvailableOptions, createPointAvailableOptionsTemplate} from './point-options-view';
+import {createPointOptionsTemplate} from './point-options-view';
+import {createPointImagesTemplate} from './point-images-view';
 
 const BLANK_POINT = {
   type: '',
@@ -17,10 +17,10 @@ const BLANK_POINT = {
 };
 
 const createAddPointTemplate = (point = {}) => {
-  const {type, destination, dateFrom, dateTo, price, description, photos, offers} = point;
+  const {price, dateFrom, dateTo, type, offers, destination} = point;
 
   const typesTemplate = createPointTypesTemplate(type);
-  const offersTemplate = createPointAvailableOptionsTemplate(offers);
+  const offersTemplate = createPointOptionsTemplate(offers);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -43,7 +43,7 @@ const createAddPointTemplate = (point = {}) => {
       <label class="event__label  event__type-output" for="event-destination-1">
         ${type}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
       <datalist id="destination-list-1">
         <option value="Amsterdam"></option>
         <option value="Geneva"></option>
@@ -71,23 +71,19 @@ const createAddPointTemplate = (point = {}) => {
     <button class="event__reset-btn" type="reset">Cancel</button>
   </header>
   <section class="event__details">
-  ${randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
+  ${offers.length !== 0 ? `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
         ${offersTemplate}
       </div>
     </section>` : ''}
-    ${description.length !== 0 ? `<section class="event__section  event__section--destination">
+    ${destination.description.length !== 0 ? `<section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${description.join(' ')}</p>
+      <p class="event__destination-description">${destination.description}</p>
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          <img class="event__photo" src="${photos + getRandomInteger(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + getRandomInteger(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + getRandomInteger(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + getRandomInteger(1, 15)}" alt="Event photo">
-          <img class="event__photo" src="${photos + getRandomInteger(1, 15)}" alt="Event photo">
+          ${createPointImagesTemplate(destination.pictures)}
         </div>
       </div>
     </section>` : ''}

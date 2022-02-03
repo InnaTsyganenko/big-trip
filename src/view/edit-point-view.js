@@ -1,10 +1,15 @@
-import {createPointTypesTemplate} from './point-types-view.js';
-import {createPointAvailableOptionsTemplate, randomAvailableOptions} from './point-options-view.js';
-import {newPointDate} from '../utils/point.js';
-import SmartView from './smart-view.js';
+import {createPointTypesTemplate} from './point-types-view';
+import {createPointOptionsTemplate} from './point-options-view';
+import {createPointCitiesTemplate} from './point-cities-view';
+import {createPointImagesTemplate} from './point-images-view';
+import {newPointDate} from '../utils/point';
+import SmartView from './smart-view';
+import {types, options, destinations} from '../mock/point';
 
 const createEditPointTemplate = (data) => {
-  const {type, destination, dateFrom, dateTo, price, description, offers} = data;
+  const {price, dateFrom, dateTo, type, destination} = data;
+  const offersByType = types[type].map((item) => options.find((x) => x.id === item));
+  const cities = [...new Set(destinations.map((item) => item.name))];
 
   const typePointsTemplate = createPointTypesTemplate(type);
   return `<li class="trip-events__item">
@@ -26,15 +31,11 @@ const createEditPointTemplate = (data) => {
     </div>
 
     <div class="event__field-group  event__field-group--destination">
-      <label class="event__label  event__type-output" for="event-destination-1">
-        ${type}
-      </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+      <label class="event__label  event__type-output" for="event-destination-1">${type}</label>
       <datalist id="destination-list-1">
-        <option value="Amsterdam"></option>
-        <option value="Geneva"></option>
-        <option value="Chamonix"></option>
+        ${createPointCitiesTemplate(cities)}
       </datalist>
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" list="destination-list-1" value="${destination.name} "autocomplete="off">
     </div>
 
     <div class="event__field-group  event__field-group--time">
@@ -60,15 +61,20 @@ const createEditPointTemplate = (data) => {
     </button>
   </header>
   <section class="event__details">
-    ${randomAvailableOptions.length !== 0 ? `<section class="event__section  event__section--offers">
+    ${offersByType.length !== 0 ? `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         <div class="event__available-offers">
-          ${createPointAvailableOptionsTemplate(offers)}
+          ${createPointOptionsTemplate(offersByType)}
         </div>
       </section>` : ''}
-      ${description.length !== 0 ? `<section class="event__section  event__section--destination">
+      ${destination.description.length !== 0 ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${description.join(' ')}</p>
+        <p class="event__destination-description">${destination.description}</p>
+        ${destination.pictures.length > 0 ? `<div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${createPointImagesTemplate(destination.pictures)}
+        </div>
+      </div>` : ''}
     </section>` : ''}
   </section>
 </form>
@@ -85,6 +91,7 @@ export default class EditPointView extends SmartView{
     this.#formHideEditHandler = this.#formHideEditHandler.bind(this);
     this.#formDeletePointHandler = this.#formDeletePointHandler.bind(this);
     this.#typePointToggleHandler = this.#typePointToggleHandler.bind(this);
+    this.#citiesInputHandler = this.#citiesInputHandler.bind(this);
 
     this.#setInnerHandlers();
   }
@@ -97,32 +104,6 @@ export default class EditPointView extends SmartView{
 
   get template() {
     return createEditPointTemplate(this._data);
-  }
-
-  updateData(update) {
-    if (!update) {
-      return;
-    }
-
-    this._data = Object.assign(
-      {},
-      this._data,
-      update,
-    );
-
-    this.updateElement();
-  }
-
-  updateElement() {
-    const prevElement = this.element;
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.element;
-
-    parent.replaceChild(newElement, prevElement);
-
-    this.restoreHandlers();
   }
 
   restoreHandlers = () => {
@@ -150,6 +131,13 @@ export default class EditPointView extends SmartView{
     this.element
       .querySelector('.event__type-group')
       .addEventListener('change', this.#typePointToggleHandler);
+
+    this.element
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this.#citiesInputHandler);
+
+    this.element
+      .querySelectorAll('.event__offer-checkbox').forEach((item) => item.addEventListener('change', this.#selectOptionHandler));
   }
 
   #typePointToggleHandler = (evt) => {
@@ -157,6 +145,21 @@ export default class EditPointView extends SmartView{
     this.updateData({
       type: evt.target.value,
     });
+  }
+
+  #citiesInputHandler = (evt) => {
+    evt.preventDefault();
+    const destinationByName = destinations.find((item) => item.name === evt.target.value);
+    this.updateData({
+      destination: destinationByName,
+    });
+  }
+
+  #selectOptionHandler = (evt) => {
+    evt.preventDefault();
+    // const offersByType = options.find((option) => option.value === evt.target.value);
+
+    this.updateData({});
   }
 
   #formSubmitHandler = (evt) => {
