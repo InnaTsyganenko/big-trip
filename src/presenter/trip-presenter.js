@@ -15,6 +15,7 @@ export default class TripEvents {
   #pointListComponent = null;
   #noPointListComponent = null;
 
+
   #pointPresenter = null;
 
   #siteMainElement = null;
@@ -24,6 +25,7 @@ export default class TripEvents {
 
   #points = [];
   #sourcedPoints = [];
+  #addPoint = {};
 
   constructor(tripContainer) {
     this.#tripContainer = tripContainer;
@@ -38,8 +40,9 @@ export default class TripEvents {
   }
 
   init(points) {
-    this.#points = points;
-    this.#sourcedPoints = points.slice();
+    this.#points = points.slice(0, this.#points.length - 1);
+    this.#sourcedPoints = points.slice(0, this.#points.length - 1);
+    this.#addPoint = points.slice(0, 1);
 
     render(this.#siteTripEventsElement, this.#pointListComponent.element, RenderPosition.BEFOREEND);
     this.#renderSort();
@@ -102,12 +105,12 @@ export default class TripEvents {
 
   #renderAddPoint = () => {
     const addPointPresenter = new AddPointPresenter(this.#pointListComponent, this.#points.length);
-    addPointPresenter.init(this.#points[0]);
+    addPointPresenter.init(this.#addPoint[0]);
     this.#addPointComponent = addPointPresenter;
   }
 
   #renderPoints = () => {
-    this.#points.forEach((tripEvent) => this.#renderPoint(tripEvent));
+    this.#points.forEach((point) => this.#renderPoint(point));
   }
 
   #renderTripEvents = () => {

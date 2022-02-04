@@ -8,7 +8,7 @@ import RouteInfoView from './view/route-info-view.js';
 import FiltersView from './view/filters-view.js';
 import TripPresenter from './presenter/trip-presenter.js';
 
-const POINT_COUNT = 5;
+const POINT_COUNT = 6;
 
 const points = Array.from({length: POINT_COUNT}, generatePoint);
 
