@@ -7,21 +7,25 @@ import EditPointView from '../view/edit-point-view';
 const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
+  ADD: 'ADD',
 };
 
 export default class Point {
+  #mode = null;
+
+  #pointListContainer = null;
+
   constructor(pointListContainer, changeData, changeMode) {
-    this._pointListContainer = pointListContainer;
+    this.#pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
 
     this._body = document.querySelector('.page-body');
     this._siteTripEventsElement = this._body.querySelector('.trip-events');
-    this._siteHeaderContainerElement = document.querySelector('.page-header__container');
 
     this._pointComponent = null;
     this._pointEditComponent = null;
-    this._mode = Mode.DEFAULT;
+    this.#mode = Mode.DEFAULT;
 
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -46,15 +50,15 @@ export default class Point {
     this._pointEditComponent.setFormHideEditHandler(this._handleHideEditClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
-      render(this._pointListContainer, this._pointComponent, RenderPosition.BEFOREEND);
+      render(this.#pointListContainer, this._pointComponent, RenderPosition.BEFOREEND);
       return;
     }
 
-    if (this._mode === Mode.DEFAULT) {
+    if (this.#mode === Mode.DEFAULT) {
       replace(this._pointComponent, prevPointComponent);
     }
 
-    if (this._mode === Mode.EDITING) {
+    if (this.#mode === Mode.EDITING) {
       replace(this._pointEditComponent, prevPointEditComponent);
     }
 
@@ -63,7 +67,7 @@ export default class Point {
   }
 
   resetView() {
-    if (this._mode !== Mode.DEFAULT) {
+    if (this.#mode !== Mode.DEFAULT) {
       this.#replaceFormToCard();
     }
   }
@@ -76,13 +80,13 @@ export default class Point {
   #replaceCardToForm = () => {
     replace(this._pointEditComponent, this._pointComponent);
     this._changeMode();
-    this._mode = Mode.EDITING;
+    this.#mode = Mode.EDITING;
     this._body.addEventListener('keydown', this._escKeyDownHandler);
   }
 
   #replaceFormToCard = () => {
     replace(this._pointComponent, this._pointEditComponent);
-    this._mode = Mode.DEFAULT;
+    this.#mode = Mode.DEFAULT;
     this._body.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
@@ -125,7 +129,7 @@ export default class Point {
 
   _handleDeletePointClick() {
     remove(this._pointEditComponent);
-    if (this._pointListContainer.element.querySelector('.trip-events__item') === null) {
+    if (this.#pointListContainer.element.querySelector('.trip-events__item') === null) {
       render(this._siteTripEventsElement, new NoPointListView().element, RenderPosition.BEFOREEND);
     }
     this._body.removeEventListener('keydown', this._escKeyDownHandler);

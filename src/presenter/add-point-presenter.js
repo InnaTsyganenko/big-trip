@@ -1,7 +1,7 @@
 import {isEscEvent} from '../utils/common';
 import {RenderPosition, render} from '../utils/render';
 import NoPointListView from '../view/no-point-list-view';
-import AddPointView from '../view/add-point-view';
+import EditPointView from '../view/edit-point-view';
 
 const ModeAddPoint = {
   DEFAULT: 'DEFAULT',
@@ -38,7 +38,7 @@ export default class AddPointPresenter {
     this.#siteHeaderContainerElement = document.querySelector('.page-header__container');
     this.#addPointButton = this.#siteHeaderContainerElement.querySelector('.trip-main__event-add-btn');
 
-    this.#addPointComponent = new AddPointView(point);
+    this.#addPointComponent = new EditPointView(point);
 
     this.#addPointButton.addEventListener('click', () => {
       this.#mode = ModeAddPoint.SHOW;
@@ -61,7 +61,7 @@ export default class AddPointPresenter {
     this.#sortDayInput = this.#siteTripEventsElement.querySelector('#sort-day');
 
     this.#addPointComponent.setFormSubmitHandler(this.#handleFormSubmit);
-    this.#addPointComponent.setFormCancelHandler(this.#handleCancelPointClick);
+    this.#addPointComponent.setDeletePointHandler(this.#handleDeletePointClick);
 
   }
 
@@ -69,11 +69,7 @@ export default class AddPointPresenter {
     this.closeAddForm();
   }
 
-  #handleHideEditClick = () => {
-    this.closeAddForm();
-  }
-
-  #handleCancelPointClick = () => {
+  #handleDeletePointClick = () => {
     this.closeAddForm();
     if (this.#pointListContainer.element.querySelector('.trip-events__item') === null) {
       render(this.#siteTripEventsElement, new NoPointListView().element, RenderPosition.BEFOREEND);

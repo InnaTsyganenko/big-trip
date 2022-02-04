@@ -7,8 +7,7 @@ import SmartView from './smart-view';
 import {types, options, destinations} from '../mock/point';
 
 const createEditPointTemplate = (data) => {
-  const {price, dateFrom, dateTo, type, destination} = data;
-  const offersByType = types[type].map((item) => options.find((x) => x.id === item));
+  const {price, dateFrom, dateTo, type, destination, offers} = data;
   const cities = [...new Set(destinations.map((item) => item.name))];
 
   const typePointsTemplate = createPointTypesTemplate(type);
@@ -61,10 +60,10 @@ const createEditPointTemplate = (data) => {
     </button>
   </header>
   <section class="event__details">
-    ${offersByType.length !== 0 ? `<section class="event__section  event__section--offers">
+    ${offers.length !== 0 ? `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         <div class="event__available-offers">
-          ${createPointOptionsTemplate(offersByType)}
+          ${createPointOptionsTemplate(offers)}
         </div>
       </section>` : ''}
       ${destination.description.length !== 0 ? `<section class="event__section  event__section--destination">
@@ -142,8 +141,13 @@ export default class EditPointView extends SmartView{
 
   #typePointToggleHandler = (evt) => {
     evt.preventDefault();
+    const offersByType = types[evt.target.value].map((item) => options.find((option) => option.id === item));
+    this._data.offers.forEach((offer) => {
+      offer.isChecked = false;
+    });
     this.updateData({
       type: evt.target.value,
+      offers: offersByType,
     });
   }
 
@@ -157,8 +161,7 @@ export default class EditPointView extends SmartView{
 
   #selectOptionHandler = (evt) => {
     evt.preventDefault();
-    // const offersByType = options.find((option) => option.value === evt.target.value);
-
+    this._data.offers.find((offer) => offer.value === evt.target.value).isChecked = true;
     this.updateData({});
   }
 
@@ -177,11 +180,12 @@ export default class EditPointView extends SmartView{
     this._callback.formDeletePoint();
   }
 
-  static parsePointToData = (point) => point;
+  static parsePointToData = (point) => ({...point,
+    offers: types[point.type].map((item) => options.find((option) => option.id === item)),
+  });
 
   static parseDataToPoint = (data) => {
-    data = Object.assign({}, data);
-
-    return data;
+    const point = {...data};
+    return point;
   }
 }
