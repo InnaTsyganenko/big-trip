@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
 import {getRandomInteger} from '../utils/common.js';
 
@@ -156,10 +155,20 @@ export const destinations = [
 ];
 
 export const generatePoint = () => {
-  const dateFrom = dayjs().add(getRandomInteger(-3000, 3000), 'm');
-  const dateTo = dateFrom.add(getRandomInteger(30, 1500), 'm');
-  const duration = dateTo.diff(dateFrom, 'm');
+  // const dateFrom = dayjs().add(getRandomInteger(-3000, 3000), 'm');
+  // const dateTo = dateFrom.add(getRandomInteger(30, 1500), 'm');
+  const dateNow = new Date();
+  const dateFrom = new Date();
+  const dateTo = new Date();
+
+
+  dateFrom.setMinutes(dateNow.getMinutes() + getRandomInteger(-3000, 3000));
+  dateTo.setDate(dateFrom.getDate() + getRandomInteger(0, 5));
+  const duration = (dateTo - dateFrom) / 60000;
+
+
   const type = Object.keys(types)[getRandomInteger(0, Object.keys(types).length - 1)];
+  const offers = types[type].map((item) => options.find((option) => option.id === item));
 
   return {
     price: getRandomInteger(20, 200),
@@ -169,7 +178,7 @@ export const generatePoint = () => {
     id: nanoid(),
     isFavorite: Boolean(getRandomInteger(0, 1)),
     type,
-    offers: [],
+    offers,
     destination: destinations[getRandomInteger(0, destinations.length - 1)],
   };
 };

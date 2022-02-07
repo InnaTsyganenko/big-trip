@@ -1,12 +1,12 @@
 import AbstractView from './abstract-view.js';
 
+const addNull = (count) => count < 10 ? `0${count}` : count;
+
 const calcDuration = (duration) => {
   let days;
   let hours;
   let minutes;
   let result;
-
-  const addNull = (count) => count < 10 ? `0${count}` : count;
 
   if (duration < 60) {
     result = addNull(`${duration}M`);
@@ -34,7 +34,8 @@ const createPointOptionsTemplate = (options) => options.map((option) => `<li cla
   </li>`).join('\n');
 
 const createPointTemplate = (point) => {
-  const {price, dateFrom, dateTo, duration, type, offers, destination, isFavorite} = point;
+  const {price, dateFrom, dateTo, duration, type, destination, isFavorite} = point;
+  const offers = point.offers.filter((offer) => offer.isChecked === true);
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
@@ -49,9 +50,9 @@ const createPointTemplate = (point) => {
       <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${dateFrom.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateFrom.format('DD / HH:mm')}</time>
+          <time class="event__start-time" datetime="${dateFrom}">${addNull(dateFrom.getHours())}:${addNull(dateFrom.getMinutes())}</time>
           &mdash;
-          <time class="event__end-time" datetime="${dateTo.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateTo.format('DD / HH:mm')}</time>
+          <time class="event__end-time" datetime="${dateTo}">${addNull(dateTo.getHours())}:${addNull(dateTo.getMinutes())}</time>
         </p>
         <p class="event__duration">${calcDuration(duration)}</p>
       </div>
