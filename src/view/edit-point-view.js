@@ -1,10 +1,35 @@
-import {createPointTypesTemplate} from './point-types-view';
-import {createPointOptionsTemplate} from './point-options-view';
-import {createPointCitiesTemplate} from './point-cities-view';
-import {createPointImagesTemplate} from './point-images-view';
 import {newPointDate} from '../utils/point';
 import SmartView from './smart-view';
 import {types, options, destinations} from '../mock/point';
+import flatpickr from 'flatpickr';
+
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
+
+const createPointTypesTemplate = (currentType) => Object.keys(types).map((type) => `<div class="event__type-item">
+  <input
+  id="event-type-${type}-1"
+  class="event__type-input  visually-hidden"
+  type="radio" name="event-type"
+  value="${type}"
+  ${currentType === type ? 'checked' : ''}
+  >
+  <label
+  class="event__type-label  event__type-label--${type}"
+  for="event-type-${type}-1">${type}</label>
+</div>`).join('\n');
+
+const createPointCitiesTemplate = (cities) => cities.map((city) => `<option value="${city}">${city}</option>`).join('\n');
+
+const createPointOptionsTemplate = (offers) => offers.map((offer) => `<div class="event__offer-selector">
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.value}-1" type="checkbox" value="${offer.value}" name="event-offer-${offer.value}" ${(offer.isChecked) ? 'checked' : ''}>
+  <label class="event__offer-label" for="event-offer-${offer.value}-1">
+    <span class="event__offer-title">${offer.title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${offer.price}</span>
+  </label>
+</div>`).join('\n');
+
+const createPointImagesTemplate = (pictures) => pictures.map((picture) => `<img class="event__photo" src="http://picsum.photos/248/152?r=${picture.src}" alt=${picture.description}>`).join('\n');
 
 const createEditPointTemplate = (data) => {
   const {price, dateFrom, dateTo, type, destination, offers} = data;
@@ -81,18 +106,26 @@ const createEditPointTemplate = (data) => {
 };
 
 export default class EditPointView extends SmartView{
+  #datepicker = null;
+
   constructor(point) {
     super();
 
     this._data = EditPointView.parsePointToData(point);
 
-    this.#formSubmitHandler = this.#formSubmitHandler.bind(this);
-    this.#formHideEditHandler = this.#formHideEditHandler.bind(this);
-    this.#formDeletePointHandler = this.#formDeletePointHandler.bind(this);
-    this.#typePointToggleHandler = this.#typePointToggleHandler.bind(this);
-    this.#citiesInputHandler = this.#citiesInputHandler.bind(this);
-
     this.#setInnerHandlers();
+    this.#setDatepicker();
+  }
+
+  // Перегружаем метод родителя removeElement,
+  // чтобы при удалении удалялся более не нужный календарь
+  removeElement = () => {
+    super.removeElement();
+
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
   }
 
   reset(point) {
@@ -109,6 +142,7 @@ export default class EditPointView extends SmartView{
     this.#setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormHideEditHandler(this._callback.formHideEdit);
+    this.#setDatepicker();
   }
 
   setFormSubmitHandler = (callback) => {
@@ -124,6 +158,27 @@ export default class EditPointView extends SmartView{
   setDeletePointHandler = (callback) => {
     this._callback.formDeletePoint = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeletePointHandler);
+  }
+
+  #setDatepicker = () => {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        dateFormat: 'd/m/Y H:i',
+        defaultDate: this._data.dateFrom,
+        enableTime: true,
+        onClose: this.#dateFromHandler, // На событие flatpickr передаём наш колбэк
+      },
+    );
+    this.#datepicker = flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        dateFormat: 'd/m/Y H:i',
+        defaultDate: this._data.dateTo,
+        enableTime: true,
+        onClose: this.#dateToHandler, // На событие flatpickr передаём наш колбэк
+      },
+    );
   }
 
   #setInnerHandlers = () => {
@@ -161,8 +216,8 @@ export default class EditPointView extends SmartView{
 
   #selectOptionHandler = (evt) => {
     evt.preventDefault();
-    this._data.offers.find((offer) => offer.value === evt.target.value).isChecked = true;
-    this.updateData({});
+    const offer = this._data.offers.find((item) => item.value === evt.target.value);
+    offer.isChecked = !offer.isChecked;
   }
 
   #formSubmitHandler = (evt) => {
@@ -180,9 +235,19 @@ export default class EditPointView extends SmartView{
     this._callback.formDeletePoint();
   }
 
-  static parsePointToData = (point) => ({...point,
-    offers: types[point.type].map((item) => options.find((option) => option.id === item)),
-  });
+  #dateFromHandler = ([userDate]) => {
+    this.updateData({
+      dateFrom: userDate,
+    });
+  }
+
+  #dateToHandler = ([userDate]) => {
+    this.updateData({
+      dateTo: userDate,
+    });
+  }
+
+  static parsePointToData = (point) => ({...point});
 
   static parseDataToPoint = (data) => {
     const point = {...data};

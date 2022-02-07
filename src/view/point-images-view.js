@@ -1,1 +1,0 @@
-export const createPointImagesTemplate = (pictures) => pictures.map((picture) => `<img class="event__photo" src="http://picsum.photos/248/152?r=${picture.src}" alt=${picture.description}>`).join('\n');
