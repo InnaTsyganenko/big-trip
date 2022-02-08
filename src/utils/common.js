@@ -37,3 +37,5 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1),
   ];
 };
+
+export const addNull = (count) => count < 10 ? `0${count}` : count;

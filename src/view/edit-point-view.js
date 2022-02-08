@@ -1,7 +1,7 @@
-import {newPointDate} from '../utils/point';
 import SmartView from './smart-view';
 import {types, options, destinations} from '../mock/point';
 import flatpickr from 'flatpickr';
+import {Mode} from '../const';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
@@ -31,7 +31,8 @@ const createPointOptionsTemplate = (offers) => offers.map((offer) => `<div class
 
 const createPointImagesTemplate = (pictures) => pictures.map((picture) => `<img class="event__photo" src="http://picsum.photos/248/152?r=${picture.src}" alt=${picture.description}>`).join('\n');
 
-const createEditPointTemplate = (data) => {
+
+const createEditPointTemplate = (data, mode) => {
   const {price, dateFrom, dateTo, type, destination, offers} = data;
   const cities = [...new Set(destinations.map((item) => item.name))];
 
@@ -64,10 +65,10 @@ const createEditPointTemplate = (data) => {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${newPointDate(dateFrom)}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${newPointDate(dateTo)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -79,10 +80,10 @@ const createEditPointTemplate = (data) => {
     </div>
 
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-    <button class="event__reset-btn" type="reset">Delete</button>
-    <button class="event__rollup-btn" type="button">
-      <span class="visually-hidden">Open event</span>
-    </button>
+    <button class="event__reset-btn" type="reset">${mode === Mode.EDITING ? 'Delete' : 'Cancel'}</button>
+    ${mode === Mode.EDITING ? `<button class="event__rollup-btn" type="button">
+    <span class="visually-hidden">Open event</span>
+  </button>` : ''}
   </header>
   <section class="event__details">
     ${offers.length !== 0 ? `<section class="event__section  event__section--offers">
@@ -107,10 +108,12 @@ const createEditPointTemplate = (data) => {
 
 export default class EditPointView extends SmartView{
   #datepicker = null;
+  #mode = null;
 
-  constructor(point) {
+  constructor(point, mode) {
     super();
 
+    this.#mode = mode;
     this._data = EditPointView.parsePointToData(point);
 
     this.#setInnerHandlers();
@@ -135,7 +138,7 @@ export default class EditPointView extends SmartView{
   }
 
   get template() {
-    return createEditPointTemplate(this._data);
+    return createEditPointTemplate(this._data, this.#mode);
   }
 
   restoreHandlers = () => {

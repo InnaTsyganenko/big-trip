@@ -1,4 +1,5 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/const.js":
@@ -7,7 +8,6 @@
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SortType": () => (/* binding */ SortType)
@@ -28,7 +28,6 @@ const SortType = {
   \***************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "options": () => (/* binding */ options),
@@ -36,11 +35,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "destinations": () => (/* binding */ destinations),
 /* harmony export */   "generatePoint": () => (/* binding */ generatePoint)
 /* harmony export */ });
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.dev.js");
-/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-
+/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.dev.js");
+/* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
 
 
 const options = [{
@@ -89,95 +85,103 @@ const destinations = [{
   name: 'Amsterdam',
   description: 'Amsterdam, city and port, western Netherlands, located on the IJsselmeer and connected to the North Sea. It is the capital and the principal commercial and financial centre of the Netherlands.',
   pictures: [{
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(1, 2)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 2)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(3, 5)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(3, 5)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(6, 8)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(6, 8)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(9, 11)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(9, 11)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(12, 14)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(12, 14)],
     description: 'Amsterdam parlament building'
   }]
 }, {
   name: 'Geneva',
   description: 'Geneva is the capital of the Swiss Canton of Geneva located in the south-westernmost corner of Switzerland. The city is situated along the banks of Europes largest lake, Lake Geneva (Lac Léman), at the mouth of the Rhone River and is bordered by the Jura Mountains to the west and the French Alps in the east.',
   pictures: [{
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(15, 17)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(15, 17)],
     description: 'Geneva parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(18, 20)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(18, 20)],
     description: 'Geneva parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(21, 23)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(21, 23)],
     description: 'Geneva parlament building'
   }]
 }, {
   name: 'Vienna',
   description: 'Vienna is the federal capital, largest city and one of nine states of Austria. Vienna is Austria&apos;s primate city, with a population of about 1.9 million. It is the 7th-largest city by population within city limits in the European Union. These regions work together in a European Centrope border region.',
   pictures: [{
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(24, 26)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(24, 26)],
     description: 'Vienna'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(27, 29)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(27, 29)],
     description: 'Vienna'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(30, 32)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(30, 32)],
     description: 'Vienna'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(34, 36)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(34, 36)],
     description: 'Vienna'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(37, 39)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(37, 39)],
     description: 'Vienna'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(40, 42)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(40, 42)],
     description: 'Vienna'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(43, 45)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(43, 45)],
     description: 'Vienna'
   }]
 }, {
   name: 'Amsterdam',
   description: 'Amsterdam, city and port, western Netherlands, located on the IJsselmeer and connected to the North Sea. It is the capital and the principal commercial and financial centre of the Netherlands.',
   pictures: [{
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(1, 2)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 2)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(3, 5)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(3, 5)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(6, 8)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(6, 8)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(9, 11)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(9, 11)],
     description: 'Amsterdam parlament building'
   }, {
-    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(12, 14)],
+    src: [(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(12, 14)],
     description: 'Amsterdam parlament building'
   }]
 }];
 const generatePoint = () => {
-  const dateFrom = dayjs__WEBPACK_IMPORTED_MODULE_0___default()().add((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(-3000, 3000), 'm');
-  const dateTo = dateFrom.add((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(30, 1500), 'm');
-  const duration = dateTo.diff(dateFrom, 'm');
-  const type = Object.keys(types)[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, Object.keys(types).length - 1)];
+  const dateNow = new Date();
+  const dateFrom = new Date();
+  const dateTo = new Date();
+  dateFrom.setDate(dateNow.getDate() + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(-2, 2));
+  dateFrom.setHours(dateNow.getHours() + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 24));
+  dateFrom.setMinutes(dateNow.getMinutes() + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(5, 60));
+  dateTo.setDate(dateFrom.getDate() + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(0, 2));
+  dateTo.setHours(dateFrom.getHours() + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(1, 24));
+  dateTo.setMinutes(dateFrom.getMinutes() + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(0, 60));
+  const duration = (dateTo - dateFrom) / 60000; // делим на 60000 чтобы получить из миллисекунд минуты
+
+  const type = Object.keys(types)[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(0, Object.keys(types).length - 1)];
   const offers = types[type].map(item => options.find(option => option.id === item));
   return {
-    price: (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(20, 200),
+    price: (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(20, 200),
     dateFrom,
     dateTo,
     duration,
-    id: (0,nanoid__WEBPACK_IMPORTED_MODULE_2__.nanoid)(),
-    isFavorite: Boolean((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, 1)),
+    id: (0,nanoid__WEBPACK_IMPORTED_MODULE_1__.nanoid)(),
+    isFavorite: Boolean((0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(0, 1)),
     type,
     offers,
-    destination: destinations[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, destinations.length - 1)]
+    destination: destinations[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_0__.getRandomInteger)(0, destinations.length - 1)]
   };
 };
 
@@ -189,7 +193,6 @@ const generatePoint = () => {
   \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ AddPointPresenter)
@@ -413,7 +416,6 @@ class AddPointPresenter {
   \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Point)
@@ -688,7 +690,6 @@ class Point {
   \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ TripEvents)
@@ -995,14 +996,14 @@ class TripEvents {
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getRandomInteger": () => (/* binding */ getRandomInteger),
 /* harmony export */   "getRandomArrayElements": () => (/* binding */ getRandomArrayElements),
 /* harmony export */   "isEscEvent": () => (/* binding */ isEscEvent),
 /* harmony export */   "isInPage": () => (/* binding */ isInPage),
-/* harmony export */   "updateItem": () => (/* binding */ updateItem)
+/* harmony export */   "updateItem": () => (/* binding */ updateItem),
+/* harmony export */   "addNull": () => (/* binding */ addNull)
 /* harmony export */ });
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -1037,26 +1038,7 @@ const updateItem = (items, update) => {
 
   return [...items.slice(0, index), update, ...items.slice(index + 1)];
 };
-
-/***/ }),
-
-/***/ "./src/utils/point.js":
-/*!****************************!*\
-  !*** ./src/utils/point.js ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "headerDate": () => (/* binding */ headerDate),
-/* harmony export */   "newPointDate": () => (/* binding */ newPointDate)
-/* harmony export */ });
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
-
-const headerDate = date => dayjs__WEBPACK_IMPORTED_MODULE_0___default()(date).format('DD MMM');
-const newPointDate = date => dayjs__WEBPACK_IMPORTED_MODULE_0___default()(date).format('DD/MM/YY HH:mm');
+const addNull = count => count < 10 ? `0${count}` : count;
 
 /***/ }),
 
@@ -1066,7 +1048,6 @@ const newPointDate = date => dayjs__WEBPACK_IMPORTED_MODULE_0___default()(date).
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RenderPosition": () => (/* binding */ RenderPosition),
@@ -1146,7 +1127,6 @@ const remove = component => {
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ AbstractView)
@@ -1221,16 +1201,14 @@ class AbstractView {
   \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ EditPointView)
 /* harmony export */ });
-/* harmony import */ var _utils_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/point */ "./src/utils/point.js");
-/* harmony import */ var _smart_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./smart-view */ "./src/view/smart-view.js");
-/* harmony import */ var _mock_point__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mock/point */ "./src/mock/point.js");
-/* harmony import */ var flatpickr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flatpickr */ "./node_modules/flatpickr/dist/esm/index.js");
-/* harmony import */ var _node_modules_flatpickr_dist_flatpickr_min_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../node_modules/flatpickr/dist/flatpickr.min.css */ "./node_modules/flatpickr/dist/flatpickr.min.css");
+/* harmony import */ var _smart_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./smart-view */ "./src/view/smart-view.js");
+/* harmony import */ var _mock_point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mock/point */ "./src/mock/point.js");
+/* harmony import */ var flatpickr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flatpickr */ "./node_modules/flatpickr/dist/esm/index.js");
+/* harmony import */ var _node_modules_flatpickr_dist_flatpickr_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/flatpickr/dist/flatpickr.min.css */ "./node_modules/flatpickr/dist/flatpickr.min.css");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
@@ -1252,8 +1230,7 @@ function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { 
 
 
 
-
-const createPointTypesTemplate = currentType => Object.keys(_mock_point__WEBPACK_IMPORTED_MODULE_2__.types).map(type => `<div class="event__type-item">
+const createPointTypesTemplate = currentType => Object.keys(_mock_point__WEBPACK_IMPORTED_MODULE_1__.types).map(type => `<div class="event__type-item">
   <input
   id="event-type-${type}-1"
   class="event__type-input  visually-hidden"
@@ -1288,7 +1265,7 @@ const createEditPointTemplate = data => {
     destination,
     offers
   } = data;
-  const cities = [...new Set(_mock_point__WEBPACK_IMPORTED_MODULE_2__.destinations.map(item => item.name))];
+  const cities = [...new Set(_mock_point__WEBPACK_IMPORTED_MODULE_1__.destinations.map(item => item.name))];
   const typePointsTemplate = createPointTypesTemplate(type);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -1318,10 +1295,10 @@ const createEditPointTemplate = data => {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${(0,_utils_point__WEBPACK_IMPORTED_MODULE_0__.newPointDate)(dateFrom)}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${(0,_utils_point__WEBPACK_IMPORTED_MODULE_0__.newPointDate)(dateTo)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -1377,9 +1354,11 @@ var _formHideEditHandler = /*#__PURE__*/new WeakMap();
 
 var _formDeletePointHandler = /*#__PURE__*/new WeakMap();
 
-var _dueDateChangeHandler = /*#__PURE__*/new WeakMap();
+var _dateFromHandler = /*#__PURE__*/new WeakMap();
 
-class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] {
+var _dateToHandler = /*#__PURE__*/new WeakMap();
+
+class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(point) {
     super();
 
@@ -1403,6 +1382,8 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
 
       this.setFormSubmitHandler(this._callback.formSubmit);
       this.setFormHideEditHandler(this._callback.formHideEdit);
+
+      _classPrivateFieldGet(this, _setDatepicker).call(this);
     });
 
     _defineProperty(this, "setFormSubmitHandler", callback => {
@@ -1423,10 +1404,19 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
     _classPrivateFieldInitSpec(this, _setDatepicker, {
       writable: true,
       value: () => {
-        _classPrivateFieldSet(this, _datepicker, (0,flatpickr__WEBPACK_IMPORTED_MODULE_3__["default"])(this.element.querySelector('.event__input--time'), {
-          dateFormat: 'j F',
+        _classPrivateFieldSet(this, _datepicker, (0,flatpickr__WEBPACK_IMPORTED_MODULE_2__["default"])(this.element.querySelector('#event-start-time-1'), {
+          dateFormat: 'd/m/Y H:i',
           defaultDate: this._data.dateFrom,
-          onChange: _classPrivateFieldGet(this, _dueDateChangeHandler) // На событие flatpickr передаём наш колбэк
+          enableTime: true,
+          onClose: _classPrivateFieldGet(this, _dateFromHandler) // На событие flatpickr передаём наш колбэк
+
+        }));
+
+        _classPrivateFieldSet(this, _datepicker, (0,flatpickr__WEBPACK_IMPORTED_MODULE_2__["default"])(this.element.querySelector('#event-end-time-1'), {
+          dateFormat: 'd/m/Y H:i',
+          defaultDate: this._data.dateTo,
+          enableTime: true,
+          onClose: _classPrivateFieldGet(this, _dateToHandler) // На событие flatpickr передаём наш колбэк
 
         }));
       }
@@ -1445,7 +1435,7 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
       writable: true,
       value: evt => {
         evt.preventDefault();
-        const offersByType = _mock_point__WEBPACK_IMPORTED_MODULE_2__.types[evt.target.value].map(item => _mock_point__WEBPACK_IMPORTED_MODULE_2__.options.find(option => option.id === item));
+        const offersByType = _mock_point__WEBPACK_IMPORTED_MODULE_1__.types[evt.target.value].map(item => _mock_point__WEBPACK_IMPORTED_MODULE_1__.options.find(option => option.id === item));
 
         this._data.offers.forEach(offer => {
           offer.isChecked = false;
@@ -1462,7 +1452,7 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
       writable: true,
       value: evt => {
         evt.preventDefault();
-        const destinationByName = _mock_point__WEBPACK_IMPORTED_MODULE_2__.destinations.find(item => item.name === evt.target.value);
+        const destinationByName = _mock_point__WEBPACK_IMPORTED_MODULE_1__.destinations.find(item => item.name === evt.target.value);
         this.updateData({
           destination: destinationByName
         });
@@ -1474,24 +1464,9 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
       value: evt => {
         evt.preventDefault();
 
-        const offer = this._data.offers.find(item => item.value === evt.target.value); // console.log(this._data.offers);
+        const offer = this._data.offers.find(item => item.value === evt.target.value);
 
-
-        offer.isChecked = !offer.isChecked; // const index = this._data.offers.findIndex((item) => item.value === evt.target.value);
-        // if (index === -1) {
-        //   throw new Error('Can\'t update unexisting offer');
-        // }
-        // this._data.offers[index].isChecked = !this._data.offers[index].isChecked;
-        // console.log(this._data.offers[index]);
-        // const offers = this._data.offers = [
-        //   ...this._data.offers.slice(0, index),
-        //   offer,
-        //   ...this._data.offers.slice(index + 1),
-        // ];
-        // console.log(offers);
-        // this.updateData({
-        //   offers: offers,
-        // });
+        offer.isChecked = !offer.isChecked;
       }
     });
 
@@ -1522,7 +1497,7 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
       }
     });
 
-    _classPrivateFieldInitSpec(this, _dueDateChangeHandler, {
+    _classPrivateFieldInitSpec(this, _dateFromHandler, {
       writable: true,
       value: ([userDate]) => {
         this.updateData({
@@ -1531,9 +1506,20 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
       }
     });
 
+    _classPrivateFieldInitSpec(this, _dateToHandler, {
+      writable: true,
+      value: ([userDate]) => {
+        this.updateData({
+          dateTo: userDate
+        });
+      }
+    });
+
     this._data = EditPointView.parsePointToData(point);
 
     _classPrivateFieldGet(this, _setInnerHandlers).call(this);
+
+    _classPrivateFieldGet(this, _setDatepicker).call(this);
   } // Перегружаем метод родителя removeElement,
   // чтобы при удалении удалялся более не нужный календарь
 
@@ -1548,8 +1534,7 @@ class EditPointView extends _smart_view__WEBPACK_IMPORTED_MODULE_1__["default"] 
 
 }
 
-_defineProperty(EditPointView, "parsePointToData", point => ({ ...point // offers: types[point.type].map((item) => options.find((option) => option.id === item)),
-
+_defineProperty(EditPointView, "parsePointToData", point => ({ ...point
 }));
 
 _defineProperty(EditPointView, "parseDataToPoint", data => {
@@ -1566,7 +1551,6 @@ _defineProperty(EditPointView, "parseDataToPoint", data => {
   \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ FiltersView)
@@ -1611,7 +1595,6 @@ class FiltersView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["defaul
   \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ NoPointListView)
@@ -1636,7 +1619,6 @@ class NoPointListView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["de
   \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ PointListView)
@@ -1661,12 +1643,13 @@ class PointListView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["defa
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ PointView)
 /* harmony export */ });
-/* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
+/* harmony import */ var _abstract_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view */ "./src/view/abstract-view.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
+
 
 
 const calcDuration = duration => {
@@ -1675,23 +1658,21 @@ const calcDuration = duration => {
   let minutes;
   let result;
 
-  const addNull = count => count < 10 ? `0${count}` : count;
-
   if (duration < 60) {
-    result = addNull(`${duration}M`);
+    result = `${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(duration)}M`;
   }
 
   if (duration >= 60 && duration < 1440) {
     hours = Math.floor(duration / 60).toString();
     minutes = (duration % 60).toString();
-    result = `${addNull(hours)}H ${addNull(minutes)}M`;
+    result = `${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(hours)}H ${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(minutes)}M`;
   }
 
   if (duration >= 1440) {
     days = Math.floor(duration / 1440).toString();
     hours = Math.floor(duration % 1440 / 60).toString();
     minutes = (duration % 1440 % 60).toString();
-    result = `${addNull(days)}D ${addNull(hours)}H ${addNull(minutes)}M`;
+    result = `${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(days)}D ${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(hours)}H ${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(minutes)}M`;
   }
 
   return result;
@@ -1723,9 +1704,9 @@ const createPointTemplate = point => {
       <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${dateFrom.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateFrom.format('DD / HH:mm')}</time>
+          <time class="event__start-time" datetime="${dateFrom}">${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(dateFrom.getHours())}:${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(dateFrom.getMinutes())}</time>
           &mdash;
-          <time class="event__end-time" datetime="${dateTo.format('YYYY-MM-DDTHH:mm:s.Z')}">${dateTo.format('DD / HH:mm')}</time>
+          <time class="event__end-time" datetime="${dateTo}">${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(dateTo.getHours())}:${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(dateTo.getMinutes())}</time>
         </p>
         <p class="event__duration">${calcDuration(duration)}</p>
       </div>
@@ -1749,7 +1730,7 @@ const createPointTemplate = point => {
   </li>`;
 };
 
-class PointView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class PointView extends _abstract_view__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(point) {
     super();
     this._point = point;
@@ -1793,13 +1774,12 @@ class PointView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"
   \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ RouteInfoView)
 /* harmony export */ });
 /* harmony import */ var _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-view.js */ "./src/view/abstract-view.js");
-/* harmony import */ var _utils_point_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/point.js */ "./src/utils/point.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
 
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
@@ -1848,11 +1828,17 @@ const createRouteInfoTemplate = points => {
     arrDestinations.push(point.destination.name);
     arrPrices.push(point.price);
   });
+  const optionsForMonth = {
+    month: 'short'
+  };
+
+  const formatShortMonth = date => new Intl.DateTimeFormat('en-US', optionsForMonth).format(date);
+
   arrPrices = arrPrices > '0' ? arrPrices.reduce((total, amount) => total + amount) : '0';
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
     <h1 class="trip-info__title">${points.length >= 1 ? displayDestinations(arrDestinations) : ''}</h1>
-    <p class="trip-info__dates">${points.length > 1 ? `${(0,_utils_point_js__WEBPACK_IMPORTED_MODULE_1__.headerDate)(points[0].dateFrom)} &mdash; ${(0,_utils_point_js__WEBPACK_IMPORTED_MODULE_1__.headerDate)(points[points.length - 1].dateTo)}` : ''}</p>
+    <p class="trip-info__dates">${points.length > 1 ? `${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(points[0].dateFrom.getDate())} ${formatShortMonth(points[0].dateFrom)} &mdash; ${(0,_utils_common__WEBPACK_IMPORTED_MODULE_1__.addNull)(points[0].dateTo.getDate())} ${formatShortMonth(points[points.length - 1].dateTo)}` : ''}</p>
   </div>
   <p class="trip-info__cost">
   Total: &euro;&nbsp;<span class="trip-info__cost-value">${arrPrices}</span>
@@ -1888,7 +1874,6 @@ class RouteInfoView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["defa
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SiteMenuView)
@@ -1919,7 +1904,6 @@ class SiteMenuView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["defau
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SmartView)
@@ -1974,7 +1958,6 @@ class SmartView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ SortView)
@@ -2055,7 +2038,6 @@ class SortView extends _abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"]
   \*********************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -2082,7 +2064,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".flatpickr-calendar{background:transpa
   \*****************************************************/
 /***/ ((module) => {
 
-"use strict";
 
 
 /*
@@ -2194,7 +2175,6 @@ module.exports = function (cssWithMappingToString) {
   \************************************************************/
 /***/ ((module) => {
 
-"use strict";
 
 
 module.exports = function (item) {
@@ -2220,33 +2200,12 @@ module.exports = function (item) {
 
 /***/ }),
 
-/***/ "./node_modules/dayjs/dayjs.min.js":
-/*!*****************************************!*\
-  !*** ./node_modules/dayjs/dayjs.min.js ***!
-  \*****************************************/
-/***/ (function(module) {
-
-!function(t,e){ true?module.exports=e():0}(this,(function(){"use strict";var t=1e3,e=6e4,n=36e5,r="millisecond",i="second",s="minute",u="hour",a="day",o="week",f="month",h="quarter",c="year",d="date",$="Invalid Date",l=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,y=/\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,M={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_")},m=function(t,e,n){var r=String(t);return!r||r.length>=e?t:""+Array(e+1-r.length).join(n)+t},g={s:m,z:function(t){var e=-t.utcOffset(),n=Math.abs(e),r=Math.floor(n/60),i=n%60;return(e<=0?"+":"-")+m(r,2,"0")+":"+m(i,2,"0")},m:function t(e,n){if(e.date()<n.date())return-t(n,e);var r=12*(n.year()-e.year())+(n.month()-e.month()),i=e.clone().add(r,f),s=n-i<0,u=e.clone().add(r+(s?-1:1),f);return+(-(r+(n-i)/(s?i-u:u-i))||0)},a:function(t){return t<0?Math.ceil(t)||0:Math.floor(t)},p:function(t){return{M:f,y:c,w:o,d:a,D:d,h:u,m:s,s:i,ms:r,Q:h}[t]||String(t||"").toLowerCase().replace(/s$/,"")},u:function(t){return void 0===t}},D="en",v={};v[D]=M;var p=function(t){return t instanceof _},S=function(t,e,n){var r;if(!t)return D;if("string"==typeof t)v[t]&&(r=t),e&&(v[t]=e,r=t);else{var i=t.name;v[i]=t,r=i}return!n&&r&&(D=r),r||!n&&D},w=function(t,e){if(p(t))return t.clone();var n="object"==typeof e?e:{};return n.date=t,n.args=arguments,new _(n)},O=g;O.l=S,O.i=p,O.w=function(t,e){return w(t,{locale:e.$L,utc:e.$u,x:e.$x,$offset:e.$offset})};var _=function(){function M(t){this.$L=S(t.locale,null,!0),this.parse(t)}var m=M.prototype;return m.parse=function(t){this.$d=function(t){var e=t.date,n=t.utc;if(null===e)return new Date(NaN);if(O.u(e))return new Date;if(e instanceof Date)return new Date(e);if("string"==typeof e&&!/Z$/i.test(e)){var r=e.match(l);if(r){var i=r[2]-1||0,s=(r[7]||"0").substring(0,3);return n?new Date(Date.UTC(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)):new Date(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)}}return new Date(e)}(t),this.$x=t.x||{},this.init()},m.init=function(){var t=this.$d;this.$y=t.getFullYear(),this.$M=t.getMonth(),this.$D=t.getDate(),this.$W=t.getDay(),this.$H=t.getHours(),this.$m=t.getMinutes(),this.$s=t.getSeconds(),this.$ms=t.getMilliseconds()},m.$utils=function(){return O},m.isValid=function(){return!(this.$d.toString()===$)},m.isSame=function(t,e){var n=w(t);return this.startOf(e)<=n&&n<=this.endOf(e)},m.isAfter=function(t,e){return w(t)<this.startOf(e)},m.isBefore=function(t,e){return this.endOf(e)<w(t)},m.$g=function(t,e,n){return O.u(t)?this[e]:this.set(n,t)},m.unix=function(){return Math.floor(this.valueOf()/1e3)},m.valueOf=function(){return this.$d.getTime()},m.startOf=function(t,e){var n=this,r=!!O.u(e)||e,h=O.p(t),$=function(t,e){var i=O.w(n.$u?Date.UTC(n.$y,e,t):new Date(n.$y,e,t),n);return r?i:i.endOf(a)},l=function(t,e){return O.w(n.toDate()[t].apply(n.toDate("s"),(r?[0,0,0,0]:[23,59,59,999]).slice(e)),n)},y=this.$W,M=this.$M,m=this.$D,g="set"+(this.$u?"UTC":"");switch(h){case c:return r?$(1,0):$(31,11);case f:return r?$(1,M):$(0,M+1);case o:var D=this.$locale().weekStart||0,v=(y<D?y+7:y)-D;return $(r?m-v:m+(6-v),M);case a:case d:return l(g+"Hours",0);case u:return l(g+"Minutes",1);case s:return l(g+"Seconds",2);case i:return l(g+"Milliseconds",3);default:return this.clone()}},m.endOf=function(t){return this.startOf(t,!1)},m.$set=function(t,e){var n,o=O.p(t),h="set"+(this.$u?"UTC":""),$=(n={},n[a]=h+"Date",n[d]=h+"Date",n[f]=h+"Month",n[c]=h+"FullYear",n[u]=h+"Hours",n[s]=h+"Minutes",n[i]=h+"Seconds",n[r]=h+"Milliseconds",n)[o],l=o===a?this.$D+(e-this.$W):e;if(o===f||o===c){var y=this.clone().set(d,1);y.$d[$](l),y.init(),this.$d=y.set(d,Math.min(this.$D,y.daysInMonth())).$d}else $&&this.$d[$](l);return this.init(),this},m.set=function(t,e){return this.clone().$set(t,e)},m.get=function(t){return this[O.p(t)]()},m.add=function(r,h){var d,$=this;r=Number(r);var l=O.p(h),y=function(t){var e=w($);return O.w(e.date(e.date()+Math.round(t*r)),$)};if(l===f)return this.set(f,this.$M+r);if(l===c)return this.set(c,this.$y+r);if(l===a)return y(1);if(l===o)return y(7);var M=(d={},d[s]=e,d[u]=n,d[i]=t,d)[l]||1,m=this.$d.getTime()+r*M;return O.w(m,this)},m.subtract=function(t,e){return this.add(-1*t,e)},m.format=function(t){var e=this,n=this.$locale();if(!this.isValid())return n.invalidDate||$;var r=t||"YYYY-MM-DDTHH:mm:ssZ",i=O.z(this),s=this.$H,u=this.$m,a=this.$M,o=n.weekdays,f=n.months,h=function(t,n,i,s){return t&&(t[n]||t(e,r))||i[n].substr(0,s)},c=function(t){return O.s(s%12||12,t,"0")},d=n.meridiem||function(t,e,n){var r=t<12?"AM":"PM";return n?r.toLowerCase():r},l={YY:String(this.$y).slice(-2),YYYY:this.$y,M:a+1,MM:O.s(a+1,2,"0"),MMM:h(n.monthsShort,a,f,3),MMMM:h(f,a),D:this.$D,DD:O.s(this.$D,2,"0"),d:String(this.$W),dd:h(n.weekdaysMin,this.$W,o,2),ddd:h(n.weekdaysShort,this.$W,o,3),dddd:o[this.$W],H:String(s),HH:O.s(s,2,"0"),h:c(1),hh:c(2),a:d(s,u,!0),A:d(s,u,!1),m:String(u),mm:O.s(u,2,"0"),s:String(this.$s),ss:O.s(this.$s,2,"0"),SSS:O.s(this.$ms,3,"0"),Z:i};return r.replace(y,(function(t,e){return e||l[t]||i.replace(":","")}))},m.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},m.diff=function(r,d,$){var l,y=O.p(d),M=w(r),m=(M.utcOffset()-this.utcOffset())*e,g=this-M,D=O.m(this,M);return D=(l={},l[c]=D/12,l[f]=D,l[h]=D/3,l[o]=(g-m)/6048e5,l[a]=(g-m)/864e5,l[u]=g/n,l[s]=g/e,l[i]=g/t,l)[y]||g,$?D:O.a(D)},m.daysInMonth=function(){return this.endOf(f).$D},m.$locale=function(){return v[this.$L]},m.locale=function(t,e){if(!t)return this.$L;var n=this.clone(),r=S(t,e,!0);return r&&(n.$L=r),n},m.clone=function(){return O.w(this.$d,this)},m.toDate=function(){return new Date(this.valueOf())},m.toJSON=function(){return this.isValid()?this.toISOString():null},m.toISOString=function(){return this.$d.toISOString()},m.toString=function(){return this.$d.toUTCString()},M}(),b=_.prototype;return w.prototype=b,[["$ms",r],["$s",i],["$m",s],["$H",u],["$W",a],["$M",f],["$y",c],["$D",d]].forEach((function(t){b[t[1]]=function(e){return this.$g(e,t[0],t[1])}})),w.extend=function(t,e){return t.$i||(t(e,_,w),t.$i=!0),w},w.locale=S,w.isDayjs=p,w.unix=function(t){return w(1e3*t)},w.en=v[D],w.Ls=v,w.p={},w}));
-
-/***/ }),
-
-/***/ "./node_modules/dayjs/plugin/isSameOrAfter.js":
-/*!****************************************************!*\
-  !*** ./node_modules/dayjs/plugin/isSameOrAfter.js ***!
-  \****************************************************/
-/***/ (function(module) {
-
-!function(e,t){ true?module.exports=t():0}(this,(function(){"use strict";return function(e,t){t.prototype.isSameOrAfter=function(e,t){return this.isSame(e,t)||this.isAfter(e,t)}}}));
-
-/***/ }),
-
 /***/ "./node_modules/flatpickr/dist/esm/index.js":
 /*!**************************************************!*\
   !*** ./node_modules/flatpickr/dist/esm/index.js ***!
   \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -4245,7 +4204,6 @@ if (typeof window !== "undefined") {
   \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "english": () => (/* binding */ english),
@@ -4333,7 +4291,6 @@ const english = {
   \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "HOOKS": () => (/* binding */ HOOKS),
@@ -4430,7 +4387,6 @@ const defaults = {
   \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "createDateFormatter": () => (/* binding */ createDateFormatter),
@@ -4576,7 +4532,6 @@ function getDefaultHours(config) {
   \******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "toggleClass": () => (/* binding */ toggleClass),
@@ -4650,7 +4605,6 @@ function getEventTarget(event) {
   \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "monthToStr": () => (/* binding */ monthToStr),
@@ -4801,7 +4755,6 @@ const formats = {
   \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "pad": () => (/* binding */ pad),
@@ -4829,7 +4782,6 @@ const arrayify = (obj) => obj instanceof Array ? obj : [obj];
   \************************************************************/
 /***/ (() => {
 
-"use strict";
 
 if (typeof Object.assign !== "function") {
     Object.assign = function (target, ...args) {
@@ -4854,7 +4806,6 @@ if (typeof Object.assign !== "function") {
   \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -4884,7 +4835,6 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
   \****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 var isOldIE = function isOldIE() {
@@ -5163,7 +5113,6 @@ module.exports = function (list, options) {
   \******************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "nanoid": () => (/* binding */ nanoid),
@@ -5287,7 +5236,6 @@ let nanoid = (size = 21) => {
   \***************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "urlAlphabet": () => (/* binding */ urlAlphabet)
@@ -5322,7 +5270,7 @@ let urlAlphabet =
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -5371,26 +5319,18 @@ let urlAlphabet =
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
 /*!*********************!*\
   !*** ./src/main.js ***!
   \*********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dayjs/plugin/isSameOrAfter */ "./node_modules/dayjs/plugin/isSameOrAfter.js");
-/* harmony import */ var dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/render.js */ "./src/utils/render.js");
-/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mock/point.js */ "./src/mock/point.js");
-/* harmony import */ var _view_site_menu_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view/site-menu-view.js */ "./src/view/site-menu-view.js");
-/* harmony import */ var _view_route_info_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./view/route-info-view.js */ "./src/view/route-info-view.js");
-/* harmony import */ var _view_filters_view_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./view/filters-view.js */ "./src/view/filters-view.js");
-/* harmony import */ var _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./presenter/trip-presenter.js */ "./src/presenter/trip-presenter.js");
-
-
-dayjs__WEBPACK_IMPORTED_MODULE_0___default().extend(dayjs_plugin_isSameOrAfter__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/render.js */ "./src/utils/render.js");
+/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mock/point.js */ "./src/mock/point.js");
+/* harmony import */ var _view_site_menu_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/site-menu-view.js */ "./src/view/site-menu-view.js");
+/* harmony import */ var _view_route_info_view_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./view/route-info-view.js */ "./src/view/route-info-view.js");
+/* harmony import */ var _view_filters_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view/filters-view.js */ "./src/view/filters-view.js");
+/* harmony import */ var _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./presenter/trip-presenter.js */ "./src/presenter/trip-presenter.js");
 
 
 
@@ -5400,20 +5340,20 @@ dayjs__WEBPACK_IMPORTED_MODULE_0___default().extend(dayjs_plugin_isSameOrAfter__
 const POINT_COUNT = 6;
 const points = Array.from({
   length: POINT_COUNT
-}, _mock_point_js__WEBPACK_IMPORTED_MODULE_3__.generatePoint);
-const routeInfoComponent = new _view_route_info_view_js__WEBPACK_IMPORTED_MODULE_5__["default"](points);
-const siteMenuComponent = new _view_site_menu_view_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
-const filtersComponent = new _view_filters_view_js__WEBPACK_IMPORTED_MODULE_6__["default"]();
+}, _mock_point_js__WEBPACK_IMPORTED_MODULE_1__.generatePoint);
+const routeInfoComponent = new _view_route_info_view_js__WEBPACK_IMPORTED_MODULE_3__["default"](points);
+const siteMenuComponent = new _view_site_menu_view_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+const filtersComponent = new _view_filters_view_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
 const siteHeaderContainerElement = document.querySelector('.page-header__container');
 const siteTripInfoElement = siteHeaderContainerElement.querySelector('.trip-main');
 const siteNavigationElement = siteHeaderContainerElement.querySelector('.trip-controls__navigation');
 const siteFiltersElement = siteHeaderContainerElement.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main');
 const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteTripInfoElement, routeInfoComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteNavigationElement, siteMenuComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_2__.render)(siteFiltersElement, filtersComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_2__.RenderPosition.AFTERBEGIN);
-const tripPresenter = new _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_7__["default"](siteTripEventsElement);
+(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.render)(siteTripInfoElement, routeInfoComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_0__.RenderPosition.AFTERBEGIN);
+(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.render)(siteNavigationElement, siteMenuComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_0__.RenderPosition.AFTERBEGIN);
+(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.render)(siteFiltersElement, filtersComponent.element, _utils_render_js__WEBPACK_IMPORTED_MODULE_0__.RenderPosition.AFTERBEGIN);
+const tripPresenter = new _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_5__["default"](siteTripEventsElement);
 tripPresenter.init(points);
 })();
 

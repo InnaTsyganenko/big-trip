@@ -1,6 +1,5 @@
-import AbstractView from './abstract-view.js';
-
-const addNull = (count) => count < 10 ? `0${count}` : count;
+import AbstractView from './abstract-view';
+import {addNull} from '../utils/common';
 
 const calcDuration = (duration) => {
   let days;
@@ -9,7 +8,7 @@ const calcDuration = (duration) => {
   let result;
 
   if (duration < 60) {
-    result = addNull(`${duration}M`);
+    result = `${addNull(duration)}M`;
   }
 
   if (duration >= 60 && duration < 1440) {
