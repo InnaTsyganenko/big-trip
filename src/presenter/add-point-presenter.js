@@ -2,46 +2,42 @@ import {isEscEvent} from '../utils/common';
 import {RenderPosition, render} from '../utils/render';
 import NoPointListView from '../view/no-point-list-view';
 import EditPointView from '../view/edit-point-view';
-
-const ModeAddPoint = {
-  DEFAULT: 'DEFAULT',
-  SHOW: 'SHOW',
-};
+import {Mode} from '../const';
 
 export default class AddPointPresenter {
   #pointListContainer = null;
   #addPointComponent = null;
   #mode = null;
   #body = null;
-  #point = null;
+  #point = {};
   #sortDayInput = null;
   #siteTripEventsElement = null;
   #siteMainElement = null;
-  #siteHeaderContainerElement = null;
+  #siteHeaderElement = null;
   #addPointButton = null;
-  #pointsLength = null;
+  #pointsLength = 0;
 
   constructor(pointListContainer, pointsLength) {
     this.#pointListContainer = pointListContainer;
     this.#pointsLength = pointsLength;
 
     this.#addPointComponent = null;
-    this.#mode = ModeAddPoint.DEFAULT;
+    this.#mode = Mode.DEFAULT;
 
     this.#body = document.querySelector('.page-body');
-    this.#siteMainElement = document.querySelector('.page-main');
+    this.#siteMainElement = this.#body.querySelector('.page-main');
   }
 
-  init(point) {
+  init(point, mode) {
     this.#point = point;
 
-    this.#siteHeaderContainerElement = document.querySelector('.page-header__container');
-    this.#addPointButton = this.#siteHeaderContainerElement.querySelector('.trip-main__event-add-btn');
+    this.#siteHeaderElement = document.querySelector('.page-header__container');
+    this.#addPointButton = this.#siteHeaderElement.querySelector('.trip-main__event-add-btn');
 
-    this.#addPointComponent = new EditPointView(point);
+    this.#addPointComponent = new EditPointView(point, mode);
 
     this.#addPointButton.addEventListener('click', () => {
-      this.#mode = ModeAddPoint.SHOW;
+      this.#mode = Mode.ADD;
 
       if (this.#pointListContainer && this.#pointListContainer.element.querySelector('.event--edit')) {
         this.#pointListContainer.element.querySelector('.event--edit').querySelector('.event__rollup-btn').click();
@@ -78,8 +74,8 @@ export default class AddPointPresenter {
   }
 
   closeAddForm = () => {
-    if (this.#mode === ModeAddPoint.SHOW) {
-      this.#mode = ModeAddPoint.DEFAULT;
+    if (this.#mode === Mode.ADD) {
+      this.#mode = Mode.DEFAULT;
       this.#pointListContainer.element.querySelector('.trip-events__item').remove();
       this.#addPointButton.disabled = false;
       if (this.#pointsLength === 0) {

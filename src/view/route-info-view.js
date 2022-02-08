@@ -1,6 +1,6 @@
 
 import AbstractView from './abstract-view.js';
-import {headerDate} from '../utils/point.js';
+import {addNull} from '../utils/common';
 
 const displayDestinations = (dest) => {
   let result;
@@ -30,11 +30,14 @@ const createRouteInfoTemplate = (points) => {
     arrPrices.push(point.price);
   });
 
+  const optionsForMonth = { month: 'short'};
+  const formatShortMonth = (date) => new Intl.DateTimeFormat('en-US', optionsForMonth).format(date);
+
   arrPrices = arrPrices > '0' ? arrPrices.reduce((total, amount) => total + amount) : '0';
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
     <h1 class="trip-info__title">${points.length >= 1 ? displayDestinations(arrDestinations) : ''}</h1>
-    <p class="trip-info__dates">${points.length > 1 ? `${headerDate(points[0].dateFrom)} &mdash; ${headerDate(points[points.length - 1].dateTo)}` : ''}</p>
+    <p class="trip-info__dates">${points.length > 1 ? `${addNull(points[0].dateFrom.getDate())} ${formatShortMonth(points[0].dateFrom)} &mdash; ${addNull(points[0].dateTo.getDate())} ${formatShortMonth(points[points.length - 1].dateTo)}` : ''}</p>
   </div>
   <p class="trip-info__cost">
   Total: &euro;&nbsp;<span class="trip-info__cost-value">${arrPrices}</span>

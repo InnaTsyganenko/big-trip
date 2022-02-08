@@ -155,17 +155,17 @@ export const destinations = [
 ];
 
 export const generatePoint = () => {
-  // const dateFrom = dayjs().add(getRandomInteger(-3000, 3000), 'm');
-  // const dateTo = dateFrom.add(getRandomInteger(30, 1500), 'm');
   const dateNow = new Date();
   const dateFrom = new Date();
   const dateTo = new Date();
 
-
-  dateFrom.setMinutes(dateNow.getMinutes() + getRandomInteger(-3000, 3000));
-  dateTo.setDate(dateFrom.getDate() + getRandomInteger(0, 5));
-  const duration = (dateTo - dateFrom) / 60000;
-
+  dateFrom.setDate(dateNow.getDate() + getRandomInteger(-2, 2));
+  dateFrom.setHours(dateNow.getHours() + getRandomInteger(1, 24));
+  dateFrom.setMinutes(dateNow.getMinutes() + getRandomInteger(5, 60));
+  dateTo.setDate(dateFrom.getDate() + getRandomInteger(0, 2));
+  dateTo.setHours(dateFrom.getHours() + getRandomInteger(1, 24));
+  dateTo.setMinutes(dateFrom.getMinutes() + getRandomInteger(0, 60));
+  const duration = (dateTo - dateFrom) / 60000; // делим на 60000 чтобы получить из миллисекунд минуты
 
   const type = Object.keys(types)[getRandomInteger(0, Object.keys(types).length - 1)];
   const offers = types[type].map((item) => options.find((option) => option.id === item));

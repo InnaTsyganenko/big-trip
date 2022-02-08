@@ -1,14 +1,9 @@
 import {isEscEvent} from '../utils/common';
 import {RenderPosition, render, replace, remove} from '../utils/render';
+import {Mode} from '../const';
 import NoPointListView from '../view/no-point-list-view';
 import PointView from '../view/point-view';
 import EditPointView from '../view/edit-point-view';
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-  ADD: 'ADD',
-};
 
 export default class Point {
   #mode = null;
@@ -34,14 +29,14 @@ export default class Point {
     this.#mode = Mode.DEFAULT;
   }
 
-  init(point) {
+  init(point, mode) {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
     this.#pointComponent = new PointView(point);
-    this.#pointEditComponent = new EditPointView(point);
+    this.#pointEditComponent = new EditPointView(point, mode);
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);
     this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
