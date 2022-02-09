@@ -72,6 +72,9 @@ export default class Point {
   }
 
   #replaceCardToForm = () => {
+    if (this.#pointListContainer && this.#pointListContainer.element.querySelector('.event--edit')) {
+      this.#pointListContainer.element.querySelector('.event--edit').querySelector('.event__rollup-btn').click();
+    }
     replace(this.#pointEditComponent, this.#pointComponent);
     this.#changeMode();
     this.#mode = Mode.EDITING;

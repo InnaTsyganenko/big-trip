@@ -1,4 +1,3 @@
-import {updateItem} from '../utils/common';
 import {RenderPosition, render} from '../utils/render';
 import SortView from '../view/sort-view';
 import NoPointListView from '../view/no-point-list-view';
@@ -23,7 +22,6 @@ export default class TripEvents {
   #pointPresenter = new Map();
 
   #siteMainElement = null;
-  #siteTripEventsElement = null;
 
   #currentSortType = null;
   #filterType = FilterType.EVERYTHING;
@@ -39,7 +37,7 @@ export default class TripEvents {
     this.#currentSortType = SortType.DAY;
 
     this.#siteMainElement = document.querySelector('.page-main');
-    this.#siteTripEventsElement = this.#siteMainElement.querySelector('.trip-events');
+    this.#tripContainer = this.#siteMainElement.querySelector('.trip-events');
 
     this.#pointListComponent = new PointListView();
   }
@@ -62,7 +60,7 @@ export default class TripEvents {
   init() {
     this.#addPoint = this.points.slice(0, 1);
 
-    render(this.#siteTripEventsElement, this.#pointListComponent.element, RenderPosition.BEFOREEND);
+    render(this.#tripContainer, this.#pointListComponent.element, RenderPosition.BEFOREEND);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -74,8 +72,8 @@ export default class TripEvents {
   destroy = () => {
     this.#clearPoints({resetSortType: true});
 
-    // remove(this.#taskListComponent);
-    // remove(this.#boardComponent);
+    this.#sortComponent.element.remove();
+    this.#pointListComponent.element.remove();
 
     this.#pointsModel.removeObserver(this.#handleModelEvent);
     this.#filterModel.removeObserver(this.#handleModelEvent);
@@ -105,7 +103,6 @@ export default class TripEvents {
         // this.#renderBoard();
         break;
       case UpdateType.MAJOR:
-        console.log('major');
         this.#clearPoints({resetSortType: true});
         this.#renderTripEvents();
         break;
@@ -132,12 +129,12 @@ export default class TripEvents {
   #renderSort = () => {
     this.#sortComponent = new SortView();
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
-    render(this.#siteTripEventsElement, this.#sortComponent.element, RenderPosition.AFTERBEGIN);
+    render(this.#tripContainer, this.#sortComponent.element, RenderPosition.AFTERBEGIN);
   }
 
   #renderNoPointsList = () => {
     this.#noPointListComponent = new NoPointListView(this.#filterType);
-    render(this.#siteTripEventsElement, this.#noPointListComponent.element, RenderPosition.BEFOREEND);
+    render(this.#tripContainer, this.#noPointListComponent.element, RenderPosition.BEFOREEND);
   }
 
   #renderPoint = (point) => {
