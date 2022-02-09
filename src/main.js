@@ -42,6 +42,8 @@ const handleSiteMenuClick = (menuItem) => {
     case MenuItem.TABLE:
       console.log(MenuItem.TABLE);
       siteTripEventsElement.classList.remove('trip-events--hidden');
+      statsComponent.element.remove();
+      tripPresenter.init();
       // remove(statisticsComponent);
       // tripPresenter.init();
       // boardPresenter.destroy();
@@ -51,13 +53,10 @@ const handleSiteMenuClick = (menuItem) => {
       // siteMenuComponent.element.querySelector(`[value=${MenuItem.STATISTICS}]`).disabled = true;
       break;
     case MenuItem.STATS:
-      console.log(MenuItem.STATS);
-      // tripPresenter.destroy();
-      // siteTripEventsElement.classList.add('trip-events--hidden');
-      // statsComponent = new StatsView(pointsModel.points);
-      // render(siteTripEventsElement, statsComponent, RenderPosition.AFTEREND);
-      // boardPresenter.init();
-      // remove(statisticsComponent);
+      tripPresenter.destroy();
+      siteTripEventsElement.classList.add('trip-events--hidden');
+      statsComponent = new StatsView(pointsModel.points);
+      render(siteTripEventsElement, statsComponent, RenderPosition.AFTEREND);
       break;
   }
 };
