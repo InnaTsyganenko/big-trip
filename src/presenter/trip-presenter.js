@@ -20,7 +20,7 @@ export default class TripEvents {
   #noPointListComponent = null;
 
 
-  #pointPresenter = null;
+  #pointPresenter = new Map();
 
   #siteMainElement = null;
   #siteTripEventsElement = null;
@@ -28,8 +28,6 @@ export default class TripEvents {
   #currentSortType = null;
   #filterType = FilterType.EVERYTHING;
 
-  #points = [];
-  #sourcedPoints = [];
   #addPoint = {};
 
   constructor(tripContainer, pointsModel, filterModel) {
@@ -38,8 +36,7 @@ export default class TripEvents {
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointPresenter = {};
-    this.#currentSortType = 'sort-day';
+    this.#currentSortType = SortType.DAY;
 
     this.#siteMainElement = document.querySelector('.page-main');
     this.#siteTripEventsElement = this.#siteMainElement.querySelector('.trip-events');
@@ -49,17 +46,17 @@ export default class TripEvents {
 
   get points() {
     this.#filterType = this.#filterModel.filter;
-    const points = this.#pointsModel.points.slice(0, this.#points.length - 1);
-    // const filteredPoints = filter[this.#filterType](points);
+    const points = this.#pointsModel.points.slice(0, this.#pointsModel.points.length - 1);
+    const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
-      case `sort-${SortType.TIME}`:
-        return points.sort((a, b) => b.duration - a.duration);
-      case `sort-${SortType.PRICE}`:
-        return points.sort((a, b) => b.price - a.price);
+      case SortType.TIME:
+        return filteredPoints.sort((a, b) => b.duration - a.duration);
+      case SortType.PRICE:
+        return filteredPoints.sort((a, b) => b.price - a.price);
     }
 
-    return points;
+    return filteredPoints;
   }
 
   init() {
@@ -101,15 +98,16 @@ export default class TripEvents {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        // this.#taskPresenter.get(data.id).init(data);
+        this.#pointPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
         // this.#clearBoard();
         // this.#renderBoard();
         break;
       case UpdateType.MAJOR:
-        // this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-        // this.#renderBoard();
+        console.log('major');
+        this.#clearPoints({resetSortType: true});
+        this.#renderTripEvents();
         break;
     }
   }
@@ -145,7 +143,7 @@ export default class TripEvents {
   #renderPoint = (point) => {
     const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange);
     pointPresenter.init(point, Mode.EDITING);
-    this.#pointPresenter[point.id] = pointPresenter;
+    this.#pointPresenter.set(point.id, pointPresenter);
   }
 
   #renderAddPoint = () => {
@@ -168,8 +166,16 @@ export default class TripEvents {
     this.#renderAddPoint();
   }
 
-  #clearPoints = () => {
+  #clearPoints = ({resetSortType = false} = {}) => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
+
+    if (this.#noPointListComponent) {
+      this.#noPointListComponent.element.remove();
+    }
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
   }
 }

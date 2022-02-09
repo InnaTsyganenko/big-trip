@@ -52,11 +52,10 @@ const handleSiteMenuClick = (menuItem) => {
       break;
     case MenuItem.STATS:
       console.log(MenuItem.STATS);
-      console.log(MenuItem.STATS);
-      tripPresenter.destroy();
-      siteTripEventsElement.classList.add('trip-events--hidden');
-      statsComponent = new StatsView(pointsModel.points);
-      render(siteTripEventsElement, statsComponent, RenderPosition.AFTEREND);
+      // tripPresenter.destroy();
+      // siteTripEventsElement.classList.add('trip-events--hidden');
+      // statsComponent = new StatsView(pointsModel.points);
+      // render(siteTripEventsElement, statsComponent, RenderPosition.AFTEREND);
       // boardPresenter.init();
       // remove(statisticsComponent);
       break;
