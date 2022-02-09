@@ -49,9 +49,9 @@ const createPointTemplate = (point) => {
       <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${dateFrom}">${addNull(dateFrom.getHours())}:${addNull(dateFrom.getMinutes())}</time>
+          <time class="event__start-time" datetime="${dateFrom}">${dateFrom.getDate()} / ${addNull(dateFrom.getHours())}:${addNull(dateFrom.getMinutes())}</time>
           &mdash;
-          <time class="event__end-time" datetime="${dateTo}">${addNull(dateTo.getHours())}:${addNull(dateTo.getMinutes())}</time>
+          <time class="event__end-time" datetime="${dateTo}">${dateTo.getDate()} / ${addNull(dateTo.getHours())}:${addNull(dateTo.getMinutes())}</time>
         </p>
         <p class="event__duration">${calcDuration(duration)}</p>
       </div>
