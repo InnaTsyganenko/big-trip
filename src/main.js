@@ -27,12 +27,12 @@ const siteNavigationElement = siteHeaderContainerElement.querySelector('.trip-co
 const siteFiltersElement = siteHeaderContainerElement.querySelector('.trip-controls__filters');
 
 const siteMainElement = document.querySelector('.page-main');
-const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
+const siteTripElement = siteMainElement.querySelector('.trip-events');
 
 render(siteTripInfoElement, routeInfoComponent.element, RenderPosition.AFTERBEGIN);
 render(siteNavigationElement, siteMenuComponent.element, RenderPosition.AFTERBEGIN);
 
-const tripPresenter = new TripPresenter(siteTripEventsElement, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(siteTripElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(siteFiltersElement, filterModel, pointsModel);
 
 let statsComponent = null;
@@ -40,23 +40,16 @@ let statsComponent = null;
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      console.log(MenuItem.TABLE);
-      siteTripEventsElement.classList.remove('trip-events--hidden');
+      siteTripElement.classList.remove('trip-events--hidden');
       statsComponent.element.remove();
       tripPresenter.init();
-      // remove(statisticsComponent);
-      // tripPresenter.init();
-      // boardPresenter.destroy();
-      // boardPresenter.init();
-      // boardPresenter.createTask(handleTaskNewFormClose);
-      // siteMenuComponent.element.querySelector(`[value=${MenuItem.TASKS}]`).disabled = true;
-      // siteMenuComponent.element.querySelector(`[value=${MenuItem.STATISTICS}]`).disabled = true;
       break;
     case MenuItem.STATS:
       tripPresenter.destroy();
-      siteTripEventsElement.classList.add('trip-events--hidden');
+      siteTripElement.classList.add('trip-events--hidden');
+      siteMainElement.querySelector('.page-body__container').classList.add('none');
       statsComponent = new StatsView(pointsModel.points);
-      render(siteTripEventsElement, statsComponent, RenderPosition.AFTEREND);
+      render(siteTripElement, statsComponent, RenderPosition.AFTEREND);
       break;
   }
 };
@@ -64,4 +57,8 @@ const handleSiteMenuClick = (menuItem) => {
 siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
-tripPresenter.init();
+// tripPresenter.init();
+siteTripElement.classList.add('trip-events--hidden');
+siteMainElement.querySelector('.page-body__container').classList.add('none');
+statsComponent = new StatsView(pointsModel.points);
+render(siteTripElement, statsComponent, RenderPosition.AFTEREND);

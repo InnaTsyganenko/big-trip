@@ -1,48 +1,283 @@
 import SmartView from './smart-view';
-import {SortType} from '../const.js';
+import Chart from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {calcDuration} from '../utils/common';
 
-const createSortingTemplate = (sorts) => {
-console.log('stats');
-  return `<section class="statistics">
-  <h2 class="visually-hidden">Trip statistics</h2>
 
-  <div class="statistics__item statistics__item--money">
-    <canvas class="statistics__chart  statistics__chart--money" width="900"></canvas>
-  </div>
+const renderMoneyChart = (barHeight, moneyCtx, typeByMoneySorting) => {
+  moneyCtx.height = barHeight;
 
-  <div class="statistics__item statistics__item--transport">
-    <canvas class="statistics__chart  statistics__chart--transport" width="900"></canvas>
-  </div>
-
-  <div class="statistics__item statistics__item--time-spend">
-    <canvas class="statistics__chart  statistics__chart--time" width="900"></canvas>
-  </div>
-  </section>`;
+  return new Chart(moneyCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: typeByMoneySorting.map((items) => items[0]).map((item) => item.toUpperCase()),
+      datasets: [{
+        data: typeByMoneySorting.map((items) => items[1]),
+        backgroundColor: '#ffffff',
+        hoverBackgroundColor: '#ffffff',
+        anchor: 'start',
+        barThickness: 44,
+        minBarLength: 50,
+      }],
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        datalabels: {
+          font: {
+            size: 13,
+          },
+          color: '#000000',
+          anchor: 'end',
+          align: 'start',
+          formatter: typeByMoneySorting.map((items) => items[1]).forEach((val) => `€ ${val}`),
+        },
+      },
+      title: {
+        display: true,
+        text: 'MONEY',
+        fontColor: '#000000',
+        fontSize: 23,
+        position: 'left',
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#000000',
+            padding: 5,
+            fontSize: 13,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
 };
 
-export default class StatsView extends SmartView {
-  #sortValues = null;
+const renderTypeChart = (barHeigth, typeCtx, typeByTransportSorting) => {
+  typeCtx.height = barHeigth;
 
-  constructor() {
+  return new Chart(typeCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: typeByTransportSorting.map((items) => items[0]).map((item) => item.toUpperCase()),
+      datasets: [{
+        data: typeByTransportSorting.map((items) => items[1]),
+        backgroundColor: '#ffffff',
+        hoverBackgroundColor: '#ffffff',
+        anchor: 'start',
+        barThickness: 44,
+        minBarLength: 50,
+      }],
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        datalabels: {
+          font: {
+            size: 13,
+          },
+          color: '#000000',
+          anchor: 'end',
+          align: 'start',
+          formatter: typeByTransportSorting.map((items) => items[1]).forEach((val) => `€ ${val}x`),
+        },
+      },
+      title: {
+        display: true,
+        text: 'TYPE',
+        fontColor: '#000000',
+        fontSize: 23,
+        position: 'left',
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#000000',
+            padding: 5,
+            fontSize: 13,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
+};
+
+const renderTimeChart = (barHeigth, timeCtx, typeByTimeSorting) => {
+  timeCtx.height = barHeigth;
+  console.log(typeByTimeSorting);
+  console.log(typeByTimeSorting.map((items) => items[0]).map((item) => item.toUpperCase()));
+  console.log(typeByTimeSorting.map((items) => calcDuration(items[1])));
+
+  return new Chart(timeCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: typeByTimeSorting.map((items) => items[0]).map((item) => item.toUpperCase()),
+      datasets: [{
+        data: typeByTimeSorting.map((items) => (items[1])),
+        backgroundColor: '#ffffff',
+        hoverBackgroundColor: '#ffffff',
+        anchor: 'start',
+        barThickness: 44,
+        minBarLength: 50,
+      }],
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        datalabels: {
+          font: {
+            size: 13,
+          },
+          color: '#000000',
+          anchor: 'end',
+          align: 'start',
+          formatter: typeByTimeSorting.map((items) => items[1]).forEach((val) => `€ ${val}`),
+        },
+      },
+      title: {
+        display: true,
+        text: 'TIME',
+        fontColor: '#000000',
+        fontSize: 23,
+        position: 'left',
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#000000',
+            padding: 5,
+            fontSize: 13,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
+};
+
+const createStatisticsTemplate = (stats) => `<section class="statistics">
+  <h2 class="visually-hidden">Trip statistics</h2>
+
+  ${stats.map((value) => `<div class="statistics__item statistics__item--${value}${value === 'time' ? '-spend' : ''}">
+    <canvas class="statistics__chart  statistics__chart--${value}" width="900"></canvas>
+  </div>`)}
+  </section>`;
+
+export default class StatsView extends SmartView {
+  #moviesByMoneyChart = null;
+  #moviesByTypeChart = null;
+  #moviesByTimeChart = null;
+  #statsValues = null;
+
+  constructor(points) {
     super();
-    this.#sortValues = Array.from(Object.values(SortType));
+    this.#statsValues = ['money', 'transport', 'time'];
+    this._data = {points};
+
+    this.#setCharts();
   }
 
   get template() {
-    return createSortingTemplate(this.#sortValues);
+    return createStatisticsTemplate(this.#statsValues);
   }
 
-  setSortTypeChangeHandler = (callback) => {
-    this._callback.sortTypeChange = callback;
-    this.element.addEventListener('change', this.#sortTypeChangeHandler);
+  restoreHandlers = () => {
+    this.#setCharts();
   }
 
-  #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'INPUT') {
-      return;
-    }
+  #setCharts = () => {
+    const BAR_HEIGHT = 70;
+    const {points} = this._data;
+    const moneyCtx = this.element.querySelector('.statistics__chart--money');
+    const typeCtx = this.element.querySelector('.statistics__chart--transport');
+    const timeCtx = this.element.querySelector('.statistics__chart--time');
 
-    evt.preventDefault();
-    this._callback.sortTypeChange(evt.target.id);
+    const allTypesUniq = [...new Set(points.map((point) => point.type))].map((item) => item.toUpperCase()).flat();
+    const barHeigth = BAR_HEIGHT * allTypesUniq.length;
+
+    const counTypeByMoney = points.reduce((acc, el) => {
+      acc[el.type] = (acc[el.type] || 0) + el.price;
+      return acc;
+    }, []);
+
+    const counTypeByTransport = points.reduce((acc, el) => {
+      acc[el.type] = (acc[el.type] || 0) + 1;
+      return acc;
+    }, []);
+
+    const counTypeByTime = points.reduce((acc, el) => {
+      acc[el.type] = (acc[el.type] || 0) + el.duration;
+      return acc;
+    }, []);
+
+    const typeByMoneySorting = Object.entries(counTypeByMoney).sort((a, b) => b[1] - a[1]);
+    const typeByTransportSorting = Object.entries(counTypeByTransport).sort((a, b) => b[1] - a[1]);
+    const typeByTimeSorting = Object.entries(counTypeByTime).sort((a, b) => b[1] - a[1]);
+
+    this.#moviesByMoneyChart = renderMoneyChart(barHeigth, moneyCtx, typeByMoneySorting);
+    this.#moviesByTypeChart = renderTypeChart(barHeigth, typeCtx, typeByTransportSorting);
+    this.#moviesByTimeChart = renderTimeChart(barHeigth, timeCtx, typeByTimeSorting);
   }
 }
