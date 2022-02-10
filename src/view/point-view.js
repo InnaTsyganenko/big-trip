@@ -1,31 +1,5 @@
 import AbstractView from './abstract-view';
-import {addNull} from '../utils/common';
-
-const calcDuration = (duration) => {
-  let days;
-  let hours;
-  let minutes;
-  let result;
-
-  if (duration < 60) {
-    result = `${addNull(duration)}M`;
-  }
-
-  if (duration >= 60 && duration < 1440) {
-    hours = Math.floor(duration / 60).toString();
-    minutes = (duration % 60).toString();
-    result = `${addNull(hours)}H ${addNull(minutes)}M`;
-  }
-
-  if (duration >= 1440) {
-    days = Math.floor(duration / 1440).toString();
-    hours = Math.floor(duration % 1440 / 60).toString();
-    minutes = ((duration % 1440 % 60)).toString();
-    result = `${addNull(days)}D ${addNull(hours)}H ${addNull(minutes)}M`;
-  }
-
-  return result;
-};
+import {addNull, calcDuration} from '../utils/common';
 
 const createPointOptionsTemplate = (options) => options.map((option) => `<li class="event__offer">
   <span class="event__offer-title"style="white-space: pre;">${option.title}</span>&plus;&euro;&nbsp;
