@@ -30,7 +30,7 @@ export default class Point {
     this.#mode = Mode.DEFAULT;
   }
 
-  init(point, mode) {
+  init(point, offers, mode) {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
@@ -44,9 +44,9 @@ export default class Point {
     this.#pointEditComponent.setDeletePointHandler(this.#handleDeletePointClick);
     this.#pointEditComponent.setFormHideEditHandler(this.#handleHideEditClick);
 
-    console.log(this.#pointComponent.element.querySelector('.event__selected-offers'));
+    console.log();
 
-    // const offersPresenter = new OffersPresenter(siteFiltersElement, offersModel.offers);
+    const offersPresenter = new OffersPresenter(this.#pointComponent.element.querySelector('.event__selected-offers'), offers);
 
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
