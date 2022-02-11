@@ -10,6 +10,7 @@ import {Mode, SortType, UpdateType, UserAction, FilterType} from '../const.js';
 export default class TripEvents {
   #pointsModel = null;
   #filterModel = null;
+  #offersModel = null;
 
   #tripContainer = null;
 
@@ -28,11 +29,12 @@ export default class TripEvents {
 
   #addPoint = {};
 
-  constructor(tripContainer, pointsModel, filterModel) {
+  constructor(tripContainer, pointsModel, filterModel, offersModel) {
     this.#tripContainer = tripContainer;
 
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+    this.#offersModel = offersModel;
 
     this.#currentSortType = SortType.DAY;
 
@@ -45,6 +47,7 @@ export default class TripEvents {
   get points() {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points.slice(0, this.#pointsModel.points.length - 1);
+
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {

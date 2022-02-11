@@ -1,40 +1,6 @@
 import {nanoid} from 'nanoid';
 import {getRandomInteger} from '../utils/common.js';
 
-export const options = [
-  {
-    id: 1,
-    value: 'luggage',
-    title: 'Add luggage',
-    price: 30,
-    isChecked: false,
-  }, {
-    id: 2,
-    value: 'comfort',
-    title: 'Switch to comfort class',
-    price: 100,
-    isChecked: false,
-  }, {
-    id: 3,
-    value: 'meal',
-    title: 'Add meal',
-    price: 15,
-    isChecked: false,
-  }, {
-    id: 4,
-    value: 'seats',
-    title: 'Choose seats',
-    price: 5,
-    isChecked: false,
-  }, {
-    id: 5,
-    value: 'train',
-    title: 'Travel by train',
-    price: 40,
-    isChecked: false,
-  },
-];
-
 export const types = {
   'taxi': [1, 2],
   'bus': [4],
@@ -168,7 +134,6 @@ export const generatePoint = () => {
   const duration = (dateTo - dateFrom) / 60000; // делим на 60000 чтобы получить из миллисекунд минуты
 
   const type = Object.keys(types)[getRandomInteger(0, Object.keys(types).length - 1)];
-  const offers = types[type].map((item) => options.find((option) => option.id === item));
 
   return {
     price: getRandomInteger(20, 200),
@@ -178,7 +143,7 @@ export const generatePoint = () => {
     id: nanoid(),
     isFavorite: Boolean(getRandomInteger(0, 1)),
     type,
-    offers,
+    offers: types[type],
     destination: destinations[getRandomInteger(0, destinations.length - 1)],
   };
 };
