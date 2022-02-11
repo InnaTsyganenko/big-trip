@@ -4,6 +4,7 @@ import {Mode} from '../const';
 import NoPointListView from '../view/no-point-list-view';
 import PointView from '../view/point-view';
 import EditPointView from '../view/edit-point-view';
+import OffersPresenter from './offers-presenter';
 
 export default class Point {
   #mode = null;
@@ -29,7 +30,7 @@ export default class Point {
     this.#mode = Mode.DEFAULT;
   }
 
-  init(point, mode) {
+  init(point, offers, mode) {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
@@ -42,6 +43,11 @@ export default class Point {
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointEditComponent.setDeletePointHandler(this.#handleDeletePointClick);
     this.#pointEditComponent.setFormHideEditHandler(this.#handleHideEditClick);
+
+    console.log();
+
+    const offersPresenter = new OffersPresenter(this.#pointComponent.element.querySelector('.event__selected-offers'), offers);
+
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointListContainer, this.#pointComponent, RenderPosition.BEFOREEND);

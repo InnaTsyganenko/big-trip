@@ -31,7 +31,7 @@ const renderMoneyChart = (barHeight, moneyCtx, typeByMoneySorting) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: typeByMoneySorting.map((items) => items[1]).forEach((val) => `€ ${val}`),
+          formatter: (val) => `€ ${val}`,
         },
       },
       title: {
@@ -101,7 +101,7 @@ const renderTypeChart = (barHeigth, typeCtx, typeByTransportSorting) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: typeByTransportSorting.map((items) => items[1]).forEach((val) => `€ ${val}x`),
+          formatter: (val) => `${val}x`,
         },
       },
       title: {
@@ -146,9 +146,6 @@ const renderTypeChart = (barHeigth, typeCtx, typeByTransportSorting) => {
 
 const renderTimeChart = (barHeigth, timeCtx, typeByTimeSorting) => {
   timeCtx.height = barHeigth;
-  console.log(typeByTimeSorting);
-  console.log(typeByTimeSorting.map((items) => items[0]).map((item) => item.toUpperCase()));
-  console.log(typeByTimeSorting.map((items) => calcDuration(items[1])));
 
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
@@ -174,7 +171,7 @@ const renderTimeChart = (barHeigth, timeCtx, typeByTimeSorting) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: typeByTimeSorting.map((items) => items[1]).forEach((val) => `€ ${val}`),
+          formatter: (val) => calcDuration(val),
         },
       },
       title: {

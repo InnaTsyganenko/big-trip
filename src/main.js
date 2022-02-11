@@ -6,6 +6,7 @@ import StatsView from './view/stats-view';
 import TripPresenter from './presenter/trip-presenter';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model';
+import OffersModel from './model/offers-model';
 import FilterModel from './model/filter-model.js';
 import {MenuItem} from './const';
 
@@ -16,6 +17,7 @@ const points = Array.from({length: POINT_COUNT}, generatePoint);
 const pointsModel = new PointsModel();
 pointsModel.points = points;
 
+const offersModel = new OffersModel();
 const filterModel = new FilterModel();
 
 const routeInfoComponent = new RouteInfoView(points);
@@ -32,7 +34,7 @@ const siteTripElement = siteMainElement.querySelector('.trip-events');
 render(siteTripInfoElement, routeInfoComponent.element, RenderPosition.AFTERBEGIN);
 render(siteNavigationElement, siteMenuComponent.element, RenderPosition.AFTERBEGIN);
 
-const tripPresenter = new TripPresenter(siteTripElement, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(siteTripElement, pointsModel, filterModel, offersModel);
 const filterPresenter = new FilterPresenter(siteFiltersElement, filterModel, pointsModel);
 
 let statsComponent = null;
@@ -57,8 +59,4 @@ const handleSiteMenuClick = (menuItem) => {
 siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
-// tripPresenter.init();
-siteTripElement.classList.add('trip-events--hidden');
-siteMainElement.querySelector('.page-body__container').classList.add('none');
-statsComponent = new StatsView(pointsModel.points);
-render(siteTripElement, statsComponent, RenderPosition.AFTEREND);
+tripPresenter.init();

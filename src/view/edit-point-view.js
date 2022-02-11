@@ -1,5 +1,6 @@
 import SmartView from './smart-view';
-import {types, options, destinations} from '../mock/point';
+import {types, destinations} from '../mock/point';
+import {offers} from '../mock/offers';
 import flatpickr from 'flatpickr';
 import {Mode} from '../const';
 
@@ -19,15 +20,6 @@ const createPointTypesTemplate = (currentType) => Object.keys(types).map((type) 
 </div>`).join('\n');
 
 const createPointCitiesTemplate = (cities) => cities.map((city) => `<option value="${city}">${city}</option>`).join('\n');
-
-const createPointOptionsTemplate = (offers) => offers.map((offer) => `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.value}-1" type="checkbox" value="${offer.value}" name="event-offer-${offer.value}" ${(offer.isChecked) ? 'checked' : ''}>
-  <label class="event__offer-label" for="event-offer-${offer.value}-1">
-    <span class="event__offer-title">${offer.title}</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${offer.price}</span>
-  </label>
-</div>`).join('\n');
 
 const createPointImagesTemplate = (pictures) => pictures.map((picture) => `<img class="event__photo" src="http://picsum.photos/248/152?r=${picture.src}" alt=${picture.description}>`).join('\n');
 
@@ -86,12 +78,7 @@ const createEditPointTemplate = (data, mode) => {
   </button>` : ''}
   </header>
   <section class="event__details">
-    ${offers.length !== 0 ? `<section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        <div class="event__available-offers">
-          ${createPointOptionsTemplate(offers)}
-        </div>
-      </section>` : ''}
+    
       ${destination.description.length !== 0 ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destination.description}</p>
@@ -193,13 +180,13 @@ export default class EditPointView extends SmartView{
       .querySelector('.event__input--destination')
       .addEventListener('change', this.#citiesInputHandler);
 
-    this.element
-      .querySelectorAll('.event__offer-checkbox').forEach((item) => item.addEventListener('change', this.#selectOptionHandler));
+    // this.element
+    //   .querySelectorAll('.event__offer-checkbox').forEach((item) => item.addEventListener('change', this.#selectOptionHandler));
   }
 
   #typePointToggleHandler = (evt) => {
     evt.preventDefault();
-    const offersByType = types[evt.target.value].map((item) => options.find((option) => option.id === item));
+    const offersByType = types[evt.target.value].map((item) => offers.find((option) => option.id === item));
     this._data.offers.forEach((offer) => {
       offer.isChecked = false;
     });
@@ -217,11 +204,11 @@ export default class EditPointView extends SmartView{
     });
   }
 
-  #selectOptionHandler = (evt) => {
-    evt.preventDefault();
-    const offer = this._data.offers.find((item) => item.value === evt.target.value);
-    offer.isChecked = !offer.isChecked;
-  }
+  // #selectOptionHandler = (evt) => {
+  //   evt.preventDefault();
+  //   const offer = this._data.offers.find((item) => item.value === evt.target.value);
+  //   offer.isChecked = !offer.isChecked;
+  // }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
