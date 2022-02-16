@@ -1,4 +1,4 @@
-export const offers = [
+export const options = [
   {
     id: 1,
     value: 'luggage',
@@ -29,5 +29,5 @@ export const offers = [
     title: 'Travel by train',
     price: 40,
     isChecked: false,
-  },
+  }
 ];

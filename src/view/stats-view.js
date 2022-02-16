@@ -158,7 +158,7 @@ const renderTimeChart = (barHeigth, timeCtx, typeByTimeSorting) => {
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
         barThickness: 44,
-        minBarLength: 50,
+        minBarLength: 70,
       }],
     },
     options: {

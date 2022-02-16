@@ -1,16 +1,17 @@
 import AbstractView from './abstract-view';
 import {addNull, calcDuration} from '../utils/common';
-import {offers} from '../mock/offers';
+import {options} from '../mock/options';
 
-const createPointOptionsTemplate = (options) => options.map((option) => `<li class="event__offer">
+const createPointOptionsTemplate = (offers) => offers.map((option) => `<li class="event__offer">
   <span class="event__offer-title"style="white-space: pre;">${option.title}</span>&plus;&euro;&nbsp;
   <span class="event__offer-price">${option.price}</span>
   </li>`).join('\n');
 
 const createPointTemplate = (point) => {
-  const {price, dateFrom, dateTo, duration, type, destination, isFavorite} = point;
-  const offersByType = point.offers.map((item) => offers.find((option) => option.id === item));
+  const {price, dateFrom, dateTo, duration, type, destination, isFavorite, offers} = point;
+  const offersByType = offers.map((item) => options.find((option) => option.id === item));
   const offersChecked = offersByType.filter((offer) => offer.isChecked === true);
+  console.log(offersChecked);
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
@@ -34,10 +35,11 @@ const createPointTemplate = (point) => {
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${price}</span>
       </p>
-      <h4 class="visually-hidden">Offers:</h4>
+      ${offersChecked.length > 0 ?
+    `<h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
         ${createPointOptionsTemplate(offersChecked)}
-      </ul>
+      </ul>` : ''}
       <button class="event__favorite-btn ${favoriteClassName}" type="button">
         <span class="visually-hidden">Add to favorite</span>
         <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
